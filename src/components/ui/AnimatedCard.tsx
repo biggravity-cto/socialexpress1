@@ -1,14 +1,15 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, HTMLMotionProps } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
-interface AnimatedCardProps extends React.HTMLAttributes<HTMLDivElement> {
+// Create a type that omits the conflicting event handlers
+type AnimatedCardProps = {
   children: React.ReactNode;
   delay?: number;
   hover?: boolean;
   className?: string;
-}
+} & Omit<HTMLMotionProps<"div">, "children" | "delay" | "hover" | "className">;
 
 const AnimatedCard: React.FC<AnimatedCardProps> = ({
   children,
