@@ -1,170 +1,105 @@
 
 import React from 'react';
+import Navbar from '@/components/navigation/Navbar';
+import Footer from '@/components/landing/Footer';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import { CheckCircle } from 'lucide-react';
 
 const Features = () => {
-  const features = [
-    {
-      title: "AI-Powered Content Creation",
-      description: "Generate engaging social media content tailored to your resort's unique amenities and experiences.",
-      icon: "✨"
-    },
-    {
-      title: "Multi-Platform Management",
-      description: "Manage all your social media accounts from a single, intuitive dashboard.",
-      icon: "🔄"
-    },
-    {
-      title: "Guest Engagement Analytics",
-      description: "Track engagement metrics and understand what content resonates with your audience.",
-      icon: "📊"
-    },
-    {
-      title: "Automated Scheduling",
-      description: "Plan and schedule posts weeks in advance to maintain a consistent online presence.",
-      icon: "🗓️"
-    },
-    {
-      title: "Guest Review Integration",
-      description: "Automatically collect and showcase positive guest reviews across your platforms.",
-      icon: "⭐"
-    },
-    {
-      title: "Custom Branding Tools",
-      description: "Ensure all content aligns with your resort's brand guidelines and visual identity.",
-      icon: "🎨"
-    }
-  ];
-
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="pt-20 bg-gradient-to-b from-white to-resort-50 min-h-screen"
-    >
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-resort-800 mb-4">
-            Powerful Features for Resort Social Media
-          </h1>
-          <p className="text-xl text-resort-600 max-w-3xl mx-auto">
-            Everything you need to captivate guests and showcase your resort's unique experiences
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.4 }}
-              className="bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-resort-800 mb-3">{feature.title}</h3>
-              <p className="text-resort-600">{feature.description}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        <div className="bg-ocean-50 rounded-2xl p-8 md:p-12 mb-16">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-ocean-800 mb-6">Compare Plans</h2>
-            
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Starter Plan */}
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h3 className="text-xl font-semibold mb-2">Starter</h3>
-                <div className="text-3xl font-bold text-resort-800 mb-4">$99<span className="text-base font-normal text-resort-600">/month</span></div>
-                <div className="space-y-3 mb-6">
-                  {[
-                    "AI post generation (10/month)",
-                    "2 social platforms",
-                    "Basic analytics",
-                    "Email support"
-                  ].map((feature, i) => (
-                    <div key={i} className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-ocean-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-resort-700">{feature}</span>
-                    </div>
-                  ))}
+    <div className="min-h-screen bg-gradient-to-b from-white to-resort-50">
+      <Navbar />
+      
+      <section className="pt-32 pb-20">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="text-center max-w-3xl mx-auto mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="inline-block bg-ocean-50 text-ocean-600 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+              Platform Features
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold text-resort-900 mb-6">
+              Everything You Need to <span className="text-ocean-600">Elevate Your Resort's Presence</span>
+            </h1>
+            <p className="text-lg text-resort-600">
+              Discover our comprehensive suite of tools designed specifically for hospitality brands to thrive in the digital landscape.
+            </p>
+          </motion.div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Feature cards */}
+            {featuresData.map((feature, index) => (
+              <motion.div 
+                key={index}
+                className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${feature.bgColor}`}>
+                  <feature.icon className={`w-6 h-6 ${feature.iconColor}`} />
                 </div>
-                <Link to="/dashboard">
-                  <Button className="w-full">Get Started</Button>
-                </Link>
-              </div>
-              
-              {/* Professional Plan */}
-              <div className="bg-white rounded-xl p-6 shadow-sm border-2 border-ocean-400 relative">
-                <div className="absolute -top-3 left-0 right-0 mx-auto w-max bg-ocean-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                  Most Popular
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Professional</h3>
-                <div className="text-3xl font-bold text-resort-800 mb-4">$199<span className="text-base font-normal text-resort-600">/month</span></div>
-                <div className="space-y-3 mb-6">
-                  {[
-                    "AI post generation (50/month)",
-                    "5 social platforms",
-                    "Advanced analytics",
-                    "Priority support",
-                    "Content calendar",
-                    "Guest review integration"
-                  ].map((feature, i) => (
-                    <div key={i} className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-ocean-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-resort-700">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-                <Link to="/dashboard">
-                  <Button className="w-full bg-ocean-600 hover:bg-ocean-700">Get Started</Button>
-                </Link>
-              </div>
-              
-              {/* Enterprise Plan */}
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h3 className="text-xl font-semibold mb-2">Enterprise</h3>
-                <div className="text-3xl font-bold text-resort-800 mb-4">$399<span className="text-base font-normal text-resort-600">/month</span></div>
-                <div className="space-y-3 mb-6">
-                  {[
-                    "Unlimited AI post generation",
-                    "Unlimited social platforms",
-                    "Custom analytics dashboard",
-                    "Dedicated account manager",
-                    "Custom API integrations",
-                    "White-labeled reports",
-                    "Team collaboration tools"
-                  ].map((feature, i) => (
-                    <div key={i} className="flex items-start">
-                      <CheckCircle className="h-5 w-5 text-ocean-500 mr-2 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-resort-700">{feature}</span>
-                    </div>
-                  ))}
-                </div>
-                <Link to="/dashboard">
-                  <Button className="w-full">Get Started</Button>
-                </Link>
-              </div>
-            </div>
+                <h3 className="text-xl font-semibold text-resort-800 mb-3">{feature.title}</h3>
+                <p className="text-resort-600">{feature.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
-
-        <div className="text-center">
-          <Link to="/pricing">
-            <Button size="lg" className="bg-ocean-600 hover:bg-ocean-700">
-              View Full Pricing Details
-            </Button>
-          </Link>
-        </div>
-      </div>
-    </motion.div>
+      </section>
+      
+      <Footer />
+    </div>
   );
 };
+
+// Sample features data
+import { Calendar, MessageSquare, Image, BarChart3, Zap, Users } from 'lucide-react';
+
+const featuresData = [
+  {
+    title: "Content Calendar",
+    description: "Plan and schedule your social media content ahead of time with our intuitive calendar interface.",
+    icon: Calendar,
+    bgColor: "bg-blue-50",
+    iconColor: "text-blue-500"
+  },
+  {
+    title: "AI Content Generation",
+    description: "Create engaging captions, hashtags, and content ideas tailored to your resort brand.",
+    icon: MessageSquare,
+    bgColor: "bg-purple-50",
+    iconColor: "text-purple-500"
+  },
+  {
+    title: "Visual Editor",
+    description: "Edit, crop, and enhance your images and videos with our built-in visual editing tools.",
+    icon: Image,
+    bgColor: "bg-pink-50",
+    iconColor: "text-pink-500"
+  },
+  {
+    title: "Advanced Analytics",
+    description: "Track performance metrics and gain insights to optimize your social media strategy.",
+    icon: BarChart3,
+    bgColor: "bg-green-50",
+    iconColor: "text-green-500"
+  },
+  {
+    title: "Automation Tools",
+    description: "Streamline your workflow with automated posting, engagement, and reporting features.",
+    icon: Zap,
+    bgColor: "bg-yellow-50",
+    iconColor: "text-yellow-500"
+  },
+  {
+    title: "Team Collaboration",
+    description: "Work seamlessly with your team to review, approve, and publish content efficiently.",
+    icon: Users,
+    bgColor: "bg-orange-50",
+    iconColor: "text-orange-500"
+  }
+];
 
 export default Features;

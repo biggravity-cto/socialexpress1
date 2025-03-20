@@ -1,285 +1,124 @@
 
 import React from 'react';
+import Navbar from '@/components/navigation/Navbar';
+import Footer from '@/components/landing/Footer';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ExternalLink, ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 const CaseStudies = () => {
-  // Sample case studies data
-  const caseStudies = [
-    {
-      id: 1,
-      title: "Paradise Bay Resort: 300% Social Media Engagement Growth",
-      description: "How Paradise Bay Resort used ResortFlux to transform their social media strategy and drive measurable results.",
-      results: [
-        "300% increase in social media engagement",
-        "45% growth in direct bookings from social channels",
-        "2.3x ROI on social media advertising spend"
-      ],
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
-      logo: "https://via.placeholder.com/80",
-      clientName: "Paradise Bay Resort & Spa",
-      isFeatured: true
-    },
-    {
-      id: 2,
-      title: "Mountain Peaks Lodge: Building Brand Awareness",
-      description: "How this boutique mountain resort established a distinctive brand voice across social platforms.",
-      results: [
-        "210% increase in Instagram followers",
-        "85% improvement in content engagement rates",
-        "Featured in 3 major travel publications"
-      ],
-      image: "https://images.unsplash.com/photo-1601701119533-fde20cecbf4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
-      logo: "https://via.placeholder.com/80",
-      clientName: "Mountain Peaks Lodge"
-    },
-    {
-      id: 3,
-      title: "Seaside Villas: UGC-Driven Marketing Strategy",
-      description: "Leveraging user-generated content to create authentic marketing materials and build trust.",
-      results: [
-        "400+ pieces of UGC collected monthly",
-        "35% decrease in content production costs",
-        "28% increase in booking conversion rate"
-      ],
-      image: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
-      logo: "https://via.placeholder.com/80",
-      clientName: "Seaside Villas Resort"
-    },
-    {
-      id: 4,
-      title: "Tropical Palms: Crisis Management Success",
-      description: "How this resort effectively managed its online reputation during a regional crisis.",
-      results: [
-        "Maintained 4.7/5 review rating during crisis period",
-        "93% positive sentiment in social media mentions",
-        "50% reduction in negative customer feedback"
-      ],
-      image: "https://images.unsplash.com/photo-1642548666500-7990b88e72f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
-      logo: "https://via.placeholder.com/80",
-      clientName: "Tropical Palms Resort"
-    },
-    {
-      id: 5,
-      title: "Urban Skyline Hotel: Local Experience Marketing",
-      description: "Creating a social strategy that highlighted local experiences to attract urban travelers.",
-      results: [
-        "25% increase in bookings from local experience packages",
-        "180% growth in local partnership referrals",
-        "Featured in city tourism campaign"
-      ],
-      image: "https://images.unsplash.com/photo-1496417263034-38ec4f0b665a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
-      logo: "https://via.placeholder.com/80",
-      clientName: "Urban Skyline Hotel & Suites"
-    },
-    {
-      id: 6,
-      title: "Island Breeze: Video-First Content Strategy",
-      description: "How this resort leveraged short-form video to capture the attention of younger travelers.",
-      results: [
-        "500K+ views on TikTok content in first quarter",
-        "37% increase in Gen Z and Millennial bookings",
-        "42% engagement rate on video content"
-      ],
-      image: "https://images.unsplash.com/photo-1609602644879-dd158c993757?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=800&q=80",
-      logo: "https://via.placeholder.com/80",
-      clientName: "Island Breeze Resort"
-    }
-  ];
-
-  // Filter categories
-  const categories = ["All Case Studies", "Engagement Growth", "Brand Awareness", "UGC Strategy", "Crisis Management", "Video Marketing"];
-
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className="pt-20 bg-gradient-to-b from-white to-resort-50 min-h-screen"
-    >
-      <div className="container mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-resort-800 mb-4">
-            Success Stories
-          </h1>
-          <p className="text-xl text-resort-600 max-w-3xl mx-auto">
-            See how resorts are transforming their social media presence with ResortFlux
-          </p>
-        </div>
-
-        {/* Filter */}
-        <div className="flex justify-center mb-12">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map((category, index) => (
-              <button
+    <div className="min-h-screen bg-gradient-to-b from-white to-resort-50">
+      <Navbar />
+      
+      <section className="pt-32 pb-20">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="text-center max-w-3xl mx-auto mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="inline-block bg-ocean-50 text-ocean-600 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+              Success Stories
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold text-resort-900 mb-6">
+              Resort <span className="text-ocean-600">Case Studies</span>
+            </h1>
+            <p className="text-lg text-resort-600">
+              See how leading resorts and hospitality brands have transformed their social media presence and achieved remarkable results with our platform.
+            </p>
+          </motion.div>
+          
+          <div className="space-y-16 max-w-5xl mx-auto">
+            {caseStudies.map((study, index) => (
+              <motion.div 
                 key={index}
-                className={`px-4 py-2 text-sm rounded-full transition-colors ${
-                  index === 0 
-                    ? 'bg-ocean-600 text-white' 
-                    : 'bg-white text-resort-700 hover:bg-ocean-50'
-                }`}
+                className="flex flex-col md:flex-row gap-8 bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Featured Case Study */}
-        {caseStudies.find(study => study.isFeatured) && (
-          <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-16">
-            <div className="md:flex">
-              <div className="md:w-1/2">
-                <img 
-                  src={caseStudies.find(study => study.isFeatured)?.image} 
-                  alt={caseStudies.find(study => study.isFeatured)?.title}
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                <div className="flex items-center mb-6">
-                  <span className="bg-ocean-100 text-ocean-800 text-xs px-3 py-1 rounded-full font-medium">Featured Case Study</span>
-                </div>
-                
-                <div className="mb-6">
+                <div className="md:w-2/5">
                   <img 
-                    src={caseStudies.find(study => study.isFeatured)?.logo} 
-                    alt={caseStudies.find(study => study.isFeatured)?.clientName}
-                    className="h-12 w-auto"
+                    src={study.image} 
+                    alt={study.title}
+                    className="w-full h-full object-cover"
                   />
                 </div>
-                
-                <h2 className="text-2xl md:text-3xl font-bold text-resort-800 mb-4">
-                  {caseStudies.find(study => study.isFeatured)?.title}
-                </h2>
-                
-                <p className="text-resort-600 mb-6">
-                  {caseStudies.find(study => study.isFeatured)?.description}
-                </p>
-                
-                <div className="mb-8">
-                  <h3 className="font-semibold text-resort-800 mb-3">Key Results:</h3>
-                  <ul className="space-y-2">
-                    {caseStudies.find(study => study.isFeatured)?.results.map((result, index) => (
-                      <li key={index} className="flex items-start">
-                        <span className="text-ocean-500 mr-2">✓</span>
-                        <span className="text-resort-700">{result}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <Button className="self-start flex items-center">
-                  Read Full Case Study <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Case Studies Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {caseStudies.filter(study => !study.isFeatured).map((study) => (
-            <motion.div
-              key={study.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="bg-white rounded-xl shadow-sm overflow-hidden flex flex-col"
-            >
-              <div className="relative h-48">
-                <img 
-                  src={study.image} 
-                  alt={study.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              <div className="p-6 flex-grow flex flex-col">
-                <div className="mb-4">
-                  <img 
-                    src={study.logo} 
-                    alt={study.clientName}
-                    className="h-10 w-auto"
-                  />
-                </div>
-                
-                <h3 className="text-xl font-semibold text-resort-800 mb-3">{study.title}</h3>
-                <p className="text-resort-600 mb-6">{study.description}</p>
-                
-                <div className="mt-auto">
-                  <Button variant="ghost" className="text-ocean-600 hover:text-ocean-700 flex items-center p-0">
-                    Read Case Study <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Testimonials */}
-        <div className="bg-resort-50 rounded-xl p-8 md:p-12 mb-16">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-resort-800 mb-3">What Our Clients Say</h2>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                quote: "ResortFlux transformed our approach to social media. We've seen a dramatic increase in engagement and direct bookings.",
-                author: "Emma Rodriguez",
-                position: "Marketing Director, Paradise Bay Resort",
-                image: "https://via.placeholder.com/64"
-              },
-              {
-                quote: "The AI-powered content generation saves us hours of work each week, and the results have been phenomenal.",
-                author: "Michael Chen",
-                position: "Social Media Manager, Urban Skyline Hotel",
-                image: "https://via.placeholder.com/64"
-              }
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
-                <div className="text-resort-600 mb-6 italic">
-                  "{testimonial.quote}"
-                </div>
-                <div className="flex items-center">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.author}
-                    className="h-12 w-12 rounded-full mr-4"
-                  />
-                  <div>
-                    <div className="font-medium text-resort-800">{testimonial.author}</div>
-                    <div className="text-sm text-resort-500">{testimonial.position}</div>
+                <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
+                  <div className="flex items-center mb-4">
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-600 mr-2">
+                      {study.category}
+                    </span>
+                    <span className="text-resort-500 text-sm">{study.location}</span>
                   </div>
+                  <h3 className="text-2xl font-semibold text-resort-800 mb-4">{study.title}</h3>
+                  <div className="flex flex-wrap gap-4 mb-6">
+                    {study.results.map((result, i) => (
+                      <div key={i} className="bg-resort-50 px-4 py-2 rounded-lg">
+                        <span className="block text-xl font-bold text-ocean-600">{result.stat}</span>
+                        <span className="text-sm text-resort-600">{result.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-resort-600 mb-6">{study.excerpt}</p>
+                  <Link 
+                    to="#" 
+                    className="inline-flex items-center text-ocean-600 font-medium hover:text-ocean-700 transition-colors"
+                  >
+                    Read Full Case Study <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
-
-        {/* CTA Section */}
-        <div className="bg-white rounded-xl p-8 md:p-12 text-center max-w-4xl mx-auto border border-gray-100 shadow-sm">
-          <h2 className="text-2xl font-bold text-resort-800 mb-4">Ready to become our next success story?</h2>
-          <p className="text-resort-600 mb-8 max-w-2xl mx-auto">
-            Join hundreds of resorts that have transformed their social media presence with ResortFlux
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-ocean-600 hover:bg-ocean-700">
-              Start Your Free Trial
-            </Button>
-            <Button variant="outline">
-              Schedule a Demo
-            </Button>
-          </div>
-        </div>
-      </div>
-    </motion.div>
+      </section>
+      
+      <Footer />
+    </div>
   );
 };
+
+// Sample case studies data
+const caseStudies = [
+  {
+    title: "How Paradise Bay Resort Increased Bookings by 43% Using Social Media Strategy",
+    excerpt: "By implementing our AI-powered content creation and strategic posting schedule, Paradise Bay Resort saw a dramatic increase in engagement and direct bookings.",
+    category: "Luxury Resort",
+    location: "Maldives",
+    image: "/placeholder.svg",
+    results: [
+      { stat: "43%", label: "Booking Increase" },
+      { stat: "127%", label: "Engagement Growth" },
+      { stat: "58%", label: "Content Efficiency" }
+    ]
+  },
+  {
+    title: "Mountain View Lodge's Social Media Transformation Journey",
+    excerpt: "Learn how this boutique mountain retreat revitalized their online presence and connected with a younger demographic of adventure travelers.",
+    category: "Boutique Lodge",
+    location: "Colorado, USA",
+    image: "/placeholder.svg",
+    results: [
+      { stat: "215%", label: "Instagram Growth" },
+      { stat: "67%", label: "Website Traffic" },
+      { stat: "31%", label: "Revenue Increase" }
+    ]
+  },
+  {
+    title: "Coastal Getaway Hotel Group's Multi-Property Social Media Success",
+    excerpt: "Discover how this hotel chain maintained brand consistency while highlighting unique features across 12 different properties.",
+    category: "Hotel Chain",
+    location: "Mediterranean Coast",
+    image: "/placeholder.svg",
+    results: [
+      { stat: "54%", label: "Cross-Property Bookings" },
+      { stat: "78%", label: "Content Production ↑" },
+      { stat: "12hr", label: "Team Time Saved Weekly" }
+    ]
+  }
+];
 
 export default CaseStudies;

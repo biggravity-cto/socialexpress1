@@ -17,33 +17,29 @@ import Blog from "./pages/Blog";
 import Guides from "./pages/Guides";
 import CaseStudies from "./pages/CaseStudies";
 import { AnimatePresence } from "framer-motion";
-import Navbar from "./components/navigation/Navbar";
 
 // Create a component to handle AnimatePresence with useLocation
 const AnimatedRoutes = () => {
   const location = useLocation();
   
   return (
-    <>
-      <Navbar />
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/posts" element={<Posts />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/features" element={<Features />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/guides" element={<Guides />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </AnimatePresence>
-    </>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<Index />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/posts" element={<Posts />} />
+        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/features" element={<Features />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/guides" element={<Guides />} />
+        <Route path="/case-studies" element={<CaseStudies />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AnimatePresence>
   );
 };
 
