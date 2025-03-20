@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -239,9 +238,9 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
-              <div className="flex items-center mb-4">
+              <Link to="/" className="flex items-center mb-4">
                 <span className="font-bold text-xl tracking-tight text-resort-800">Resort<span className="text-ocean-600">Flux</span></span>
-              </div>
+              </Link>
               <p className="text-resort-600 mb-4">
                 AI-powered social media management built specifically for hospitality resorts.
               </p>
@@ -281,15 +280,16 @@ const Index = () => {
               © {new Date().getFullYear()} ResortFlux. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-resort-500 hover:text-resort-900 transition-colors">
+              {/* Convert anchor tags to Link components */}
+              <Link to="#" className="text-resort-500 hover:text-resort-900 transition-colors">
                 Twitter
-              </a>
-              <a href="#" className="text-resort-500 hover:text-resort-900 transition-colors">
+              </Link>
+              <Link to="#" className="text-resort-500 hover:text-resort-900 transition-colors">
                 LinkedIn
-              </a>
-              <a href="#" className="text-resort-500 hover:text-resort-900 transition-colors">
+              </Link>
+              <Link to="#" className="text-resort-500 hover:text-resort-900 transition-colors">
                 Instagram
-              </a>
+              </Link>
             </div>
           </div>
         </div>
