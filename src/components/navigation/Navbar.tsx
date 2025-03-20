@@ -9,7 +9,6 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
   
   useEffect(() => {
     const handleScroll = () => {
@@ -27,11 +26,14 @@ const Navbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    // Close mobile menu when route changes
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
-
-  if (!isHomePage) return null;
 
   return (
     <>
