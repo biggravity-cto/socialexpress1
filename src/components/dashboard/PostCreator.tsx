@@ -67,7 +67,7 @@ const templates = [
   },
   { 
     name: 'Special Event', 
-    content: 'Join us for a special event at [VENUE] on [DATE]. We're hosting [EVENT DESCRIPTION] that you won't want to miss. Reserve your spot now! #specialevent #exclusive #hospitality',
+    content: 'Join us for a special event at [VENUE] on [DATE]. We\'re hosting [EVENT DESCRIPTION] that you won\'t want to miss. Reserve your spot now! #specialevent #exclusive #hospitality',
     category: 'events'
   },
   { 
