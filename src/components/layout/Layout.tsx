@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { 
   SidebarProvider, 
   Sidebar, 
@@ -11,10 +11,20 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-  SidebarTrigger
+  SidebarTrigger,
+  useSidebar
 } from '@/components/ui/sidebar';
-import { LayoutDashboard, Calendar, Image, BarChart3, Settings, Users, LogOut } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  Calendar, 
+  Image, 
+  BarChart3, 
+  Settings, 
+  Users, 
+  LogOut 
+} from 'lucide-react';
 import Navbar from '../navigation/Navbar';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -53,6 +63,23 @@ const navItems = [
   }
 ];
 
+// This component is needed to use the useSidebar hook inside the SidebarProvider
+const AutoCollapseSidebar = () => {
+  const { setOpen } = useSidebar();
+  const isMobile = useIsMobile();
+  
+  React.useEffect(() => {
+    // Automatically collapse sidebar on mobile
+    if (isMobile) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  }, [isMobile, setOpen]);
+  
+  return null;
+};
+
 const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
   const isPublicPage = ['/', '/login', '/features', '/pricing', '/blog', '/guides', '/case-studies'].includes(location.pathname);
@@ -72,7 +99,8 @@ const Layout = ({ children }: LayoutProps) => {
 
   // For authenticated pages (dashboard, calendar, etc.)
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={!useIsMobile()}>
+      <AutoCollapseSidebar />
       <div className="flex h-screen w-full overflow-hidden">
         <Sidebar variant="inset" collapsible="icon">
           <SidebarHeader className="flex h-14 items-center px-4">
@@ -88,10 +116,10 @@ const Layout = ({ children }: LayoutProps) => {
                     tooltip={item.name}
                     isActive={location.pathname === item.path}
                   >
-                    <a href={item.path}>
+                    <Link to={item.path}>
                       {item.icon}
                       <span>{item.name}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -102,10 +130,10 @@ const Layout = ({ children }: LayoutProps) => {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="Logout">
-                  <a href="/login">
+                  <Link to="/login">
                     <LogOut className="h-5 w-5" />
                     <span>Logout</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
