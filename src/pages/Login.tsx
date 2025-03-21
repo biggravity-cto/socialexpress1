@@ -30,7 +30,7 @@ const Login = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md"
+        className="w-full max-w-md mx-auto"
       >
         <div className="mb-8 text-center">
           <Link to="/" className="inline-block">
