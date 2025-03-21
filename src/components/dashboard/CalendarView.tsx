@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Calendar as CalendarIcon, Clock, Instagram, Twitter, Facebook, DragIcon, Globe, MoreHorizontal } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Instagram, Twitter, Facebook, Globe, MoreHorizontal } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

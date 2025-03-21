@@ -17,6 +17,7 @@ import Blog from "./pages/Blog";
 import Guides from "./pages/Guides";
 import CaseStudies from "./pages/CaseStudies";
 import { AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 // Create a component to handle AnimatePresence with useLocation
 const AnimatedRoutes = () => {
@@ -43,18 +44,22 @@ const AnimatedRoutes = () => {
   );
 };
 
-const queryClient = new QueryClient();
+// Move App component definition to a function declaration to ensure it's fully defined before export
+function App() {
+  // Create a new QueryClient instance inside the component
+  const [queryClient] = useState(() => new QueryClient());
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AnimatedRoutes />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <AnimatedRoutes />
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
