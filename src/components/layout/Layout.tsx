@@ -61,19 +61,19 @@ const Layout = ({ children }: LayoutProps) => {
   // For public pages like home, login, pricing, etc.
   if (isPublicPage) {
     return (
-      <>
+      <div className="min-h-screen w-full">
         {!isLoginPage && <Navbar />}
-        <main className="min-h-screen w-full">
+        <main className="w-full">
           {children}
         </main>
-      </>
+      </div>
     );
   }
 
   // For authenticated pages (dashboard, calendar, etc.)
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex h-screen w-full overflow-hidden">
         <Sidebar variant="inset" collapsible="icon">
           <SidebarHeader className="flex h-14 items-center px-4">
             <span className="font-bold text-lg tracking-tight text-sidebar-foreground">Resort<span className="text-ocean-600">Flux</span></span>
@@ -112,14 +112,14 @@ const Layout = ({ children }: LayoutProps) => {
           </SidebarFooter>
         </Sidebar>
         
-        <SidebarInset className="bg-background">
+        <SidebarInset className="flex-1 overflow-auto">
           <div className="flex items-center h-14 px-4 border-b border-gray-100">
             <SidebarTrigger className="mr-2" />
             <h1 className="text-xl font-semibold text-resort-800 capitalize">
               {location.pathname.substring(1) || 'Dashboard'}
             </h1>
           </div>
-          <div className="px-4 py-4">
+          <div className="p-4 md:p-6">
             {children}
           </div>
         </SidebarInset>
