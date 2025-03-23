@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Calendar as CalendarIcon, Clock, Instagram, Twitter, Facebook, Globe, MoreHorizontal } from 'lucide-react';
 import { Calendar } from '@/components/ui/calendar';
@@ -5,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import AnimatedCard from '../ui/AnimatedCard';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,6 +83,7 @@ const CalendarView = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [selectedDateEvents, setSelectedDateEvents] = useState<CalendarEvent[]>([]);
   const [draggingEvent, setDraggingEvent] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   // Update events when date changes
   React.useEffect(() => {
@@ -155,11 +158,11 @@ const CalendarView = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-      <div className="md:col-span-5 lg:col-span-4">
+    <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-12'}`}>
+      <div className={`${isMobile ? 'mb-4' : 'lg:col-span-4'}`}>
         <AnimatedCard className="h-full">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium text-resort-800">Content Calendar</h3>
+            <h3 className="font-medium text-resort-800">Select Date</h3>
             <Button variant="outline" size="sm" className="text-xs h-8">
               <CalendarIcon className="mr-1 h-3 w-3" /> Today
             </Button>
@@ -169,7 +172,7 @@ const CalendarView = () => {
             mode="single"
             selected={date}
             onSelect={setDate}
-            className="rounded-md border pointer-events-auto"
+            className="rounded-md border pointer-events-auto w-full"
             modifiers={{
               highlighted: getHighlightedDates()
             }}
@@ -219,7 +222,7 @@ const CalendarView = () => {
         </AnimatedCard>
       </div>
       
-      <div className="md:col-span-7 lg:col-span-8">
+      <div className={`${isMobile ? '' : 'lg:col-span-8'}`}>
         <AnimatedCard className="h-full">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-medium text-resort-800">

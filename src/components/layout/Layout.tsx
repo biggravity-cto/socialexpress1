@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { 
@@ -58,34 +59,18 @@ const Layout = ({ children }: LayoutProps) => {
   const isMobile = useIsMobile();
   const isPublicPage = ['/', '/login', '/features', '/pricing', '/blog', '/guides', '/case-studies'].includes(location.pathname);
   const isLoginPage = location.pathname === '/login';
-  const [sidebarOpen, setSidebarOpen] = React.useState(!isMobile);
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
 
-  // Keep sidebar state in sync with mobile status
+  // Auto-collapse sidebar on mobile, auto-expand on desktop
   React.useEffect(() => {
-    if (isMobile) {
-      setSidebarOpen(false);
-    } else {
-      setSidebarOpen(true);
-    }
+    setSidebarOpen(!isMobile);
   }, [isMobile]);
-
-  // For public pages like home, login, pricing, etc.
-  if (isPublicPage) {
-    return (
-      <div className="min-h-screen w-full">
-        {!isLoginPage && <Navbar />}
-        <main className="w-full">
-          {children}
-        </main>
-      </div>
-    );
-  }
 
   // The sidebar content - reused in both desktop and mobile
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       <div className="flex h-14 items-center px-4 border-b border-gray-100">
-        <span className="font-bold text-lg tracking-tight text-resort-800">Resort<span className="text-ocean-600">Flux</span></span>
+        <span className="font-bold text-lg tracking-tight text-resort-800">Social<span className="text-ocean-600">Express</span></span>
       </div>
       
       <div className="flex-1 overflow-auto py-2">
@@ -118,6 +103,18 @@ const Layout = ({ children }: LayoutProps) => {
       </div>
     </div>
   );
+
+  // For public pages like home, login, pricing, etc.
+  if (isPublicPage) {
+    return (
+      <div className="min-h-screen w-full">
+        {!isLoginPage && <Navbar />}
+        <main className="w-full">
+          {children}
+        </main>
+      </div>
+    );
+  }
 
   // For authenticated pages (dashboard, calendar, etc.)
   return (

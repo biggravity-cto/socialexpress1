@@ -14,7 +14,7 @@ export function useIsMobile() {
     const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`)
     
     const handleResize = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT)
+      setIsMobile(mql.matches)
     }
     
     // Initial check
@@ -22,11 +22,21 @@ export function useIsMobile() {
     
     // Add event listeners
     window.addEventListener("resize", handleResize)
-    mql.addEventListener("change", handleResize)
+    
+    // This is the modern way to listen for media query changes
+    if (mql.addEventListener) {
+      mql.addEventListener("change", handleResize)
+    } else {
+      // Fallback for older browsers
+      window.addEventListener("resize", handleResize)
+    }
     
     return () => {
       window.removeEventListener("resize", handleResize)
-      mql.removeEventListener("change", handleResize)
+      
+      if (mql.removeEventListener) {
+        mql.removeEventListener("change", handleResize)
+      }
     }
   }, [])
 

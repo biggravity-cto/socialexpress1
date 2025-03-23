@@ -16,7 +16,9 @@ const Calendar = () => {
         <p className="text-resort-500">Plan and schedule your content across platforms</p>
       </div>
       
-      <CalendarView />
+      <div className="w-full overflow-x-hidden">
+        <CalendarView />
+      </div>
     </motion.div>
   );
 };
