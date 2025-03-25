@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { 
@@ -154,8 +153,7 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
         <SheetContent 
           side="left" 
-          className="p-0 w-64 border-r border-gray-100"
-          overlayClassName="bg-black/60" 
+          className="p-0 w-64 border-r border-gray-100 bg-white"
         >
           <SidebarContent />
         </SheetContent>
