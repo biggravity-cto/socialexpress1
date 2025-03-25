@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <Link to="/" className="flex items-center mb-4">
-              <span className="font-bold text-xl tracking-tight text-resort-800">Resort<span className="text-ocean-600">Flux</span></span>
+              <span className="font-bold text-xl tracking-tight text-resort-800">BG Social<span className="text-ocean-600">Express</span></span>
             </Link>
             <p className="text-resort-600 mb-4">
               AI-powered social media management built specifically for hospitality resorts.
@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
         
         <div className="border-t border-gray-100 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-resort-500 text-sm">
-            © {new Date().getFullYear()} ResortFlux. All rights reserved.
+            © {new Date().getFullYear()} BG Social Express. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="#" className="text-resort-500 hover:text-resort-900 transition-colors">

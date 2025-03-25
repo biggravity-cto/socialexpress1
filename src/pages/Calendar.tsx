@@ -2,8 +2,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import CalendarView from '@/components/dashboard/CalendarView';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Calendar = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -16,8 +19,10 @@ const Calendar = () => {
         <p className="text-resort-500">Plan and schedule your content across platforms</p>
       </div>
       
-      <div className="w-full overflow-x-hidden">
-        <CalendarView />
+      <div className={`w-full ${isMobile ? 'overflow-x-auto' : 'overflow-hidden'}`}>
+        <div className="min-w-[800px] lg:min-w-0">
+          <CalendarView />
+        </div>
       </div>
     </motion.div>
   );

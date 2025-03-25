@@ -10,7 +10,9 @@ import {
   Users, 
   LogOut,
   Menu,
-  X
+  X,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import Navbar from '../navigation/Navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -70,7 +72,7 @@ const Layout = ({ children }: LayoutProps) => {
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       <div className="flex h-14 items-center px-4 border-b border-gray-100">
-        <span className="font-bold text-lg tracking-tight text-resort-800">Social<span className="text-ocean-600">Express</span></span>
+        <span className="font-bold text-lg tracking-tight text-resort-800">BG Social<span className="text-ocean-600">Express</span></span>
       </div>
       
       <div className="flex-1 overflow-auto py-2">
@@ -86,7 +88,7 @@ const Layout = ({ children }: LayoutProps) => {
               }`}
             >
               <span className="mr-3">{item.icon}</span>
-              {item.name}
+              {sidebarOpen && <span>{item.name}</span>}
             </Link>
           ))}
         </nav>
@@ -98,7 +100,7 @@ const Layout = ({ children }: LayoutProps) => {
           className="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-100 transition-colors"
         >
           <LogOut className="h-5 w-5 mr-3" />
-          Logout
+          {sidebarOpen && <span>Logout</span>}
         </Link>
       </div>
     </div>
@@ -121,26 +123,40 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="flex h-screen overflow-hidden">
       {/* Desktop Sidebar */}
       <div 
-        className={`hidden md:block transition-all duration-300 border-r border-gray-100 bg-white ${
-          sidebarOpen ? 'w-64' : 'w-0'
+        className={`hidden md:flex transition-all duration-300 flex-col border-r border-gray-100 bg-white ${
+          sidebarOpen ? 'w-64' : 'w-16'
         }`}
       >
-        {sidebarOpen && <SidebarContent />}
+        <SidebarContent />
+        
+        {/* Desktop collapse toggle button */}
+        <button 
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="absolute bottom-4 right-0 translate-x-1/2 bg-white p-1.5 rounded-full border border-gray-200 shadow-sm hover:bg-gray-50 transition-colors"
+          aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          {sidebarOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+        </button>
       </div>
       
-      {/* Mobile Sidebar (Sheet) */}
+      {/* Mobile Sidebar */}
       <Sheet>
         <div className="md:hidden fixed top-0 left-0 right-0 z-10 h-14 bg-white border-b border-gray-100 flex items-center px-4">
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="mr-2">
+            <Button variant="outline" size="icon" className="mr-2 border-gray-200 text-gray-700">
               <Menu className="h-5 w-5" />
+              <span className="sr-only">Open menu</span>
             </Button>
           </SheetTrigger>
           <h1 className="text-xl font-semibold text-resort-800 capitalize">
             {location.pathname.substring(1) || 'Dashboard'}
           </h1>
         </div>
-        <SheetContent side="left" className="p-0 w-64">
+        <SheetContent 
+          side="left" 
+          className="p-0 w-64 border-r border-gray-100"
+          overlayClassName="bg-black/60" 
+        >
           <SidebarContent />
         </SheetContent>
       </Sheet>
@@ -149,14 +165,6 @@ const Layout = ({ children }: LayoutProps) => {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Desktop Header */}
         <div className="hidden md:flex items-center h-14 px-4 border-b border-gray-100">
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="mr-2"
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
           <h1 className="text-xl font-semibold text-resort-800 capitalize">
             {location.pathname.substring(1) || 'Dashboard'}
           </h1>
