@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { 
@@ -11,7 +12,9 @@ import {
   Menu,
   X,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Library,
+  ClipboardCheck
 } from 'lucide-react';
 import Navbar from '../navigation/Navbar';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -34,14 +37,19 @@ const navItems = [
     icon: <Calendar className="h-5 w-5" />
   },
   {
-    name: 'Posts',
-    path: '/posts',
-    icon: <Image className="h-5 w-5" />
+    name: 'Content Library',
+    path: '/content-library',
+    icon: <Library className="h-5 w-5" />
   },
   {
     name: 'Analytics',
     path: '/analytics',
     icon: <BarChart3 className="h-5 w-5" />
+  },
+  {
+    name: 'Approvals',
+    path: '/approvals',
+    icon: <ClipboardCheck className="h-5 w-5" />
   },
   {
     name: 'Team',
@@ -60,7 +68,7 @@ const Layout = ({ children }: LayoutProps) => {
   const isMobile = useIsMobile();
   const isPublicPage = ['/', '/login', '/features', '/pricing', '/blog', '/guides', '/case-studies'].includes(location.pathname);
   const isLoginPage = location.pathname === '/login';
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [sidebarOpen, setSidebarOpen] = React.useState(!isMobile);
 
   // Auto-collapse sidebar on mobile, auto-expand on desktop
   React.useEffect(() => {

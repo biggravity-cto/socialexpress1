@@ -34,7 +34,7 @@ const Login = () => {
       >
         <div className="mb-8 text-center">
           <Link to="/" className="inline-block">
-            <span className="font-bold text-xl tracking-tight text-resort-800">Resort<span className="text-ocean-600">Flux</span></span>
+            <span className="font-bold text-xl tracking-tight text-resort-800">BG Social<span className="text-ocean-600">Express</span></span>
           </Link>
         </div>
         

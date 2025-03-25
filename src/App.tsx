@@ -7,7 +7,8 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
-import Posts from "./pages/Posts";
+import ContentLibrary from "./pages/ContentLibrary";
+import Approvals from "./pages/Approvals";
 import Analytics from "./pages/Analytics";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
@@ -30,7 +31,8 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<Index />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/calendar" element={<Calendar />} />
-        <Route path="/posts" element={<Posts />} />
+        <Route path="/content-library" element={<ContentLibrary />} />
+        <Route path="/approvals" element={<Approvals />} />
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/login" element={<Login />} />
         <Route path="/features" element={<Features />} />

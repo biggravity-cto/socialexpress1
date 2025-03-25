@@ -4,7 +4,7 @@ import PerformanceMetrics from '@/components/dashboard/PerformanceMetrics';
 import RecentActivity from '@/components/dashboard/RecentActivity';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BarChart, Calendar, MessageSquare, Settings, Image, Plus, ArrowRight } from 'lucide-react';
+import { Calendar, MessageSquare, Settings, Library, Plus, ArrowRight, ClipboardCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AnimatedCard from '@/components/ui/AnimatedCard';
 import { motion } from 'framer-motion';
@@ -20,23 +20,14 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">Welcome Back</h1>
-          <p className="text-resort-500">Here's what's happening with your resort's social media</p>
+          <p className="text-resort-500">Here's what's happening with your social media</p>
         </div>
         <div className="flex items-center space-x-2">
-          <Link to="/posts">
+          <Link to="/calendar">
             <Button className="bg-ocean-600 hover:bg-ocean-700 shadow-sm">
-              <Plus className="mr-1.5 h-4 w-4" /> New Post
+              <Plus className="mr-1.5 h-4 w-4" /> Create Content
             </Button>
           </Link>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2">
-          <PerformanceMetrics />
-        </div>
-        <div>
-          <RecentActivity />
         </div>
       </div>
 
@@ -51,18 +42,18 @@ const Dashboard = () => {
             delay: 0
           },
           {
-            title: "Create Post",
-            description: "Draft and schedule new social media content",
-            icon: <Image className="h-6 w-6 text-blue-600" />,
-            path: "/posts",
+            title: "Content Library",
+            description: "Browse and manage your content assets",
+            icon: <Library className="h-6 w-6 text-blue-600" />,
+            path: "/content-library",
             color: "from-blue-50 to-white",
             delay: 1
           },
           {
-            title: "Analytics",
-            description: "Track performance across all platforms",
-            icon: <BarChart className="h-6 w-6 text-green-600" />,
-            path: "/analytics",
+            title: "Approvals",
+            description: "Review pending content approvals and workflows",
+            icon: <ClipboardCheck className="h-6 w-6 text-green-600" />,
+            path: "/approvals",
             color: "from-green-50 to-white",
             delay: 2
           },
@@ -98,83 +89,53 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="md:col-span-2 p-6 bg-white/80 backdrop-blur-sm">
-          <h3 className="text-lg font-medium text-resort-800 mb-4">Recent Performance</h3>
-          <div className="flex items-center space-x-4">
-            <div className="flex-1 border border-gray-100 rounded-lg p-4">
-              <p className="text-sm text-resort-500">Engagement Rate</p>
-              <p className="text-2xl font-semibold text-resort-800 mt-1">4.8%</p>
-              <div className="flex items-center mt-1 text-green-600 text-xs font-medium">
-                <svg className="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                2.1% from last week
-              </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div className="lg:col-span-2">
+          <RecentActivity />
+        </div>
+        <div>
+          <Card className="p-6 bg-white/80 backdrop-blur-sm">
+            <h3 className="text-lg font-medium text-resort-800 mb-4">Quick Settings</h3>
+            <div className="space-y-3">
+              <Link to="/settings/profile" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center">
+                  <div className="p-2 rounded-full bg-ocean-50 mr-3">
+                    <Settings className="h-5 w-5 text-ocean-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-resort-800">Account Settings</p>
+                    <p className="text-xs text-resort-500">Update your profile and preferences</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-resort-400" />
+              </Link>
+              <Link to="/settings/team" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center">
+                  <div className="p-2 rounded-full bg-purple-50 mr-3">
+                    <Settings className="h-5 w-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-resort-800">Team Settings</p>
+                    <p className="text-xs text-resort-500">Manage team members and permissions</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-resort-400" />
+              </Link>
+              <Link to="/settings/integrations" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center">
+                  <div className="p-2 rounded-full bg-green-50 mr-3">
+                    <Settings className="h-5 w-5 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-resort-800">Integrations</p>
+                    <p className="text-xs text-resort-500">Connect your social media accounts</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-resort-400" />
+              </Link>
             </div>
-            <div className="flex-1 border border-gray-100 rounded-lg p-4">
-              <p className="text-sm text-resort-500">Reach</p>
-              <p className="text-2xl font-semibold text-resort-800 mt-1">14.2K</p>
-              <div className="flex items-center mt-1 text-green-600 text-xs font-medium">
-                <svg className="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                5.3% from last week
-              </div>
-            </div>
-            <div className="flex-1 border border-gray-100 rounded-lg p-4">
-              <p className="text-sm text-resort-500">Profile Visits</p>
-              <p className="text-2xl font-semibold text-resort-800 mt-1">3.4K</p>
-              <div className="flex items-center mt-1 text-red-600 text-xs font-medium">
-                <svg className="w-3 h-3 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 5V19M5 12L12 19L19 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                1.2% from last week
-              </div>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-6 bg-white/80 backdrop-blur-sm">
-          <h3 className="text-lg font-medium text-resort-800 mb-4">Quick Settings</h3>
-          <div className="space-y-3">
-            <Link to="/settings/profile" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-              <div className="flex items-center">
-                <div className="p-2 rounded-full bg-ocean-50 mr-3">
-                  <Settings className="h-5 w-5 text-ocean-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-resort-800">Account Settings</p>
-                  <p className="text-xs text-resort-500">Update your profile and preferences</p>
-                </div>
-              </div>
-              <ArrowRight className="h-4 w-4 text-resort-400" />
-            </Link>
-            <Link to="/settings/team" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-              <div className="flex items-center">
-                <div className="p-2 rounded-full bg-purple-50 mr-3">
-                  <Settings className="h-5 w-5 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-resort-800">Team Settings</p>
-                  <p className="text-xs text-resort-500">Manage team members and permissions</p>
-                </div>
-              </div>
-              <ArrowRight className="h-4 w-4 text-resort-400" />
-            </Link>
-            <Link to="/settings/integrations" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-              <div className="flex items-center">
-                <div className="p-2 rounded-full bg-green-50 mr-3">
-                  <Settings className="h-5 w-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-resort-800">Integrations</p>
-                  <p className="text-xs text-resort-500">Connect your social media accounts</p>
-                </div>
-              </div>
-              <ArrowRight className="h-4 w-4 text-resort-400" />
-            </Link>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
     </motion.div>
   );
