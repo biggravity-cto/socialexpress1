@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, addDays, getDay, parseISO } from 'date-fns';
 import { Twitter, Instagram, Facebook, Trash2, Edit, Calendar as CalendarIcon, PlusCircle, Clock, Share2, Bookmark, MoreHorizontal } from 'lucide-react';
@@ -834,3 +835,44 @@ const DayDetailDialog: React.FC<{
                           <Badge className={getStatusClass(post.status)}>
                             {post.status.replace('_', ' ')}
                           </Badge>
+                          
+                          <Badge variant="outline">
+                            {post.type}
+                          </Badge>
+                          
+                          {postCampaign && (
+                            <Badge 
+                              variant="outline" 
+                              style={{ 
+                                backgroundColor: postCampaign.color || '#e5e7eb',
+                                borderColor: postCampaign.color || '#e5e7eb'
+                              }}
+                            >
+                              {postCampaign.name}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-10 border rounded-lg bg-gray-50">
+            <CalendarIcon className="h-12 w-12 mx-auto mb-2 text-gray-300" />
+            <p className="text-gray-500">No posts scheduled for this day</p>
+            <Button 
+              variant="outline"
+              className="mt-4"
+              onClick={onCreatePost}
+            >
+              <PlusCircle className="h-4 w-4 mr-1" /> Create Post
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
