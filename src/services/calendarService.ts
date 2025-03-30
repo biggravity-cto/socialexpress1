@@ -1,6 +1,6 @@
 
 import { supabase } from '@/integrations/supabase/client';
-import { Campaign, Post, PostCreationData } from '@/types/calendar';
+import { Campaign, Post, PostCreationData, isPlatform, isStatus } from '@/types/calendar';
 
 // Campaigns
 export const fetchCampaigns = async (): Promise<Campaign[]> => {
@@ -8,7 +8,7 @@ export const fetchCampaigns = async (): Promise<Campaign[]> => {
     const { data, error } = await supabase
       .from('campaigns')
       .select('*')
-      .order('startDate', { ascending: true });
+      .order('startdate', { ascending: true });
     
     if (error) throw error;
     return data || [];
@@ -85,6 +85,15 @@ export const fetchPosts = async (): Promise<Post[]> => {
 
 export const createPost = async (postData: PostCreationData): Promise<Post | null> => {
   try {
+    // Validate platform and status
+    if (!isPlatform(postData.platform)) {
+      throw new Error(`Invalid platform: ${postData.platform}`);
+    }
+    
+    if (!isStatus(postData.status)) {
+      throw new Error(`Invalid status: ${postData.status}`);
+    }
+    
     const { data, error } = await supabase
       .from('posts')
       .insert([postData])
@@ -101,6 +110,15 @@ export const createPost = async (postData: PostCreationData): Promise<Post | nul
 
 export const updatePost = async (id: string, updates: Partial<Post>): Promise<Post | null> => {
   try {
+    // Validate platform and status if they're being updated
+    if (updates.platform && !isPlatform(updates.platform)) {
+      throw new Error(`Invalid platform: ${updates.platform}`);
+    }
+    
+    if (updates.status && !isStatus(updates.status)) {
+      throw new Error(`Invalid status: ${updates.status}`);
+    }
+    
     const { data, error } = await supabase
       .from('posts')
       .update(updates)

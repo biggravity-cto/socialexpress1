@@ -4,8 +4,8 @@
 export interface Campaign {
   id: string;
   name: string;
-  startDate: string; // ISO date string
-  endDate: string; // ISO date string
+  startdate: string; // ISO date string - matching the database column name
+  enddate: string; // ISO date string - matching the database column name
   color: string; // CSS class for styling
   description?: string;
   created_at?: string;
@@ -17,16 +17,25 @@ export interface Post {
   title: string;
   date: string; // ISO date string format
   time: string;
-  platform: 'instagram' | 'twitter' | 'facebook';
+  platform: string; // Changed from enum to string to match database
   type: string;
   content?: string;
   campaign_id?: string;
-  status: 'scheduled' | 'draft' | 'published' | 'pending_approval';
+  status: string; // Changed from enum to string to match database
   author_id?: string;
   author?: string;
-  imgUrl?: string;
+  imgurl?: string; // Changed to match database column name
   created_at?: string;
   updated_at?: string;
 }
 
 export type PostCreationData = Omit<Post, 'id' | 'created_at' | 'updated_at'>;
+
+// Type guards for platform and status to ensure type safety
+export function isPlatform(value: string): value is 'instagram' | 'twitter' | 'facebook' {
+  return ['instagram', 'twitter', 'facebook'].includes(value);
+}
+
+export function isStatus(value: string): value is 'scheduled' | 'draft' | 'published' | 'pending_approval' {
+  return ['scheduled', 'draft', 'published', 'pending_approval'].includes(value);
+}

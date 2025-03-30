@@ -1,318 +1,283 @@
 
 import React, { useState } from 'react';
-import { Calendar as CalendarIcon, Clock, Instagram, Twitter, Facebook, Globe, MoreHorizontal } from 'lucide-react';
-import { Calendar } from '@/components/ui/calendar';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import AnimatedCard from '../ui/AnimatedCard';
-import { cn } from '@/lib/utils';
-import { useIsMobile } from '@/hooks/use-mobile';
+import { DayPicker } from 'react-day-picker';
+import { format } from 'date-fns';
 import { Campaign, Post } from '@/types/calendar';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { parseISO, format } from 'date-fns';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CalendarIcon, Plus, ListFilter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
 
 interface CalendarViewProps {
   posts: Post[];
   campaigns: Campaign[];
-  onCreatePost?: (postData: any) => void;
-  onUpdatePost?: (id: string, updates: Partial<Post>) => void;
-  onDeletePost?: (id: string) => void;
+  onCreatePost: (post: any) => void;
+  onUpdatePost: (id: string, post: any) => void;
+  onDeletePost: (id: string) => void;
 }
 
-export const Calendar: React.FC<CalendarViewProps> = ({ 
-  posts = [], 
-  campaigns = [],
+export const CalendarView: React.FC<CalendarViewProps> = ({
+  posts,
+  campaigns,
   onCreatePost,
   onUpdatePost,
   onDeletePost
 }) => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
-  const [selectedDatePosts, setSelectedDatePosts] = useState<Post[]>([]);
-  const [draggingPost, setDraggingPost] = useState<string | null>(null);
-  const isMobile = useIsMobile();
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(new Date());
+  const [hoveredDay, setHoveredDay] = useState<Date | undefined>(undefined);
+  const [view, setView] = useState<'month' | 'week' | 'day'>('month');
+  const [showPostCreator, setShowPostCreator] = useState(false);
 
-  // Convert ISO date strings to Date objects
-  const convertToDate = (dateStr: string) => {
-    return parseISO(dateStr);
-  };
-
-  // Update posts when date changes
-  React.useEffect(() => {
-    if (date) {
-      const formattedSelectedDate = format(date, 'yyyy-MM-dd');
-      const filteredPosts = posts.filter(post => {
-        return post.date === formattedSelectedDate;
-      });
-      setSelectedDatePosts(filteredPosts);
-    } else {
-      setSelectedDatePosts([]);
-    }
-  }, [date, posts]);
-
-  // Function to generate highlighted dates for the calendar
-  const getHighlightedDates = () => {
-    const uniqueDates = new Set<string>();
+  // Helper functions
+  const getPostsForDate = (date: Date) => {
+    if (!date) return [];
     
-    posts.forEach(post => {
-      uniqueDates.add(post.date);
+    return posts.filter(post => {
+      const postDate = new Date(post.date);
+      return (
+        postDate.getDate() === date.getDate() &&
+        postDate.getMonth() === date.getMonth() &&
+        postDate.getFullYear() === date.getFullYear()
+      );
     });
+  };
+
+  const getCampaignForDate = (date: Date) => {
+    if (!date) return null;
     
-    return Array.from(uniqueDates).map(dateStr => parseISO(dateStr));
+    return campaigns.find(campaign => {
+      const start = new Date(campaign.startdate);
+      const end = new Date(campaign.enddate);
+      return date >= start && date <= end;
+    });
   };
 
-  const getPlatformIcon = (platform: string) => {
-    switch (platform) {
-      case 'instagram':
-        return <Instagram className="h-4 w-4" />;
-      case 'twitter':
-        return <Twitter className="h-4 w-4" />;
-      case 'facebook':
-        return <Facebook className="h-4 w-4" />;
-      default:
-        return null;
-    }
+  // Event handlers
+  const handlePrevMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'published':
-        return 'bg-green-100 text-green-800';
-      case 'scheduled':
-        return 'bg-blue-100 text-blue-800';
-      case 'draft':
-        return 'bg-gray-100 text-gray-800';
-      case 'pending_approval':
-        return 'bg-amber-100 text-amber-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
+  const handleNextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
   };
 
-  const handleDragStart = (postId: string) => {
-    setDraggingPost(postId);
+  const handleDayClick = (day: Date) => {
+    setSelectedDay(day);
   };
 
-  const handleDragEnd = () => {
-    setDraggingPost(null);
+  const formatMonthYear = (date: Date) => {
+    return format(date, 'MMMM yyyy');
   };
 
-  const handleDrop = (newDate: Date) => {
-    if (draggingPost && onUpdatePost) {
-      const formattedNewDate = format(newDate, 'yyyy-MM-dd');
-      onUpdatePost(draggingPost, { date: formattedNewDate });
-      setDraggingPost(null);
-    }
-  };
+  // Get highlighted days (days with posts)
+  const highlightedDays = posts.map(post => new Date(post.date));
 
-  const handleCreateClick = () => {
-    if (onCreatePost && date) {
-      onCreatePost({
-        title: "New post",
-        date: format(date, 'yyyy-MM-dd'),
-        time: "12:00",
-        platform: "instagram",
-        type: "Post",
-        status: "draft"
-      });
-    }
-  };
-
-  const handleDeletePost = (postId: string) => {
-    if (onDeletePost) {
-      onDeletePost(postId);
-    }
+  // Render day cell content
+  const renderDayContents = (day: Date) => {
+    const postsForDay = getPostsForDate(day);
+    const campaign = getCampaignForDate(day);
+    
+    return (
+      <div className="h-full">
+        <div className="text-center mb-1">
+          {day.getDate()}
+        </div>
+        {campaign && (
+          <div 
+            className={`text-xs py-0.5 px-1 mb-1 rounded ${campaign.color}`}
+          >
+            {campaign.name}
+          </div>
+        )}
+        {postsForDay.slice(0, 2).map((post, i) => (
+          <div 
+            key={post.id} 
+            className="text-xs truncate mb-0.5 p-0.5 bg-gray-50 rounded"
+          >
+            {post.title}
+          </div>
+        ))}
+        {postsForDay.length > 2 && (
+          <div className="text-xs text-gray-500">
+            +{postsForDay.length - 2} more
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
-    <div className={`grid gap-4 ${isMobile ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-12'}`}>
-      <div className={`${isMobile ? 'mb-4' : 'lg:col-span-4'}`}>
-        <AnimatedCard className="h-full">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-medium text-resort-800">Select Date</h3>
-            <Button variant="outline" size="sm" className="text-xs h-8" onClick={() => setDate(new Date())}>
-              <CalendarIcon className="mr-1 h-3 w-3" /> Today
+    <div className="space-y-4">
+      <Card className="p-4">
+        <div className="flex justify-between items-center mb-4">
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" size="icon" onClick={handlePrevMonth}>
+              <ChevronLeft className="h-4 w-4" />
             </Button>
+            <Button variant="outline">Today</Button>
+            <Button variant="outline" size="icon" onClick={handleNextMonth}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <h2 className="text-xl font-semibold ml-2">{formatMonthYear(currentMonth)}</h2>
           </div>
           
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border pointer-events-auto w-full"
-            modifiers={{
-              highlighted: getHighlightedDates()
-            }}
-            modifiersStyles={{
-              highlighted: {
-                fontWeight: 'bold',
-                backgroundColor: 'rgba(14, 165, 233, 0.1)',
-                color: 'rgb(3, 105, 161)'
-              }
-            }}
-            onDayMouseEnter={(day) => {
-              if (draggingPost) {
-                // Show visual feedback that this day is a drop target
-                console.log(`Hovering over ${day.toDateString()} with post ${draggingPost}`);
-              }
-            }}
-            onDayClick={(day) => {
-              if (draggingPost) {
-                handleDrop(day);
-              }
-            }}
-          />
-          
-          <div className="mt-4 text-sm text-resort-500">
-            <p>
-              {date ? format(date, 'MMMM yyyy') : ''}
-            </p>
-            <div className="flex flex-col space-y-2 mt-3">
-              <div className="flex items-center space-x-2">
-                <span className="inline-block w-3 h-3 rounded-full bg-blue-100"></span>
-                <span>Scheduled</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="inline-block w-3 h-3 rounded-full bg-green-100"></span>
-                <span>Published</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="inline-block w-3 h-3 rounded-full bg-amber-100"></span>
-                <span>Pending Approval</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="inline-block w-3 h-3 rounded-full bg-gray-100"></span>
-                <span>Draft</span>
-              </div>
-            </div>
-          </div>
-        </AnimatedCard>
-      </div>
-      
-      <div className={`${isMobile ? '' : 'lg:col-span-8'}`}>
-        <AnimatedCard className="h-full">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="font-medium text-resort-800">
-              {date ? format(date, 'EEEE, MMMM d') : 'Posts'}
-            </h3>
+          <div className="flex items-center space-x-2">
+            <Tabs defaultValue="month" onValueChange={(value) => setView(value as any)}>
+              <TabsList>
+                <TabsTrigger value="day">Day</TabsTrigger>
+                <TabsTrigger value="week">Week</TabsTrigger>
+                <TabsTrigger value="month">Month</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            
             <Button 
-              size="sm" 
-              className="bg-ocean-600 hover:bg-ocean-700 h-8 text-xs"
-              onClick={handleCreateClick}
+              variant="outline" 
+              className="flex items-center"
             >
-              + Add Content
+              <ListFilter className="h-4 w-4 mr-2" />
+              Filter
+            </Button>
+            
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              onClick={() => setShowPostCreator(true)}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Create Post
             </Button>
           </div>
+        </div>
+        
+        <DayPicker
+          selected={selectedDay}
+          onSelect={setSelectedDay}
+          className="p-3 pointer-events-auto"
+          modifiers={{ highlighted: highlightedDays }}
+          modifiersStyles={{
+            highlighted: { backgroundColor: '#f0f9ff' }
+          }}
+          onDayMouseEnter={setHoveredDay}
+          onDayClick={handleDayClick}
+          month={currentMonth}
+          mode="single"
+        />
+      </Card>
+
+      {/* Selected day details */}
+      {selectedDay && (
+        <Card className="p-4">
+          <h3 className="text-lg font-medium mb-2">
+            {format(selectedDay, 'EEEE, MMMM d, yyyy')}
+          </h3>
           
-          {selectedDatePosts.length > 0 ? (
-            <div className="space-y-3">
-              {selectedDatePosts.map((post) => (
-                <div 
-                  key={post.id} 
-                  className={cn(
-                    "group p-3 rounded-lg border border-gray-100 hover:border-ocean-200 hover:bg-ocean-50/30 transition-all duration-300",
-                    draggingPost === post.id ? "opacity-50 border-dashed border-ocean-500" : "",
-                    post.status === 'pending_approval' ? "border-l-4 border-l-amber-400" : ""
-                  )}
-                  draggable={true}
-                  onDragStart={() => handleDragStart(post.id)}
-                  onDragEnd={handleDragEnd}
-                >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center mb-1 flex-wrap gap-2">
-                        <Badge className={cn("mr-2 px-2 py-0.5 text-xs font-normal", getStatusColor(post.status))}>
-                          {post.status.replace('_', ' ')}
-                        </Badge>
-                        <span className="flex items-center text-resort-500 text-xs">
-                          <span className="p-1 rounded-full bg-gray-50 mr-1.5">
-                            {getPlatformIcon(post.platform)}
-                          </span>
-                          {post.platform.charAt(0).toUpperCase() + post.platform.slice(1)}
-                        </span>
-                      </div>
-                      <h4 className="font-medium text-resort-800">{post.title}</h4>
-                      <div className="flex items-center mt-2 text-resort-500 text-xs">
-                        <Clock className="mr-1 h-3 w-3" />
-                        {post.time}
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="cursor-move text-resort-400 p-1 rounded hover:bg-gray-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="9" cy="5" r="1" />
-                          <circle cx="9" cy="12" r="1" />
-                          <circle cx="9" cy="19" r="1" />
-                          <circle cx="15" cy="5" r="1" />
-                          <circle cx="15" cy="12" r="1" />
-                          <circle cx="15" cy="19" r="1" />
-                        </svg>
-                      </span>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            className="h-8 w-8 p-0 text-resort-500"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem>Edit Post</DropdownMenuItem>
-                          <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                          {post.status === 'pending_approval' && (
-                            <DropdownMenuItem>Approve</DropdownMenuItem>
-                          )}
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem 
-                            className="text-red-600"
-                            onClick={() => handleDeletePost(post.id)}
-                          >
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
+          {getCampaignForDate(selectedDay) && (
+            <Badge className="mb-4">
+              {getCampaignForDate(selectedDay)?.name}
+            </Badge>
+          )}
+          
+          <div className="space-y-3">
+            {getPostsForDate(selectedDay).length > 0 ? (
+              getPostsForDate(selectedDay).map(post => (
+                <div key={post.id} className="p-3 border rounded-lg">
+                  <div className="flex justify-between">
+                    <h4 className="font-medium">{post.title}</h4>
+                    <span className="text-sm text-gray-500">{post.time}</span>
                   </div>
+                  <div className="flex items-center mt-1">
+                    <Badge>{post.platform}</Badge>
+                    <Badge className="ml-2">{post.status}</Badge>
+                  </div>
+                  {post.content && (
+                    <p className="mt-2 text-sm text-gray-700">{post.content}</p>
+                  )}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12 px-4">
-              <div className="text-resort-400 mb-3">
-                <CalendarIcon className="h-12 w-12 mx-auto" />
+              ))
+            ) : (
+              <div className="text-center py-6 text-gray-500">
+                <CalendarIcon className="h-12 w-12 mx-auto mb-2 text-gray-300" />
+                <p>No posts scheduled for this day</p>
+                <Button 
+                  className="mt-3"
+                  onClick={() => setShowPostCreator(true)}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Post
+                </Button>
               </div>
-              <h3 className="text-lg font-medium text-resort-800 mb-2">No posts scheduled</h3>
-              <p className="text-resort-500 text-sm mb-6">
-                There are no posts scheduled for this date. Add a new post to get started.
-              </p>
-              <Button 
-                size="sm" 
-                className="bg-ocean-600 hover:bg-ocean-700"
-                onClick={handleCreateClick}
-              >
-                Create New Post
+            )}
+          </div>
+        </Card>
+      )}
+
+      {/* Post Creator Dialog */}
+      <Dialog open={showPostCreator} onOpenChange={setShowPostCreator}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Create New Post</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input id="title" placeholder="Enter post title" />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="platform">Platform</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select platform" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="instagram">Instagram</SelectItem>
+                    <SelectItem value="twitter">Twitter</SelectItem>
+                    <SelectItem value="facebook">Facebook</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="status">Status</Label>
+                <Select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="draft">Draft</SelectItem>
+                    <SelectItem value="scheduled">Scheduled</SelectItem>
+                    <SelectItem value="pending_approval">Pending Approval</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="content">Content</Label>
+              <Input id="content" placeholder="Post content" />
+            </div>
+            
+            <div className="flex justify-end space-x-2">
+              <Button variant="outline" onClick={() => setShowPostCreator(false)}>
+                Cancel
+              </Button>
+              <Button onClick={() => {
+                // Here would be the logic to create a post
+                setShowPostCreator(false);
+              }}>
+                Create Post
               </Button>
             </div>
-          )}
-          <div className="mt-4 pt-4 border-t border-gray-100">
-            <p className="text-xs text-resort-500">
-              Tip: You can drag and drop posts to reschedule them to different dates.
-            </p>
           </div>
-        </AnimatedCard>
-      </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
-
-export default Calendar;
