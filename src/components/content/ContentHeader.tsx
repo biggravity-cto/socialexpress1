@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Sparkles, CloudUpload } from 'lucide-react';
+import { Plus, Sparkles, CloudUpload, Image as ImageIcon, FileText, Video } from 'lucide-react';
 
 interface ContentHeaderProps {
   setContentType: (type: 'post' | 'image' | 'video' | 'document') => void;
@@ -68,7 +68,7 @@ const ContentHeader: React.FC<ContentHeaderProps> = ({
                         }}
                       >
                         <div className="text-sm font-medium leading-none flex items-center">
-                          <Image className="h-4 w-4 mr-2" />
+                          <ImageIcon className="h-4 w-4 mr-2" />
                           Image or Graphic
                         </div>
                         <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
