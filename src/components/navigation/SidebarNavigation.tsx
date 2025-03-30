@@ -33,7 +33,7 @@ import { Button } from '@/components/ui/button';
 const SidebarNavigation = () => {
   return (
     <>
-      <SidebarContent className="flex flex-col h-full justify-between">
+      <SidebarContent>
         {/* Main navigation group */}
         <SidebarGroup>
           <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
