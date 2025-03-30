@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, Outlet } from 'react-router-dom';
 import { 
@@ -6,7 +7,6 @@ import {
   Library, 
   MessageSquare, 
   ClipboardCheck,
-  BarChart3, 
   Settings, 
   Users, 
   LogOut,
@@ -16,10 +16,6 @@ import {
   BrainCircuit,
   LineChart,
   Bell,
-  Megaphone,
-  Plug,
-  Palette,
-  UserCircle,
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -29,90 +25,47 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Badge } from '@/components/ui/badge';
 import RecentActivity from '../dashboard/RecentActivity';
 
-// Reorganized menu structure with new grouping and order
+// Simplified flat menu structure in specified order
 const navItems = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    icon: <LayoutDashboard className="h-5 w-5" />,
-    standalone: true
+    icon: <LayoutDashboard className="h-5 w-5" />
   },
   {
-    group: "MARKETING",
-    icon: <Megaphone className="h-5 w-5" />,
-    items: [
-      {
-        name: 'Campaigns',
-        path: '/campaigns',
-        icon: <BrainCircuit className="h-5 w-5" />,
-        description: 'Strategic planning & briefs'
-      },
-      {
-        name: 'Calendar',
-        path: '/calendar',
-        icon: <Calendar className="h-5 w-5" />,
-        description: 'Visual scheduling & planning'
-      },
-      {
-        name: 'Library',
-        path: '/content',
-        icon: <Library className="h-5 w-5" />,
-        description: 'Content creation, AI tools & assets'
-      },
-      {
-        name: 'Approvals',
-        path: '/approvals',
-        icon: <ClipboardCheck className="h-5 w-5" />,
-        description: 'Workflow for campaigns & content'
-      }
-    ]
+    name: 'Campaigns',
+    path: '/campaigns',
+    icon: <BrainCircuit className="h-5 w-5" />
   },
   {
-    group: "INSIGHTS",
-    icon: <BarChart3 className="h-5 w-5" />,
-    items: [
-      {
-        name: 'Analytics',
-        path: '/analytics',
-        icon: <BarChart3 className="h-5 w-5" />,
-        description: 'Performance tracking & ROI'
-      },
-      {
-        name: 'Market Intelligence',
-        path: '/market-intelligence',
-        icon: <LineChart className="h-5 w-5" />,
-        description: 'Competitor & trend analysis'
-      }
-    ]
+    name: 'Calendar',
+    path: '/calendar',
+    icon: <Calendar className="h-5 w-5" />
+  },
+  {
+    name: 'Content Studio',
+    path: '/content',
+    icon: <Library className="h-5 w-5" />
+  },
+  {
+    name: 'Approvals',
+    path: '/approvals',
+    icon: <ClipboardCheck className="h-5 w-5" />
+  },
+  {
+    name: 'Market Intelligence',
+    path: '/market-intelligence',
+    icon: <LineChart className="h-5 w-5" />
   },
   {
     name: 'Unified Social Inbox',
     path: '/messages',
-    icon: <MessageSquare className="h-5 w-5" />,
-    standalone: true
-  }
-];
-
-const settingsItems = [
-  {
-    name: 'Team',
-    path: '/team',
-    icon: <Users className="h-5 w-5" />,
+    icon: <MessageSquare className="h-5 w-5" />
   },
   {
-    name: 'Integrations',
-    path: '/integrations',
-    icon: <Plug className="h-5 w-5" />,
-  },
-  {
-    name: 'Brand Kit',
-    path: '/brand-kit',
-    icon: <Palette className="h-5 w-5" />,
-  },
-  {
-    name: 'Account',
-    path: '/account',
-    icon: <UserCircle className="h-5 w-5" />,
+    name: 'Settings',
+    path: '/settings',
+    icon: <Settings className="h-5 w-5" />
   }
 ];
 
@@ -162,99 +115,22 @@ const Layout = () => {
       
       <div className="flex-1 overflow-auto py-2">
         <nav className="space-y-1 px-2">
-          {navItems.map((item, idx) => {
-            // Standalone items
-            if (item.standalone) {
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
-                    location.pathname === item.path 
-                      ? "bg-ocean-50 text-ocean-600" 
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  <span className="mr-3">{item.icon}</span>
-                  {sidebarOpen && <span>{item.name}</span>}
-                </Link>
-              );
-            }
-            
-            // Group items - now as static headings
-            if (item.group) {
-              return (
-                <div key={item.group} className="space-y-1">
-                  {/* Group header as static label */}
-                  <div className="px-2 py-2 text-sm font-semibold text-gray-800">
-                    <div className="flex items-center">
-                      <span className="mr-3">{item.icon}</span>
-                      {sidebarOpen && (
-                        <span className="uppercase text-xs tracking-wider">{item.group}</span>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {/* Group items */}
-                  <div className="space-y-1 mt-1">
-                    {item.items?.map(subItem => (
-                      <Link
-                        key={subItem.path}
-                        to={subItem.path}
-                        className={`flex items-center px-2 py-2 ${sidebarOpen ? 'pl-10' : 'pl-2 justify-center'} text-sm font-medium rounded-md transition-colors ${
-                          location.pathname === subItem.path 
-                            ? "bg-ocean-50 text-ocean-600" 
-                            : "text-gray-600 hover:bg-gray-100"
-                        }`}
-                      >
-                        <span className={sidebarOpen ? "mr-3" : ""}>{subItem.icon}</span>
-                        {sidebarOpen && <span>{subItem.name}</span>}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              );
-            }
-            
-            return null;
-          })}
+          {/* Flat menu items in the specified order */}
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
+                location.pathname === item.path 
+                  ? "bg-ocean-50 text-ocean-600" 
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+            >
+              <span className="mr-3">{item.icon}</span>
+              {sidebarOpen && <span>{item.name}</span>}
+            </Link>
+          ))}
         </nav>
-      </div>
-      
-      <div className="border-t border-gray-100 pt-2">
-        {/* Settings section with static items */}
-        <div className="px-2">
-          {/* Settings header as static label */}
-          <Link
-            to="/settings"
-            className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
-              location.pathname === '/settings' || settingsItems.some(item => location.pathname === item.path)
-                ? "bg-ocean-50 text-ocean-600" 
-                : "text-gray-600 hover:bg-gray-100"
-            }`}
-          >
-            <Settings className="h-5 w-5 mr-3" />
-            {sidebarOpen && <span>Settings</span>}
-          </Link>
-          
-          {/* Settings sub-items */}
-          <div className="space-y-1 mt-1">
-            {settingsItems.map(item => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`flex items-center px-2 py-2 ${sidebarOpen ? 'pl-10' : 'pl-2 justify-center'} text-sm font-medium rounded-md transition-colors ${
-                  location.pathname === item.path 
-                    ? "bg-ocean-50 text-ocean-600" 
-                    : "text-gray-600 hover:bg-gray-100"
-                }`}
-              >
-                <span className={sidebarOpen ? "mr-3" : ""}>{item.icon}</span>
-                {sidebarOpen && <span>{item.name}</span>}
-              </Link>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
