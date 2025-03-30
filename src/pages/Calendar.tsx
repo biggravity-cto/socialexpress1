@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -482,12 +481,7 @@ const CalendarPage = () => {
   };
   
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className="space-y-6"
-    >
+    <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">Content Calendar</h1>
@@ -847,4 +841,12 @@ const CalendarPage = () => {
                           >
                             {campaign.name}
                           </TableCell>
-                          {endDayIndex
+                          {endDayIndex < week.length - 1 && endDayIndex !== -1 && (
+                            <TableCell colSpan={week.length - endDayIndex}></TableCell>
+                          )}
+                        </TableRow>
+                      ) : null;
+                    })}
+                    
+                    {/* Calendar Days */}
+                    <
