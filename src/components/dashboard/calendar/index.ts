@@ -1,4 +1,5 @@
 
-export * from './PostsList';
-export * from './PostCreatorDialog';
-export * from './CalendarView';
+// Export the calendar components
+export { CalendarView } from './CalendarView';
+export { PostCreatorDialog } from './PostCreatorDialog';
+export { PostsList } from './PostsList';
