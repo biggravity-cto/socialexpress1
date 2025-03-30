@@ -1,137 +1,175 @@
 
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown } from 'lucide-react';
-import GlassPanel from '../ui/GlassPanel';
+import { useMobile } from '@/hooks/use-mobile';
+import { 
+  LayoutDashboard, 
+  BarChart3, 
+  Calendar, 
+  MessagesSquare, 
+  Users, 
+  Settings, 
+  LogOut, 
+  Menu, 
+  X, 
+  BellDot, 
+  Megaphone,
+  CheckCircle,
+  LayoutGrid,
+  GaugeCircle
+} from 'lucide-react';
+import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarLink, SidebarTrigger, SidebarFooter } from '@/components/ui/sidebar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const Navbar = () => {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isMobile = useMobile();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      if (scrollPosition > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    // Close mobile menu when route changes
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
-
-  const handleMobileMenuToggle = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  return (
-    <>
-      <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'py-3 bg-white/80 backdrop-blur-lg shadow-sm' : 'py-5 bg-transparent'
-        }`}
-      >
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <Link 
-            to="/" 
-            className="flex items-center"
-          >
-            <span className="font-bold text-xl tracking-tight text-resort-800">BG Social<span className="text-ocean-600">Express</span></span>
+  if (location.pathname === '/' || location.pathname === '/login') {
+    // Render Public Navbar for Landing and Login pages
+    return (
+      <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm py-3">
+        <div className="container flex items-center justify-between">
+          <Link to="/" className="text-2xl font-bold">
+            SocialSync
           </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-sm text-resort-700 hover:text-resort-900 transition-colors">Home</Link>
-            <Link to="/features" className="text-sm text-resort-700 hover:text-resort-900 transition-colors">Features</Link>
-            <Link to="/pricing" className="text-sm text-resort-700 hover:text-resort-900 transition-colors">Pricing</Link>
-            
-            <div className="relative group">
-              <button className="flex items-center text-sm text-resort-700 hover:text-resort-900 transition-colors">
-                Resources
-                <ChevronDown className="ml-1 h-4 w-4 transition-transform group-hover:rotate-180" />
-              </button>
-              <div className="absolute right-0 mt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-right">
-                <GlassPanel className="p-3">
-                  <div className="py-1 space-y-1">
-                    <Link to="/blog" className="block px-3 py-2 text-sm text-resort-700 hover:bg-resort-50 rounded-md">Blog</Link>
-                    <Link to="/guides" className="block px-3 py-2 text-sm text-resort-700 hover:bg-resort-50 rounded-md">Guides</Link>
-                    <Link to="/case-studies" className="block px-3 py-2 text-sm text-resort-700 hover:bg-resort-50 rounded-md">Case Studies</Link>
-                  </div>
-                </GlassPanel>
-              </div>
-            </div>
-          </nav>
-
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-6">
+            <NavLink to="/features" className="text-gray-600 hover:text-gray-900">Features</NavLink>
+            <NavLink to="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</NavLink>
+            <NavLink to="/blog" className="text-gray-600 hover:text-gray-900">Blog</NavLink>
+            <NavLink to="/guides" className="text-gray-600 hover:text-gray-900">Guides</NavLink>
+          </div>
+          <div className="flex items-center space-x-3">
             <Link to="/login">
-              <Button variant="ghost" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50">
-                Log in
-              </Button>
+              <Button variant="outline">Log in</Button>
             </Link>
-            <Link to="/dashboard">
-              <Button className="bg-ocean-600 hover:bg-ocean-700 text-white border-none">
-                Get Started
-              </Button>
+            <Link to="/login">
+              <Button>Sign up</Button>
             </Link>
           </div>
-
-          {/* Mobile menu button */}
-          <button 
-            className="md:hidden p-2 rounded-md text-resort-800"
-            onClick={handleMobileMenuToggle}
-          >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+          {isMobile && (
+            <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden">
+              {isMenuOpen ? <X /> : <Menu />}
+            </Button>
+          )}
         </div>
-      </header>
-
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-white pt-20 px-4 md:hidden animate-fade-in">
-          <nav className="flex flex-col space-y-5 py-8">
-            <Link to="/" className="text-lg font-medium text-resort-800 hover:text-resort-900 py-2">Home</Link>
-            <Link to="/features" className="text-lg font-medium text-resort-800 hover:text-resort-900 py-2">Features</Link>
-            <Link to="/pricing" className="text-lg font-medium text-resort-800 hover:text-resort-900 py-2">Pricing</Link>
-            
-            <div className="border-b border-gray-100 my-4"></div>
-            
-            <Link to="/blog" className="text-lg font-medium text-resort-800 hover:text-resort-900 py-2">Blog</Link>
-            <Link to="/guides" className="text-lg font-medium text-resort-800 hover:text-resort-900 py-2">Guides</Link>
-            <Link to="/case-studies" className="text-lg font-medium text-resort-800 hover:text-resort-900 py-2">Case Studies</Link>
-            
-            <div className="border-b border-gray-100 my-4"></div>
-            
-            <div className="flex flex-col space-y-4 pt-4">
-              <Link to="/login">
-                <Button variant="outline" className="w-full justify-center">
-                  Log in
-                </Button>
-              </Link>
-              <Link to="/dashboard">
-                <Button className="w-full bg-ocean-600 hover:bg-ocean-700 text-white justify-center">
-                  Get Started
-                </Button>
-              </Link>
+        {isMenuOpen && isMobile && (
+          <div className="absolute top-16 left-0 right-0 bg-white shadow-md p-4 md:hidden">
+            <div className="flex flex-col space-y-4">
+              <NavLink to="/features" className="text-gray-600 hover:text-gray-900">Features</NavLink>
+              <NavLink to="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</NavLink>
+              <NavLink to="/blog" className="text-gray-600 hover:text-gray-900">Blog</NavLink>
+              <NavLink to="/guides" className="text-gray-600 hover:text-gray-900">Guides</NavLink>
+              <div className="pt-2 border-t border-gray-100">
+                <Link to="/login" className="w-full">
+                  <Button className="w-full">Log in</Button>
+                </Link>
+              </div>
             </div>
-          </nav>
+          </div>
+        )}
+      </header>
+    );
+  }
+
+  // Dashboard Navbar with Sidebar
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <Sidebar>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
+              <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
+              <SidebarLink to="/campaigns" icon={<Megaphone />}>Campaigns</SidebarLink>
+              <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
+              <SidebarLink to="/content" icon={<LayoutGrid />}>Content</SidebarLink>
+              <SidebarLink to="/market-intelligence" icon={<GaugeCircle />}>Market Intelligence</SidebarLink>
+            </SidebarGroup>
+            <SidebarGroup>
+              <SidebarLink to="/messages" icon={<MessagesSquare />}>Messages</SidebarLink>
+              <SidebarLink to="/approvals" icon={<CheckCircle />}>Approvals</SidebarLink>
+              <SidebarLink to="/team" icon={<Users />}>Team</SidebarLink>
+              <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
+            </SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter>
+            <div className="flex items-center justify-between px-3 py-2">
+              <div className="flex items-center">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                      <Avatar className="h-9 w-9">
+                        <AvatarImage src="/placeholder.svg" />
+                        <AvatarFallback>JD</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="text-red-600">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <Button variant="ghost" size="icon" className="relative">
+                <BellDot className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+                  3
+                </span>
+              </Button>
+            </div>
+          </SidebarFooter>
+        </Sidebar>
+        
+        <div className="flex-1 min-h-screen">
+          <header className="h-14 border-b lg:h-[60px]">
+            <div className="flex h-full items-center px-4 md:px-6">
+              <SidebarTrigger />
+              <div className="ml-auto flex items-center gap-2">
+                <Button variant="ghost" size="icon" className="relative">
+                  <BellDot className="h-5 w-5" />
+                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-medium text-white">
+                    3
+                  </span>
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src="/placeholder.svg" />
+                        <AvatarFallback>JD</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
+                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem className="text-red-600">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          </header>
+          <main className="flex-1">{/* The Outlet component from Layout will render here */}</main>
         </div>
-      )}
-    </>
+      </div>
+    </SidebarProvider>
   );
 };
 

@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { Campaign } from '@/types/calendar';
 
 interface PostCreatorDialogProps {
   showPostCreator: boolean;
@@ -19,6 +20,7 @@ interface PostCreatorDialogProps {
     type: string;
     content: string;
     status: string;
+    campaign_id?: string;
   };
   setNewPost: React.Dispatch<React.SetStateAction<{
     title: string;
@@ -28,8 +30,10 @@ interface PostCreatorDialogProps {
     type: string;
     content: string;
     status: string;
+    campaign_id?: string;
   }>>;
   handleCreatePost: () => void;
+  campaigns: Campaign[];
 }
 
 export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
@@ -37,13 +41,14 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
   setShowPostCreator,
   newPost,
   setNewPost,
-  handleCreatePost
+  handleCreatePost,
+  campaigns
 }) => {
   return (
     <Dialog open={showPostCreator} onOpenChange={setShowPostCreator}>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Create New Post</DialogTitle>
+          <DialogTitle>{newPost.id ? 'Edit Post' : 'Create New Post'}</DialogTitle>
         </DialogHeader>
         
         <div className="space-y-4 py-4">
@@ -88,9 +93,30 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
                   <SelectItem value="draft">Draft</SelectItem>
                   <SelectItem value="scheduled">Scheduled</SelectItem>
                   <SelectItem value="pending_approval">Pending Approval</SelectItem>
+                  <SelectItem value="published">Published</SelectItem>
                 </SelectContent>
               </Select>
             </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="campaign">Campaign</Label>
+            <Select 
+              value={newPost.campaign_id || ""}
+              onValueChange={(value) => setNewPost({...newPost, campaign_id: value !== "" ? value : undefined})}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select campaign (optional)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">No campaign</SelectItem>
+                {campaigns.map(campaign => (
+                  <SelectItem key={campaign.id} value={campaign.id}>
+                    {campaign.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
           <div className="space-y-2">
@@ -143,7 +169,7 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
               onClick={handleCreatePost}
               disabled={!newPost.title}
             >
-              Create Post
+              {newPost.id ? 'Update' : 'Create'} Post
             </Button>
           </div>
         </div>
