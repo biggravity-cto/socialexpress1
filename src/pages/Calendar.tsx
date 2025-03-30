@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -15,6 +15,7 @@ import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { format } from 'date-fns';
+import { supabase } from '@/integrations/supabase/client';
 
 // Define campaign type
 interface Campaign {
@@ -261,6 +262,37 @@ const CalendarPage = () => {
   const [showPostCreator, setShowPostCreator] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date(2023, 1, 1));
   const [draggingPost, setDraggingPost] = useState<string | null>(null);
+  const [campaignsData, setCampaignsData] = useState<Campaign[]>(campaigns);
+  const [postsData, setPostsData] = useState<Post[]>(posts);
+  
+  // Fetch campaigns and posts from Supabase when component mounts
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      try {
+        // This is where we would fetch campaigns from Supabase
+        // Example: const { data, error } = await supabase.from('campaigns').select('*');
+        // For now, we'll use the sample data
+        // setCampaignsData(data || campaigns);
+      } catch (error) {
+        console.error('Error fetching campaigns:', error);
+      }
+    };
+
+    const fetchPosts = async () => {
+      try {
+        // This is where we would fetch posts from Supabase
+        // Example: const { data, error } = await supabase.from('posts').select('*');
+        // For now, we'll use the sample data
+        // We need to format dates from strings to Date objects
+        // setPostsData(data?.map(post => ({ ...post, date: new Date(post.date) })) || posts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+
+    fetchCampaigns();
+    fetchPosts();
+  }, []);
   
   // Generate calendar days for the month view
   const generateCalendarDays = () => {
@@ -322,7 +354,7 @@ const CalendarPage = () => {
   
   // Get posts for a specific date
   const getPostsForDate = (date: Date) => {
-    return posts.filter(post => 
+    return postsData.filter(post => 
       post.date.getDate() === date.getDate() &&
       post.date.getMonth() === date.getMonth() &&
       post.date.getFullYear() === date.getFullYear()
@@ -331,7 +363,7 @@ const CalendarPage = () => {
   
   // Get campaign for a specific date
   const getCampaignForDate = (date: Date) => {
-    return campaigns.find(campaign => {
+    return campaignsData.find(campaign => {
       const start = new Date(campaign.startDate);
       const end = new Date(campaign.endDate);
       return date >= start && date <= end;
@@ -374,6 +406,20 @@ const CalendarPage = () => {
     if (draggingPost) {
       // In a real app, this would update the post date in a database
       console.log(`Moving post ${draggingPost} to ${date.toDateString()}`);
+      
+      // Update the post's date in the local state
+      const updatedPosts = postsData.map(post => {
+        if (post.id === draggingPost) {
+          return { ...post, date: new Date(date) };
+        }
+        return post;
+      });
+      
+      setPostsData(updatedPosts);
+      
+      // Here we would also update the post in Supabase
+      // Example: await supabase.from('posts').update({ date: date.toISOString() }).eq('id', draggingPost);
+      
       // Reset dragging state
       setDraggingPost(null);
     }
@@ -390,6 +436,33 @@ const CalendarPage = () => {
   // Handle clicking a day
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
+  };
+
+  // Create a new post
+  const handleCreatePost = async (postData: Partial<Post>) => {
+    try {
+      // In a real app, we would create a post in Supabase
+      // Example: const { data, error } = await supabase.from('posts').insert([postData]);
+      
+      // For now, just update the local state
+      const newPost: Post = {
+        id: `${postsData.length + 1}`,
+        title: postData.title || 'Untitled Post',
+        date: postData.date || new Date(),
+        time: postData.time || '12:00',
+        platform: postData.platform || 'instagram',
+        type: postData.type || 'Post',
+        campaign: postData.campaign,
+        status: 'draft',
+        author: 'Current User',
+        imgUrl: '/placeholder.svg'
+      };
+      
+      setPostsData([...postsData, newPost]);
+      setShowPostCreator(false);
+    } catch (error) {
+      console.error('Error creating post:', error);
+    }
   };
 
   // Get the day detail dialog component to display selected day's posts
@@ -533,7 +606,7 @@ const CalendarPage = () => {
                 <div className="space-y-2">
                   <Label>Campaigns</Label>
                   <div className="flex flex-wrap gap-2">
-                    {campaigns.map(campaign => (
+                    {campaignsData.map(campaign => (
                       <Button 
                         key={campaign.id} 
                         variant="outline" 
@@ -670,7 +743,7 @@ const CalendarPage = () => {
                       <SelectValue placeholder="Select campaign" />
                     </SelectTrigger>
                     <SelectContent>
-                      {campaigns.map(campaign => (
+                      {campaignsData.map(campaign => (
                         <SelectItem key={campaign.id} value={campaign.id}>
                           {campaign.name}
                         </SelectItem>
@@ -772,7 +845,7 @@ const CalendarPage = () => {
         
         <div className="flex items-center">
           <span className="text-sm font-medium mr-2">Campaigns:</span>
-          {campaigns.map(campaign => (
+          {campaignsData.map(campaign => (
             <Badge key={campaign.id} className={`mr-1 ${campaign.color}`}>
               {campaign.name}
             </Badge>
@@ -803,8 +876,8 @@ const CalendarPage = () => {
             <TableBody>
               {calendarWeeks().map((week, weekIndex) => {
                 // Find campaigns that span this week
-                const campaigns = week.map(day => getCampaignForDate(day.date)).filter(Boolean);
-                const uniqueCampaigns = campaigns.filter((campaign, index, self) => 
+                const weekCampaigns = week.map(day => getCampaignForDate(day.date)).filter(Boolean);
+                const uniqueCampaigns = weekCampaigns.filter((campaign, index, self) => 
                   index === self.findIndex((c) => c?.id === campaign?.id)
                 );
                 
@@ -819,19 +892,35 @@ const CalendarPage = () => {
                       const endDate = new Date(campaign.endDate);
                       
                       // Calculate which days of the week this campaign covers
-                      const startDayIndex = week.findIndex(day => 
-                        day.date.getTime() >= startDate.getTime() && 
-                        day.date.getTime() <= endDate.getTime()
-                      );
+                      let startDayIndex = -1;
+                      let endDayIndex = -1;
                       
-                      const endDayIndex = week.findIndex((day, i) => 
-                        i >= startDayIndex && 
-                        (day.date.getTime() > endDate.getTime() || i === week.length - 1)
-                      );
+                      for (let i = 0; i < week.length; i++) {
+                        const currentDate = week[i].date;
+                        
+                        // If this is the first day in this week that the campaign covers
+                        if (startDayIndex === -1 && 
+                            currentDate.getTime() >= startDate.getTime() && 
+                            currentDate.getTime() <= endDate.getTime()) {
+                          startDayIndex = i;
+                        }
+                        
+                        // If this is the last day in this week that the campaign covers
+                        if (startDayIndex !== -1 && 
+                            (currentDate.getTime() > endDate.getTime() || i === week.length - 1)) {
+                          endDayIndex = i === week.length - 1 && currentDate.getTime() <= endDate.getTime() 
+                            ? i + 1  // Include Saturday if campaign extends to it
+                            : i;
+                          break;
+                        }
+                      }
                       
-                      const span = endDayIndex === -1 ? 
-                        week.length - startDayIndex : 
-                        endDayIndex - startDayIndex;
+                      // If campaign doesn't end in this week, set endDayIndex to the end of the week
+                      if (startDayIndex !== -1 && endDayIndex === -1) {
+                        endDayIndex = week.length;
+                      }
+                      
+                      const span = endDayIndex - startDayIndex;
                       
                       return startDayIndex !== -1 ? (
                         <TableRow key={campaign.id} className="h-6">
@@ -842,7 +931,7 @@ const CalendarPage = () => {
                           >
                             {campaign.name}
                           </TableCell>
-                          {endDayIndex < week.length - 1 && endDayIndex !== -1 && (
+                          {endDayIndex < week.length && (
                             <TableCell colSpan={week.length - endDayIndex}></TableCell>
                           )}
                         </TableRow>
