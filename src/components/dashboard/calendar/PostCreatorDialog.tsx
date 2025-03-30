@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   Dialog,
@@ -41,13 +40,16 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
 interface PostCreatorDialogProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
   addPost?: (post: Omit<Post, 'id'>) => void;
   updatePost?: (id: string, updates: Partial<Post>) => void;
   deletePost?: (id: string) => void;
   editingPost?: Post | null;
   onSavePost?: (post: Omit<Post, 'id'> & { id?: string }) => void;
+  onCancel?: () => void;
+  selectedDate?: Date; // Added this prop to match usage in Calendar.tsx
+  campaigns?: Campaign[]; // Added this prop to match usage in Calendar.tsx
 }
 
 export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({ 
@@ -57,16 +59,19 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
   updatePost,
   deletePost,
   editingPost,
-  onSavePost
+  onSavePost,
+  onCancel,
+  selectedDate: initialSelectedDate,
+  campaigns: initialCampaigns = []
 }) => {
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
-  const [date, setDate] = useState<Date>(new Date());
+  const [campaigns, setCampaigns] = useState<Campaign[]>(initialCampaigns);
+  const [date, setDate] = useState<Date>(initialSelectedDate || new Date());
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const { toast } = useToast();
   
   const [formData, setFormData] = useState<Omit<Post, 'id'> & { id?: string }>({
     title: '',
-    date: format(new Date(), 'yyyy-MM-dd'),
+    date: format(date, 'yyyy-MM-dd'),
     time: '09:00',
     platform: 'instagram',
     type: 'image',
@@ -76,22 +81,25 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
   });
 
   useEffect(() => {
-    const loadCampaigns = async () => {
-      try {
-        const campaignsData = await fetchCampaigns();
-        setCampaigns(campaignsData);
-      } catch (error) {
-        console.error('Error loading campaigns:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load campaigns",
-          variant: "destructive"
-        });
-      }
-    };
-
-    loadCampaigns();
-  }, [toast]);
+    // Only fetch campaigns if they weren't provided as props
+    if (initialCampaigns.length === 0) {
+      const loadCampaigns = async () => {
+        try {
+          const campaignsData = await fetchCampaigns();
+          setCampaigns(campaignsData);
+        } catch (error) {
+          console.error('Error loading campaigns:', error);
+          toast({
+            title: "Error",
+            description: "Failed to load campaigns",
+            variant: "destructive"
+          });
+        }
+      };
+  
+      loadCampaigns();
+    }
+  }, [initialCampaigns, toast]);
 
   useEffect(() => {
     if (editingPost) {
@@ -110,6 +118,13 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
         status: editingPost.status,
         campaign_id: editingPost.campaign_id
       });
+    } else if (initialSelectedDate) {
+      // Initialize with the selected date if provided
+      setDate(initialSelectedDate);
+      setFormData(prev => ({
+        ...prev,
+        date: format(initialSelectedDate, 'yyyy-MM-dd')
+      }));
     } else {
       // Reset form when creating a new post
       setDate(new Date());
@@ -124,7 +139,7 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
         campaign_id: undefined
       });
     }
-  }, [editingPost, open]);
+  }, [editingPost, open, initialSelectedDate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -143,12 +158,13 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
     
     if (onSavePost) {
       onSavePost(postData);
+      if (setOpen) setOpen(false);
     } else if (formData.id && updatePost) {
       updatePost(formData.id, postData);
-      setOpen(false);
+      if (setOpen) setOpen(false);
     } else if (addPost) {
       addPost(postData);
-      setOpen(false);
+      if (setOpen) setOpen(false);
     }
   };
 
@@ -156,6 +172,14 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
     if (editingPost && deletePost) {
       deletePost(editingPost.id);
       setShowDeleteDialog(false);
+      if (setOpen) setOpen(false);
+    }
+  };
+
+  const handleCancel = () => {
+    if (onCancel) {
+      onCancel();
+    } else if (setOpen) {
       setOpen(false);
     }
   };
@@ -335,7 +359,7 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
               )}
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setOpen(false)}>
+              <Button variant="outline" onClick={handleCancel}>
                 Cancel
               </Button>
               <Button onClick={handleSave}>
