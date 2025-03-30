@@ -6,14 +6,13 @@ import {
   BarChart3, 
   Calendar, 
   MessageSquare, 
-  Users, 
   Settings, 
   LogOut, 
   BellDot, 
   Library,
   BrainCircuit,
-  LineChart,
   ClipboardCheck,
+  LineChart,
 } from 'lucide-react';
 import { 
   SidebarContent, 
@@ -43,9 +42,8 @@ const SidebarNavigation = () => {
           <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
           <SidebarLink to="/content" icon={<Library />}>Content Studio</SidebarLink>
           <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
-          <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
-          <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
           <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
+          <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
           <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
         </SidebarGroup>
       </SidebarContent>
@@ -68,12 +66,6 @@ const SidebarNavigation = () => {
                   <Link to="/settings" className="flex w-full items-center">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Settings</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link to="/team" className="flex w-full items-center">
-                    <Users className="mr-2 h-4 w-4" />
-                    <span>Team</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
