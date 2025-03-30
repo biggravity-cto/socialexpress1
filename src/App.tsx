@@ -27,15 +27,28 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Index />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="calendar" element={<Calendar />} />
+        
+        {/* Marketing Section */}
         <Route path="campaigns" element={<Campaigns />} />
-        <Route path="analytics" element={<Analytics />} />
+        <Route path="calendar" element={<Calendar />} />
         <Route path="content" element={<Content />} />
-        <Route path="market-intelligence" element={<MarketIntelligence />} />
-        <Route path="messages" element={<Messages />} />
         <Route path="approvals" element={<Approvals />} />
-        <Route path="team" element={<Team />} />
+        
+        {/* Standalone */}
+        <Route path="messages" element={<Messages />} />
+        
+        {/* Insights Section */}
+        <Route path="analytics" element={<Analytics />} />
+        <Route path="market-intelligence" element={<MarketIntelligence />} />
+        
+        {/* Settings Section and Sub-pages */}
         <Route path="settings" element={<Settings />} />
+        <Route path="team" element={<Team />} />
+        <Route path="integrations" element={<Settings />} /> {/* Replace with proper page once created */}
+        <Route path="brand-kit" element={<Settings />} /> {/* Replace with proper page once created */}
+        <Route path="account" element={<Settings />} /> {/* Replace with proper page once created */}
+        
+        {/* Public/Marketing Pages */}
         <Route path="login" element={<Login />} />
         <Route path="posts" element={<Posts />} />
         <Route path="features" element={<Features />} />

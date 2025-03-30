@@ -20,11 +20,35 @@ import {
   BrainCircuit,
   LineChart,
   MessageSquare,
-  ClipboardCheck
+  ClipboardCheck,
+  ChevronDown,
+  Plug,
+  Palette,
+  UserCircle,
 } from 'lucide-react';
-import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarLink, SidebarTrigger, SidebarFooter } from '@/components/ui/sidebar';
+import { 
+  SidebarProvider, 
+  Sidebar, 
+  SidebarContent, 
+  SidebarGroup, 
+  SidebarLink, 
+  SidebarTrigger, 
+  SidebarFooter 
+} from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuLabel, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
+import { 
+  Collapsible, 
+  CollapsibleContent, 
+  CollapsibleTrigger 
+} from '@/components/ui/collapsible';
 
 const Navbar = () => {
   const isMobile = useIsMobile();
@@ -84,33 +108,72 @@ const Navbar = () => {
       <div className="min-h-screen flex w-full">
         <Sidebar>
           <SidebarContent>
-            {/* Main */}
+            {/* Dashboard (Standalone) */}
             <SidebarGroup>
               <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
             </SidebarGroup>
             
-            {/* Campaigns */}
+            {/* MARKETING Section */}
             <SidebarGroup>
-              <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Strategic Planner</SidebarLink>
+              <Collapsible className="w-full">
+                <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                  <div className="flex items-center">
+                    <Megaphone className="mr-2 h-4 w-4" />
+                    <span>Marketing</span>
+                  </div>
+                  <ChevronDown className="h-4 w-4" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Campaigns</SidebarLink>
+                  <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
+                  <SidebarLink to="/content" icon={<Library />}>Library</SidebarLink>
+                  <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
+                </CollapsibleContent>
+              </Collapsible>
             </SidebarGroup>
             
-            {/* Content Hub */}
+            {/* Messages (Standalone) */}
             <SidebarGroup>
-              <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
-              <SidebarLink to="/content" icon={<Library />}>Library</SidebarLink>
               <SidebarLink to="/messages" icon={<MessageSquare />}>Messages</SidebarLink>
-              <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
             </SidebarGroup>
             
-            {/* Insights */}
+            {/* INSIGHTS Section */}
             <SidebarGroup>
-              <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
-              <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
+              <Collapsible className="w-full">
+                <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                  <div className="flex items-center">
+                    <BarChart3 className="mr-2 h-4 w-4" />
+                    <span>Insights</span>
+                  </div>
+                  <ChevronDown className="h-4 w-4" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
+                  <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
+                </CollapsibleContent>
+              </Collapsible>
             </SidebarGroup>
           </SidebarContent>
           <SidebarFooter>
+            {/* Settings Section */}
             <div className="px-3 py-2 border-t border-gray-100">
-              <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
+              <Collapsible className="w-full">
+                <CollapsibleTrigger className="flex items-center justify-between w-full rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">
+                  <div className="flex items-center">
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </div>
+                  <ChevronDown className="h-4 w-4" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="pl-6 space-y-1 mt-1">
+                    <SidebarLink to="/team" icon={<Users />}>Team</SidebarLink>
+                    <SidebarLink to="/integrations" icon={<Plug />}>Integrations</SidebarLink>
+                    <SidebarLink to="/brand-kit" icon={<Palette />}>Brand Kit</SidebarLink>
+                    <SidebarLink to="/account" icon={<UserCircle />}>Account</SidebarLink>
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
             </div>
             <div className="flex items-center justify-between px-3 py-2">
               <div className="flex items-center">
