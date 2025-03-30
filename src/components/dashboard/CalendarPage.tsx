@@ -97,7 +97,8 @@ const CalendarPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Calendar</h1>
+      <h1 className="text-2xl font-bold mb-4">Content Calendar</h1>
+      <p className="text-gray-500 mb-6">Plan and schedule your content across platforms</p>
       {loading ? (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>

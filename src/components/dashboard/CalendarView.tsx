@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
-import { DayPicker } from 'react-day-picker';
-import { format } from 'date-fns';
+import { format, addMonths, subMonths, isSameDay } from 'date-fns';
 import { Campaign, Post } from '@/types/calendar';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -12,6 +11,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { Calendar } from '@/components/ui/calendar';
 
 interface CalendarViewProps {
   posts: Post[];
@@ -30,9 +30,17 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 }) => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(new Date());
-  const [hoveredDay, setHoveredDay] = useState<Date | undefined>(undefined);
   const [view, setView] = useState<'month' | 'week' | 'day'>('month');
   const [showPostCreator, setShowPostCreator] = useState(false);
+  const [newPost, setNewPost] = useState({
+    title: '',
+    date: format(new Date(), 'yyyy-MM-dd'),
+    time: '12:00',
+    platform: 'instagram',
+    type: 'image',
+    content: '',
+    status: 'draft'
+  });
 
   // Helper functions
   const getPostsForDate = (date: Date) => {
@@ -40,11 +48,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
     
     return posts.filter(post => {
       const postDate = new Date(post.date);
-      return (
-        postDate.getDate() === date.getDate() &&
-        postDate.getMonth() === date.getMonth() &&
-        postDate.getFullYear() === date.getFullYear()
-      );
+      return isSameDay(postDate, date);
     });
   };
 
@@ -60,56 +64,37 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
 
   // Event handlers
   const handlePrevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
+    setCurrentMonth(subMonths(currentMonth, 1));
   };
 
   const handleNextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
+    setCurrentMonth(addMonths(currentMonth, 1));
   };
 
-  const handleDayClick = (day: Date) => {
-    setSelectedDay(day);
+  const handleCreatePost = () => {
+    const postData = {
+      ...newPost,
+      date: selectedDay ? format(selectedDay, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd')
+    };
+    onCreatePost(postData);
+    setShowPostCreator(false);
+    setNewPost({
+      title: '',
+      date: format(new Date(), 'yyyy-MM-dd'),
+      time: '12:00',
+      platform: 'instagram',
+      type: 'image',
+      content: '',
+      status: 'draft'
+    });
   };
 
-  const formatMonthYear = (date: Date) => {
-    return format(date, 'MMMM yyyy');
-  };
-
-  // Get highlighted days (days with posts)
-  const highlightedDays = posts.map(post => new Date(post.date));
-
-  // Render day cell content
-  const renderDayContents = (day: Date) => {
-    const postsForDay = getPostsForDate(day);
-    const campaign = getCampaignForDate(day);
-    
-    return (
-      <div className="h-full">
-        <div className="text-center mb-1">
-          {day.getDate()}
-        </div>
-        {campaign && (
-          <div 
-            className={`text-xs py-0.5 px-1 mb-1 rounded ${campaign.color}`}
-          >
-            {campaign.name}
-          </div>
-        )}
-        {postsForDay.slice(0, 2).map((post, i) => (
-          <div 
-            key={post.id} 
-            className="text-xs truncate mb-0.5 p-0.5 bg-gray-50 rounded"
-          >
-            {post.title}
-          </div>
-        ))}
-        {postsForDay.length > 2 && (
-          <div className="text-xs text-gray-500">
-            +{postsForDay.length - 2} more
-          </div>
-        )}
-      </div>
-    );
+  // Helper function to determine if a date should be highlighted
+  const isDayHighlighted = (day: Date) => {
+    return posts.some(post => {
+      const postDate = new Date(post.date);
+      return isSameDay(postDate, day);
+    });
   };
 
   return (
@@ -120,11 +105,11 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
             <Button variant="outline" size="icon" onClick={handlePrevMonth}>
               <ChevronLeft className="h-4 w-4" />
             </Button>
-            <Button variant="outline">Today</Button>
+            <Button variant="outline" onClick={() => setSelectedDay(new Date())}>Today</Button>
             <Button variant="outline" size="icon" onClick={handleNextMonth}>
               <ChevronRight className="h-4 w-4" />
             </Button>
-            <h2 className="text-xl font-semibold ml-2">{formatMonthYear(currentMonth)}</h2>
+            <h2 className="text-xl font-semibold ml-2">{format(currentMonth, 'MMMM yyyy')}</h2>
           </div>
           
           <div className="flex items-center space-x-2">
@@ -154,18 +139,18 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           </div>
         </div>
         
-        <DayPicker
+        <Calendar
+          mode="single"
           selected={selectedDay}
           onSelect={setSelectedDay}
-          className="p-3 pointer-events-auto"
-          modifiers={{ highlighted: highlightedDays }}
+          month={currentMonth}
+          className="rounded-md border shadow-sm"
+          modifiers={{
+            highlighted: isDayHighlighted
+          }}
           modifiersStyles={{
             highlighted: { backgroundColor: '#f0f9ff' }
           }}
-          onDayMouseEnter={setHoveredDay}
-          onDayClick={handleDayClick}
-          month={currentMonth}
-          mode="single"
         />
       </Card>
 
@@ -191,8 +176,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                     <span className="text-sm text-gray-500">{post.time}</span>
                   </div>
                   <div className="flex items-center mt-1">
-                    <Badge>{post.platform}</Badge>
-                    <Badge className="ml-2">{post.status}</Badge>
+                    <Badge className="mr-2">{post.platform}</Badge>
+                    <Badge variant="outline">{post.status}</Badge>
                   </div>
                   {post.content && (
                     <p className="mt-2 text-sm text-gray-700">{post.content}</p>
@@ -226,13 +211,21 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           <div className="space-y-4 py-4">
             <div className="space-y-2">
               <Label htmlFor="title">Title</Label>
-              <Input id="title" placeholder="Enter post title" />
+              <Input 
+                id="title" 
+                placeholder="Enter post title" 
+                value={newPost.title}
+                onChange={(e) => setNewPost({...newPost, title: e.target.value})}
+              />
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="platform">Platform</Label>
-                <Select>
+                <Select 
+                  value={newPost.platform}
+                  onValueChange={(value) => setNewPost({...newPost, platform: value})}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select platform" />
                   </SelectTrigger>
@@ -246,7 +239,10 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
               
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
-                <Select>
+                <Select 
+                  value={newPost.status}
+                  onValueChange={(value) => setNewPost({...newPost, status: value})}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
@@ -261,17 +257,49 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
             
             <div className="space-y-2">
               <Label htmlFor="content">Content</Label>
-              <Input id="content" placeholder="Post content" />
+              <Input 
+                id="content" 
+                placeholder="Post content" 
+                value={newPost.content || ''}
+                onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="time">Time</Label>
+                <Input 
+                  id="time" 
+                  type="time"
+                  value={newPost.time}
+                  onChange={(e) => setNewPost({...newPost, time: e.target.value})}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="type">Type</Label>
+                <Select 
+                  value={newPost.type}
+                  onValueChange={(value) => setNewPost({...newPost, type: value})}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="image">Image</SelectItem>
+                    <SelectItem value="video">Video</SelectItem>
+                    <SelectItem value="text">Text</SelectItem>
+                    <SelectItem value="carousel">Carousel</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             
             <div className="flex justify-end space-x-2">
               <Button variant="outline" onClick={() => setShowPostCreator(false)}>
                 Cancel
               </Button>
-              <Button onClick={() => {
-                // Here would be the logic to create a post
-                setShowPostCreator(false);
-              }}>
+              <Button onClick={handleCreatePost}>
                 Create Post
               </Button>
             </div>
