@@ -107,14 +107,11 @@ const Navbar = () => {
               <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
               <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
             </SidebarGroup>
-            
-            {/* Management */}
-            <SidebarGroup>
-              <SidebarLink to="/team" icon={<Users />}>Team</SidebarLink>
-              <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
-            </SidebarGroup>
           </SidebarContent>
           <SidebarFooter>
+            <div className="px-3 py-2 border-t border-gray-100">
+              <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
+            </div>
             <div className="flex items-center justify-between px-3 py-2">
               <div className="flex items-center">
                 <DropdownMenu>
@@ -129,8 +126,18 @@ const Navbar = () => {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link to="/settings" className="flex w-full items-center">
+                        <Settings className="mr-2 h-4 w-4" />
+                        <span>Settings</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link to="/team" className="flex w-full items-center">
+                        <Users className="mr-2 h-4 w-4" />
+                        <span>Team</span>
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="text-red-600">
                       <LogOut className="mr-2 h-4 w-4" />
@@ -172,8 +179,18 @@ const Navbar = () => {
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link to="/settings" className="flex w-full items-center">
+                        <Settings className="mr-2 h-4 w-4" />
+                        <span>Settings</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link to="/team" className="flex w-full items-center">
+                        <Users className="mr-2 h-4 w-4" />
+                        <span>Team</span>
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className="text-red-600">
                       <LogOut className="mr-2 h-4 w-4" />

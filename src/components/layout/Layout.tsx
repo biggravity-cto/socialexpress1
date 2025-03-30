@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, Outlet } from 'react-router-dom';
 import { 
@@ -95,21 +94,6 @@ const navItems = [
         icon: <LineChart className="h-5 w-5" />
       }
     ]
-  },
-  {
-    group: "Management",
-    items: [
-      {
-        name: 'Team',
-        path: '/team',
-        icon: <Users className="h-5 w-5" />
-      },
-      {
-        name: 'Settings',
-        path: '/settings',
-        icon: <Settings className="h-5 w-5" />
-      }
-    ]
   }
 ];
 
@@ -189,11 +173,11 @@ const Layout = ({ children }: LayoutProps) => {
       
       <div className="border-t border-gray-100 p-2">
         <Link
-          to="/login"
+          to="/settings"
           className="flex items-center px-2 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-100 transition-colors"
         >
-          <LogOut className="h-5 w-5 mr-3" />
-          {sidebarOpen && <span>Logout</span>}
+          <Settings className="h-5 w-5 mr-3" />
+          {sidebarOpen && <span>Settings</span>}
         </Link>
       </div>
     </div>
