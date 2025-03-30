@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Filter, Grid, List, Plus, Image, FileText, Video, MoreHorizontal, Upload, Download, Clock, CalendarIcon, Layers, Copy, Share2, Trash2, CloudLightning, Sparkles, ChevronRight, CloudUpload, Facebook, Twitter, Instagram, Database } from 'lucide-react';
+import { Search, Filter, Grid, List, Plus, Image, FileText, Video, MoreHorizontal, Upload, Download, Clock, CalendarIcon, Layers, Copy, Share2, Trash2, CloudLightning, Sparkles, ChevronRight, CloudUpload, Facebook, Twitter, Instagram, Database, MessageSquare } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -19,13 +18,14 @@ import { supabase } from '@/integrations/supabase/client';
 // Types
 interface ContentItem {
   id: number;
-  type: 'image' | 'video' | 'document';
+  type: 'image' | 'video' | 'document' | 'post';
   title: string;
   date: string;
   status: 'published' | 'draft' | 'reviewing';
   thumbnail?: string;
   platform?: 'instagram' | 'twitter' | 'facebook';
   tags?: string[];
+  content?: string;
 }
 
 // Mock data
@@ -71,12 +71,13 @@ const contentItems: ContentItem[] = [
   },
   { 
     id: 5, 
-    type: 'document', 
-    title: 'Guest Testimonials', 
+    type: 'post', 
+    title: 'New Resort Opening Announcement', 
     date: '2023-06-15', 
-    status: 'reviewing', 
-    thumbnail: '/placeholder.svg',
-    tags: ['testimonials', 'reviews', 'feedback']
+    status: 'published', 
+    platform: 'twitter',
+    content: 'We're thrilled to announce the grand opening of our new luxury resort location! Join us for special promotions and events.',
+    tags: ['announcement', 'opening', 'news']
   },
   { 
     id: 6, 
@@ -90,12 +91,13 @@ const contentItems: ContentItem[] = [
   },
   { 
     id: 7, 
-    type: 'image', 
-    title: 'Room Types Showcase', 
-    date: '2023-07-05', 
+    type: 'post', 
+    title: 'Summer Discount Campaign', 
+    date: '2023-07-01', 
     status: 'draft', 
-    thumbnail: '/placeholder.svg',
-    tags: ['rooms', 'accommodation', 'luxury']
+    platform: 'facebook',
+    content: 'Summer is here! Book your stay now and enjoy 20% off on all our premium suites.',
+    tags: ['promotion', 'discount', 'summer']
   },
   { 
     id: 8, 
@@ -105,6 +107,16 @@ const contentItems: ContentItem[] = [
     status: 'reviewing', 
     thumbnail: '/placeholder.svg',
     tags: ['events', 'planning', 'weddings']
+  },
+  { 
+    id: 9, 
+    type: 'post', 
+    title: 'Customer Testimonial Spotlight', 
+    date: '2023-07-18', 
+    status: 'published', 
+    platform: 'instagram',
+    content: 'Hear what our guests are saying about their unforgettable experiences at our resort!',
+    tags: ['testimonial', 'review', 'guest']
   },
 ];
 
@@ -117,6 +129,8 @@ const getIcon = (type: string) => {
       return <Video className="h-5 w-5" />;
     case 'document':
       return <FileText className="h-5 w-5" />;
+    case 'post':
+      return <MessageSquare className="h-5 w-5" />;
     default:
       return <FileText className="h-5 w-5" />;
   }
@@ -202,7 +216,7 @@ const ContentLibrary = () => {
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">Content Management</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">Library</h1>
           <p className="text-resort-500">Create, manage and publish your digital assets</p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -494,6 +508,7 @@ const ContentLibrary = () => {
       <Tabs defaultValue="all">
         <TabsList className="mb-4">
           <TabsTrigger value="all">All Content</TabsTrigger>
+          <TabsTrigger value="posts">Posts</TabsTrigger>
           <TabsTrigger value="images">Images</TabsTrigger>
           <TabsTrigger value="videos">Videos</TabsTrigger>
           <TabsTrigger value="documents">Documents</TabsTrigger>
@@ -522,6 +537,11 @@ const ContentLibrary = () => {
                         alt={item.title}
                         className="w-full h-full object-cover"
                       />
+                    )}
+                    {item.type === 'post' && (
+                      <div className="absolute inset-0 flex items-center justify-center p-4 bg-gray-50">
+                        <p className="text-sm text-gray-600 line-clamp-4">{item.content || 'No content'}</p>
+                      </div>
                     )}
                   </div>
                   <div className="p-3">
@@ -572,6 +592,9 @@ const ContentLibrary = () => {
                         )}
                       </div>
                     </div>
+                    {item.type === 'post' && item.content && (
+                      <p className="mt-2 text-sm text-gray-600 line-clamp-2">{item.content}</p>
+                    )}
                   </div>
                   <div className="p-2 flex items-center">
                     <DropdownMenu>
@@ -602,10 +625,38 @@ const ContentLibrary = () => {
           </div>
         </TabsContent>
         
+        <TabsContent value="posts">
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
+            {contentItems.filter(item => item.type === 'post').map(item => (
+              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="relative h-40 bg-gray-50 flex items-center justify-center p-4">
+                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
+                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
+                    {item.platform && (
+                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
+                        {getPlatformIcon(item.platform)}
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-600 line-clamp-5">{item.content || 'No content'}</p>
+                </div>
+                <div className="p-3">
+                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs text-gray-500">{item.date}</p>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+        
         <TabsContent value="images">
           <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
             {contentItems.filter(item => item.type === 'image').map(item => (
-              // Similar card structure as above, but for images only
               <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
                 <div className="relative h-40 bg-gray-100">
                   <div className="absolute top-2 right-2 flex space-x-1 z-10">
@@ -641,7 +692,6 @@ const ContentLibrary = () => {
         <TabsContent value="videos">
           <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
             {contentItems.filter(item => item.type === 'video').map(item => (
-              // Similar card structure as above, but for videos only
               <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
                 <div className="relative h-40 bg-gray-100">
                   <div className="absolute top-2 right-2 flex space-x-1 z-10">
@@ -680,7 +730,6 @@ const ContentLibrary = () => {
         <TabsContent value="documents">
           <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
             {contentItems.filter(item => item.type === 'document').map(item => (
-              // Similar card structure as above, but for documents only
               <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
                 <div className="relative h-40 bg-gray-50 flex items-center justify-center">
                   <div className="absolute top-2 right-2 flex space-x-1 z-10">

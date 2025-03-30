@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { 
@@ -43,7 +42,7 @@ const navItems = [
     icon: <Calendar className="h-5 w-5" />
   },
   {
-    name: 'Content',
+    name: 'Library',
     path: '/content-library',
     icon: <Library className="h-5 w-5" />
   },
@@ -85,6 +84,7 @@ const navItems = [
 ];
 
 const Layout = ({ children }: LayoutProps) => {
+  // ... keep existing code (useState and useEffects)
   const location = useLocation();
   const isMobile = useIsMobile();
   const isPublicPage = ['/', '/login', '/features', '/pricing', '/blog', '/guides', '/case-studies'].includes(location.pathname);
@@ -195,7 +195,8 @@ const Layout = ({ children }: LayoutProps) => {
             </Button>
           </SheetTrigger>
           <h1 className="text-xl font-semibold text-resort-800 capitalize">
-            {location.pathname.substring(1).replace('-', ' ') || 'Dashboard'}
+            {location.pathname === '/content-library' ? 'Library' : 
+             location.pathname.substring(1).replace('-', ' ') || 'Dashboard'}
           </h1>
           
           {/* Notification Bell */}
@@ -238,7 +239,8 @@ const Layout = ({ children }: LayoutProps) => {
               {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
             </Button>
             <h1 className="text-xl font-semibold text-resort-800 capitalize">
-              {location.pathname.substring(1).replace(/-/g, ' ') || 'Dashboard'}
+              {location.pathname === '/content-library' ? 'Library' : 
+               location.pathname.substring(1).replace(/-/g, ' ') || 'Dashboard'}
             </h1>
           </div>
           

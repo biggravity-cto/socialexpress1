@@ -27,6 +27,7 @@ import Pricing from "./pages/Pricing";
 import Blog from "./pages/Blog";
 import Guides from "./pages/Guides";
 import CaseStudies from "./pages/CaseStudies";
+import Posts from "./pages/Posts";
 
 // Create a component to handle AnimatePresence with useLocation
 const AnimatedRoutes = () => {
@@ -52,6 +53,7 @@ const AnimatedRoutes = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/guides" element={<Guides />} />
         <Route path="/case-studies" element={<CaseStudies />} />
+        <Route path="/posts" element={<Posts />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<NotFound />} />
       </Routes>
