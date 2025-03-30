@@ -59,8 +59,8 @@ const navItems = [
     icon: <BarChart3 className="h-5 w-5" />
   },
   {
-    name: 'AI Campaign Planner',
-    path: '/campaign-planner',
+    name: 'Campaigns',
+    path: '/campaigns',
     icon: <BrainCircuit className="h-5 w-5" />
   },
   {
@@ -111,7 +111,9 @@ const Layout = ({ children }: LayoutProps) => {
   const SidebarContent = () => (
     <div className="flex flex-col h-full">
       <div className="flex h-14 items-center px-4 border-b border-gray-100 justify-between">
-        <span className="font-bold text-lg tracking-tight text-resort-800">BG Social<span className="text-ocean-600">Express</span></span>
+        <span className="font-bold text-lg tracking-tight text-resort-800">
+          {sidebarOpen ? 'BG Social' : 'BG'}{sidebarOpen && <span className="text-ocean-600">Express</span>}
+        </span>
         <Button 
           variant="ghost" 
           size="icon" 
@@ -189,7 +191,7 @@ const Layout = ({ children }: LayoutProps) => {
             </Button>
           </SheetTrigger>
           <h1 className="text-xl font-semibold text-resort-800 capitalize">
-            {location.pathname.substring(1) || 'Dashboard'}
+            {location.pathname.substring(1).replace('-', ' ') || 'Dashboard'}
           </h1>
         </div>
         <SheetContent 
@@ -210,10 +212,10 @@ const Layout = ({ children }: LayoutProps) => {
             className="mr-2"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
-            <PanelLeft className="h-5 w-5" />
+            {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
           </Button>
           <h1 className="text-xl font-semibold text-resort-800 capitalize">
-            {location.pathname.substring(1).replace('-', ' ') || 'Dashboard'}
+            {location.pathname.substring(1).replace(/-/g, ' ') || 'Dashboard'}
           </h1>
         </div>
         
