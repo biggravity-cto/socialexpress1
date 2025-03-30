@@ -1,8 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarHeader } from './CalendarHeader';
-import { CalendarBody } from './CalendarBody';
 import { PostsList } from './PostsList';
 import { PostCreatorDialog } from './PostCreatorDialog';
 import { Button } from '@/components/ui/button';
@@ -28,9 +26,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   onDeletePost 
 }) => {
   const [date, setDate] = useState<Date>(new Date());
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [isCreatorDialogOpen, setIsCreatorDialogOpen] = useState(false);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
 
   useEffect(() => {
     // Initialize if no posts provided
@@ -39,22 +36,6 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
     }
   }, [posts]);
 
-  const handlePostClick = (post: Post) => {
-    setSelectedPost(post);
-    const postForEditing = {
-      id: post.id,
-      title: post.title,
-      date: post.date,
-      time: post.time,
-      platform: post.platform,
-      type: post.type,
-      content: post.content || '', // Ensure content is not undefined
-      status: post.status,
-      campaign_id: post.campaign_id
-    };
-    setEditingPost(postForEditing);
-  };
-
   const handleDateSelect = (date: Date | undefined) => {
     if (date) {
       setDate(date);
@@ -62,16 +43,13 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   };
 
   const handleCreatePost = () => {
+    setEditingPost(null);
     setIsCreatorDialogOpen(true);
   };
 
   const handleEditPost = (post: Post) => {
     setEditingPost(post);
     setIsCreatorDialogOpen(true);
-  };
-
-  const handleDeletePost = (post: Post) => {
-    onDeletePost(post.id);
   };
 
   const handleSavePost = (post: Omit<Post, 'id'> & { id?: string }) => {
@@ -81,6 +59,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
       onCreatePost(post);
     }
     setIsCreatorDialogOpen(false);
+    setEditingPost(null);
   };
 
   return (
@@ -109,7 +88,14 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
             />
           </PopoverContent>
         </Popover>
-        <CalendarBody selectedDay={date} setSelectedDay={handleDateSelect} currentMonth={date} posts={posts} />
+        <div className="mt-4">
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={handleDateSelect}
+            className="rounded-md border shadow-sm pointer-events-auto"
+          />
+        </div>
       </div>
       <div className="w-full md:w-1/2">
         <div className="flex justify-between items-center mb-2">

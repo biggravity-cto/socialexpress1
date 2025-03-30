@@ -229,14 +229,6 @@ const Layout = ({ children }: LayoutProps) => {
         {/* Desktop Header */}
         <div className="hidden md:flex items-center h-14 px-4 border-b border-gray-100 justify-between">
           <div className="flex items-center">
-            <Button 
-              variant="outline" 
-              size="icon" 
-              className="mr-2"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-            >
-              {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
-            </Button>
             <h1 className="text-xl font-semibold text-resort-800 capitalize">
               {location.pathname === '/content' ? 'Content' : 
                location.pathname.substring(1).replace(/-/g, ' ') || 'Dashboard'}
