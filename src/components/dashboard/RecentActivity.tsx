@@ -3,7 +3,6 @@ import React from 'react';
 import { ActivitySquare, ChevronRight, Calendar, Image, BarChart3, MessageSquare, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import AnimatedCard from '../ui/AnimatedCard';
 
 interface Activity {
   id: number;
@@ -88,21 +87,27 @@ const getActivityColor = (type: Activity['type']) => {
   }
 };
 
-const RecentActivity = () => {
+interface RecentActivityProps {
+  compact?: boolean;
+}
+
+const RecentActivity = ({ compact = false }: RecentActivityProps) => {
   return (
-    <AnimatedCard>
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="font-medium text-resort-800">Recent Activity</h3>
-        <Button variant="ghost" size="sm" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50 font-normal">
-          View All <ChevronRight className="ml-1 h-4 w-4" />
-        </Button>
-      </div>
+    <div className={cn(compact ? "p-0" : "p-6")}>
+      {!compact && (
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="font-medium text-resort-800">Recent Activity</h3>
+          <Button variant="ghost" size="sm" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50 font-normal">
+            View All <ChevronRight className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+      )}
       
-      <div className="space-y-4">
+      <div className="space-y-1">
         {recentActivities.map((activity) => (
           <div 
             key={activity.id}
-            className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex items-start space-x-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
           >
             <div className={cn(
               "p-2 rounded-full mt-0.5", 
@@ -116,12 +121,22 @@ const RecentActivity = () => {
                 <h4 className="font-medium text-resort-800 truncate">{activity.title}</h4>
                 <span className="text-xs text-resort-500 whitespace-nowrap ml-2">{activity.time}</span>
               </div>
-              <p className="text-sm text-resort-600 mt-1">{activity.description}</p>
+              {!compact && (
+                <p className="text-sm text-resort-600 mt-1">{activity.description}</p>
+              )}
             </div>
           </div>
         ))}
       </div>
-    </AnimatedCard>
+      
+      {compact && (
+        <div className="p-3 border-t border-gray-100">
+          <Button variant="ghost" size="sm" className="w-full text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50">
+            View All Activity
+          </Button>
+        </div>
+      )}
+    </div>
   );
 };
 
