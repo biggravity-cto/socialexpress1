@@ -104,7 +104,7 @@ const contentItems: ContentItem[] = [
     date: '2023-06-15', 
     status: 'published', 
     platform: 'twitter',
-    content: 'We're thrilled to announce the grand opening of our new luxury resort location! Join us for special promotions and events.',
+    content: "We're thrilled to announce the grand opening of our new luxury resort location! Join us for special promotions and events.",
     tags: ['announcement', 'opening', 'news']
   },
   { 
