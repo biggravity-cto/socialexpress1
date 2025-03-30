@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -240,12 +239,12 @@ const Library = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6"
+      className="space-y-6 container mx-auto p-4"
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">Library</h1>
-          <p className="text-resort-500">Create, manage and publish your digital assets</p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-1">Content Library</h1>
+          <p className="text-gray-500">Create, manage and publish your digital assets</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Dialog open={showGoogleDriveConnect} onOpenChange={setShowGoogleDriveConnect}>
@@ -273,7 +272,7 @@ const Library = () => {
                         </div>
                         <div>
                           <h3 className="font-medium">Google Drive</h3>
-                          <p className="text-xs text-resort-500">Connect your Google Drive account</p>
+                          <p className="text-xs text-gray-500">Connect your Google Drive account</p>
                         </div>
                       </div>
                     </Card>
@@ -287,7 +286,7 @@ const Library = () => {
                         </div>
                         <div>
                           <h3 className="font-medium">Dropbox</h3>
-                          <p className="text-xs text-resort-500">Coming soon</p>
+                          <p className="text-xs text-gray-500">Coming soon</p>
                         </div>
                       </div>
                     </Card>
@@ -301,7 +300,7 @@ const Library = () => {
                         </div>
                         <div>
                           <h3 className="font-medium">OneDrive</h3>
-                          <p className="text-xs text-resort-500">Coming soon</p>
+                          <p className="text-xs text-gray-500">Coming soon</p>
                         </div>
                       </div>
                     </Card>
@@ -320,7 +319,7 @@ const Library = () => {
                         </div>
                         <div>
                           <h3 className="font-medium">Custom SFTP</h3>
-                          <p className="text-xs text-resort-500">Coming soon</p>
+                          <p className="text-xs text-gray-500">Coming soon</p>
                         </div>
                       </div>
                     </Card>
@@ -341,7 +340,7 @@ const Library = () => {
           
           <Dialog open={showAIGenerator} onOpenChange={setShowAIGenerator}>
             <DialogTrigger asChild>
-              <Button className="bg-ocean-600 hover:bg-ocean-700 shadow-sm">
+              <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm">
                 <Sparkles className="mr-1.5 h-4 w-4" /> AI Generator
               </Button>
             </DialogTrigger>
@@ -356,7 +355,7 @@ const Library = () => {
                     defaultValue="image" 
                     className="flex space-x-2"
                     value={generationType}
-                    onValueChange={(value) => setGenerationType(value as 'image' | 'video' | 'text')}
+                    onValueChange={(value) => setGenerationType(value as any)}
                   >
                     <div className="flex items-center space-x-2">
                       <RadioGroupItem value="image" id="image" />
@@ -450,7 +449,7 @@ const Library = () => {
                 </div>
                 
                 <Button 
-                  className="w-full bg-ocean-600 hover:bg-ocean-700"
+                  className="w-full bg-blue-600 hover:bg-blue-700"
                   onClick={handleGenerateContent}
                   disabled={generating || !prompt.trim()}
                 >
@@ -496,7 +495,7 @@ const Library = () => {
             </DialogContent>
           </Dialog>
           
-          <Button className="bg-ocean-600 hover:bg-ocean-700 shadow-sm">
+          <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm">
             <Plus className="mr-1.5 h-4 w-4" /> Add Content
           </Button>
         </div>
@@ -514,273 +513,4 @@ const Library = () => {
           <Button variant="outline" className="justify-center sm:w-auto">
             <Filter className="mr-2 h-4 w-4" /> Filter
           </Button>
-          <div className="flex rounded-md shadow-sm">
-            <Button
-              variant={viewMode === 'grid' ? 'default' : 'outline'}
-              className={`rounded-r-none border-r-0 ${viewMode === 'grid' ? 'bg-ocean-600 hover:bg-ocean-700' : ''}`}
-              onClick={() => setViewMode('grid')}
-            >
-              <Grid className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === 'list' ? 'default' : 'outline'}
-              className={`rounded-l-none ${viewMode === 'list' ? 'bg-ocean-600 hover:bg-ocean-700' : ''}`}
-              onClick={() => setViewMode('list')}
-            >
-              <List className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </Card>
-
-      <Tabs defaultValue="all">
-        <TabsList className="mb-4">
-          <TabsTrigger value="all">All Content</TabsTrigger>
-          <TabsTrigger value="posts">Posts</TabsTrigger>
-          <TabsTrigger value="images">Images</TabsTrigger>
-          <TabsTrigger value="videos">Videos</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="all">
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.map((item) => (
-              viewMode === 'grid' ? (
-                <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                  <div className="relative h-40 bg-gray-100">
-                    <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                      <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                      {item.platform && (
-                        <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-                          {getPlatformIcon(item.platform)}
-                        </Badge>
-                      )}
-                    </div>
-                    <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-sm p-1 rounded-md z-10">
-                      {getIcon(item.type)}
-                    </div>
-                    {item.thumbnail && (
-                      <img 
-                        src={item.thumbnail} 
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                    {item.type === 'post' && (
-                      <div className="absolute inset-0 flex items-center justify-center p-4 bg-gray-50">
-                        <p className="text-sm text-gray-600 line-clamp-4">{item.content || 'No content'}</p>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                    <div className="flex justify-between items-center">
-                      <p className="text-xs text-gray-500">{item.date}</p>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Copy className="mr-2 h-4 w-4" /> Copy
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Share2 className="mr-2 h-4 w-4" /> Share
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Download className="mr-2 h-4 w-4" /> Download
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            <Trash2 className="mr-2 h-4 w-4" /> Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                </Card>
-              ) : (
-                <Card key={item.id} className="flex overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                  <div className="w-16 h-16 bg-gray-100 flex items-center justify-center shrink-0">
-                    {getIcon(item.type)}
-                  </div>
-                  <div className="p-3 flex-grow">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-medium text-sm mb-1">{item.title}</h3>
-                        <p className="text-xs text-gray-500">{item.date}</p>
-                      </div>
-                      <div className="flex space-x-1">
-                        <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                        {item.platform && (
-                          <Badge variant="outline" className="bg-white/80">
-                            {getPlatformIcon(item.platform)}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    {item.type === 'post' && item.content && (
-                      <p className="mt-2 text-sm text-gray-600 line-clamp-2">{item.content}</p>
-                    )}
-                  </div>
-                  <div className="p-2 flex items-center">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Copy className="mr-2 h-4 w-4" /> Copy
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Share2 className="mr-2 h-4 w-4" /> Share
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Download className="mr-2 h-4 w-4" /> Download
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          <Trash2 className="mr-2 h-4 w-4" /> Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </Card>
-              )
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="posts">
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.filter(item => item.type === 'post').map(item => (
-              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-40 bg-gray-50 flex items-center justify-center p-4">
-                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                    {item.platform && (
-                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-                        {getPlatformIcon(item.platform)}
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-600 line-clamp-5">{item.content || 'No content'}</p>
-                </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="images">
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.filter(item => item.type === 'image').map(item => (
-              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-40 bg-gray-100">
-                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                    {item.platform && (
-                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-                        {getPlatformIcon(item.platform)}
-                      </Badge>
-                    )}
-                  </div>
-                  {item.thumbnail && (
-                    <img 
-                      src={item.thumbnail} 
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="videos">
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.filter(item => item.type === 'video').map(item => (
-              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-40 bg-gray-100">
-                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                    {item.platform && (
-                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-                        {getPlatformIcon(item.platform)}
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Video className="h-10 w-10 text-gray-400" />
-                  </div>
-                  {item.thumbnail && (
-                    <img 
-                      src={item.thumbnail} 
-                      alt={item.title}
-                      className="w-full h-full object-cover opacity-70"
-                    />
-                  )}
-                </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="documents">
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.filter(item => item.type === 'document').map(item => (
-              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-40 bg-gray-50 flex items-center justify-center">
-                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                  </div>
-                  <FileText className="h-16 w-16 text-gray-300" />
-                </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-      </Tabs>
-    </motion.div>
-  );
-};
-
-export default Library;
+          <div className="flex rounded

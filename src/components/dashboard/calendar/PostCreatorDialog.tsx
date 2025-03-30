@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 interface PostCreatorDialogProps {
   showPostCreator: boolean;
@@ -94,11 +95,12 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
           
           <div className="space-y-2">
             <Label htmlFor="content">Content</Label>
-            <Input 
+            <Textarea 
               id="content" 
               placeholder="Post content" 
               value={newPost.content || ''}
               onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+              className="min-h-[100px]"
             />
           </div>
           
@@ -132,11 +134,15 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({
             </div>
           </div>
           
-          <div className="flex justify-end space-x-2">
+          <div className="flex justify-end space-x-2 pt-4">
             <Button variant="outline" onClick={() => setShowPostCreator(false)}>
               Cancel
             </Button>
-            <Button onClick={handleCreatePost}>
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700"
+              onClick={handleCreatePost}
+              disabled={!newPost.title}
+            >
               Create Post
             </Button>
           </div>

@@ -15,6 +15,8 @@ const CalendarPage = () => {
     const loadData = async () => {
       setLoading(true);
       try {
+        // In a real app, these would come from an API/database
+        // For now, we'll use mock data
         const campaignsData = await fetchCampaigns();
         const postsData = await fetchPosts();
         
