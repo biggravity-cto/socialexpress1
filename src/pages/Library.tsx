@@ -30,18 +30,25 @@ import {
   Twitter, 
   Instagram, 
   Database,
-  MessageSquare
+  MessageSquare,
+  Edit,
+  Eye,
+  Bookmark,
+  CheckCircle
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from "@/hooks/use-toast";
 
 // Types
 interface ContentItem {
@@ -195,11 +202,58 @@ const Library = () => {
   const [showAIGenerator, setShowAIGenerator] = useState(false);
   const [generationType, setGenerationType] = useState<'image' | 'video' | 'text'>('image');
   const [showGoogleDriveConnect, setShowGoogleDriveConnect] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
+  const [showItemDetail, setShowItemDetail] = useState(false);
+  const [showItemEditor, setShowItemEditor] = useState(false);
+  const [showCampaignDialog, setShowCampaignDialog] = useState(false);
+  const [showScheduleDialog, setShowScheduleDialog] = useState(false);
+  const { toast } = useToast();
 
   // AI Generator form state
   const [prompt, setPrompt] = useState('');
   const [generating, setGenerating] = useState(false);
   const [generatedContent, setGeneratedContent] = useState<string | null>(null);
+
+  // Handle content item click
+  const handleItemClick = (item: ContentItem) => {
+    setSelectedItem(item);
+    setShowItemDetail(true);
+  };
+  
+  // Handle edit item
+  const handleEditItem = (item: ContentItem) => {
+    setSelectedItem(item);
+    setShowItemEditor(true);
+  };
+  
+  // Handle delete item
+  const handleDeleteItem = (itemId: number) => {
+    // In a real app, this would delete the item from the database
+    toast({
+      title: "Success",
+      description: "Item deleted successfully"
+    });
+  };
+  
+  // Handle add to campaign
+  const handleAddToCampaign = (item: ContentItem) => {
+    setSelectedItem(item);
+    setShowCampaignDialog(true);
+  };
+  
+  // Handle schedule post
+  const handleSchedulePost = (item: ContentItem) => {
+    setSelectedItem(item);
+    setShowScheduleDialog(true);
+  };
+  
+  // Handle duplicate
+  const handleDuplicate = (item: ContentItem) => {
+    toast({
+      title: "Duplicated",
+      description: `${item.title} has been duplicated`
+    });
+  };
 
   // Would connect to Supabase or API in a real application
   const handleGenerateContent = async () => {
@@ -546,8 +600,8 @@ const Library = () => {
           <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
             {contentItems.map((item) => (
               viewMode === 'grid' ? (
-                <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                  <div className="relative h-40 bg-gray-100">
+                <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow group">
+                  <div className="relative h-40 bg-gray-100 cursor-pointer" onClick={() => handleItemClick(item)}>
                     <div className="absolute top-2 right-2 flex space-x-1 z-10">
                       <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
                       {item.platform && (
@@ -571,6 +625,51 @@ const Library = () => {
                         <p className="text-sm text-gray-600 line-clamp-4">{item.content || 'No content'}</p>
                       </div>
                     )}
+                    
+                    {/* Hover actions overlay */}
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center space-x-2">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button size="sm" variant="secondary" className="h-8 w-8 p-0" onClick={(e) => {
+                              e.stopPropagation();
+                              handleEditItem(item);
+                            }}>
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Edit</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button size="sm" variant="secondary" className="h-8 w-8 p-0" onClick={(e) => {
+                              e.stopPropagation();
+                              handleSchedulePost(item);
+                            }}>
+                              <Clock className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Schedule</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button size="sm" variant="secondary" className="h-8 w-8 p-0" onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToCampaign(item);
+                            }}>
+                              <Bookmark className="h-4 w-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>Add to Campaign</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
                   </div>
                   <div className="p-3">
                     <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
@@ -583,8 +682,20 @@ const Library = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Copy className="mr-2 h-4 w-4" /> Copy
+                          <DropdownMenuItem onClick={() => handleItemClick(item)}>
+                            <Eye className="mr-2 h-4 w-4" /> View
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditItem(item)}>
+                            <Edit className="mr-2 h-4 w-4" /> Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSchedulePost(item)}>
+                            <Clock className="mr-2 h-4 w-4" /> Schedule
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleAddToCampaign(item)}>
+                            <Bookmark className="mr-2 h-4 w-4" /> Add to Campaign
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleDuplicate(item)}>
+                            <Copy className="mr-2 h-4 w-4" /> Duplicate
                           </DropdownMenuItem>
                           <DropdownMenuItem>
                             <Share2 className="mr-2 h-4 w-4" /> Share
@@ -592,20 +703,39 @@ const Library = () => {
                           <DropdownMenuItem>
                             <Download className="mr-2 h-4 w-4" /> Download
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            <Trash2 className="mr-2 h-4 w-4" /> Delete
-                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600">
+                                <Trash2 className="mr-2 h-4 w-4" /> Delete
+                              </DropdownMenuItem>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will permanently delete this item from your library.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction onClick={() => handleDeleteItem(item.id)} className="bg-red-600 hover:bg-red-700">
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
                   </div>
                 </Card>
               ) : (
-                <Card key={item.id} className="flex overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                  <div className="w-16 h-16 bg-gray-100 flex items-center justify-center shrink-0">
+                <Card key={item.id} className="flex overflow-hidden border border-gray-200 hover:shadow-md transition-shadow group">
+                  <div className="w-16 h-16 bg-gray-100 flex items-center justify-center shrink-0" onClick={() => handleItemClick(item)}>
                     {getIcon(item.type)}
                   </div>
-                  <div className="p-3 flex-grow">
+                  <div className="p-3 flex-grow cursor-pointer" onClick={() => handleItemClick(item)}>
                     <div className="flex justify-between items-start">
                       <div>
                         <h3 className="font-medium text-sm mb-1">{item.title}</h3>
@@ -624,7 +754,15 @@ const Library = () => {
                       <p className="mt-2 text-sm text-gray-600 line-clamp-2">{item.content}</p>
                     )}
                   </div>
-                  <div className="p-2 flex items-center">
+                  <div className="p-2 flex items-center gap-1">
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity" 
+                      onClick={() => handleEditItem(item)}>
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={() => handleSchedulePost(item)}>
+                      <Clock className="h-4 w-4" />
+                    </Button>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -632,8 +770,20 @@ const Library = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Copy className="mr-2 h-4 w-4" /> Copy
+                        <DropdownMenuItem onClick={() => handleItemClick(item)}>
+                          <Eye className="mr-2 h-4 w-4" /> View
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditItem(item)}>
+                          <Edit className="mr-2 h-4 w-4" /> Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleSchedulePost(item)}>
+                          <Clock className="mr-2 h-4 w-4" /> Schedule
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleAddToCampaign(item)}>
+                          <Bookmark className="mr-2 h-4 w-4" /> Add to Campaign
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDuplicate(item)}>
+                          <Copy className="mr-2 h-4 w-4" /> Duplicate
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Share2 className="mr-2 h-4 w-4" /> Share
@@ -641,9 +791,28 @@ const Library = () => {
                         <DropdownMenuItem>
                           <Download className="mr-2 h-4 w-4" /> Download
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">
-                          <Trash2 className="mr-2 h-4 w-4" /> Delete
-                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="text-red-600">
+                              <Trash2 className="mr-2 h-4 w-4" /> Delete
+                            </DropdownMenuItem>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete this item from your library.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => handleDeleteItem(item.id)} className="bg-red-600 hover:bg-red-700">
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
@@ -779,6 +948,323 @@ const Library = () => {
           </div>
         </TabsContent>
       </Tabs>
+      
+      {/* Item Detail Dialog */}
+      <Dialog open={showItemDetail} onOpenChange={setShowItemDetail}>
+        <DialogContent className="sm:max-w-[600px]">
+          {selectedItem && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  {getIcon(selectedItem.type)}
+                  {selectedItem.title}
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-4 py-4">
+                <div className="flex justify-between">
+                  <div className="flex space-x-2">
+                    <Badge className={getStatusColor(selectedItem.status)}>
+                      {selectedItem.status}
+                    </Badge>
+                    {selectedItem.platform && (
+                      <Badge variant="outline" className="flex items-center gap-1">
+                        {getPlatformIcon(selectedItem.platform)}
+                        <span className="capitalize">{selectedItem.platform}</span>
+                      </Badge>
+                    )}
+                  </div>
+                  <span className="text-sm text-gray-500">{selectedItem.date}</span>
+                </div>
+                
+                {selectedItem.type === 'post' && selectedItem.content && (
+                  <div className="p-4 border rounded-md bg-gray-50">
+                    <p className="text-sm">{selectedItem.content}</p>
+                  </div>
+                )}
+                
+                {(selectedItem.type === 'image' || selectedItem.thumbnail) && (
+                  <div className="border p-2 rounded-md bg-gray-50">
+                    <img 
+                      src={selectedItem.thumbnail || '/placeholder.svg'} 
+                      alt={selectedItem.title}
+                      className="w-full h-48 object-contain rounded"
+                    />
+                  </div>
+                )}
+                
+                {selectedItem.type === 'video' && (
+                  <div className="border p-2 rounded-md bg-gray-50 flex items-center justify-center h-48">
+                    <Video className="h-10 w-10 text-gray-400" />
+                  </div>
+                )}
+                
+                {selectedItem.type === 'document' && (
+                  <div className="border p-2 rounded-md bg-gray-50 flex items-center justify-center h-48">
+                    <FileText className="h-10 w-10 text-gray-400" />
+                  </div>
+                )}
+                
+                {selectedItem.tags && selectedItem.tags.length > 0 && (
+                  <div className="space-y-2">
+                    <Label>Tags</Label>
+                    <div className="flex flex-wrap gap-1">
+                      {selectedItem.tags.map(tag => (
+                        <Badge key={tag} variant="outline" className="bg-gray-100">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <DialogFooter className="sm:justify-between">
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={() => {
+                    setShowItemDetail(false);
+                    handleEditItem(selectedItem);
+                  }}>
+                    <Edit className="h-4 w-4 mr-1" /> Edit
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => {
+                    setShowItemDetail(false);
+                    handleSchedulePost(selectedItem);
+                  }}>
+                    <Clock className="h-4 w-4 mr-1" /> Schedule
+                  </Button>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm">
+                    <Share2 className="h-4 w-4 mr-1" /> Share
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Download className="h-4 w-4 mr-1" /> Download
+                  </Button>
+                </div>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+      
+      {/* Item Editor Dialog */}
+      <Dialog open={showItemEditor} onOpenChange={setShowItemEditor}>
+        <DialogContent className="sm:max-w-[600px]">
+          {selectedItem && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Edit {selectedItem.type}</DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-4 py-4">
+                <div className="space-y-2">
+                  <Label htmlFor="title">Title</Label>
+                  <Input id="title" defaultValue={selectedItem.title} />
+                </div>
+                
+                {selectedItem.type === 'post' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="content">Content</Label>
+                    <Textarea id="content" defaultValue={selectedItem.content} className="min-h-[100px]" />
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="platform">Platform</Label>
+                    <Select defaultValue={selectedItem.platform}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select platform" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="instagram">Instagram</SelectItem>
+                        <SelectItem value="facebook">Facebook</SelectItem>
+                        <SelectItem value="twitter">Twitter</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="status">Status</Label>
+                    <Select defaultValue={selectedItem.status}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="draft">Draft</SelectItem>
+                        <SelectItem value="reviewing">Reviewing</SelectItem>
+                        <SelectItem value="published">Published</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="tags">Tags</Label>
+                  <Input id="tags" defaultValue={selectedItem.tags?.join(', ')} placeholder="Enter tags separated by commas" />
+                </div>
+              </div>
+              
+              <DialogFooter className="gap-2">
+                <Button variant="outline" onClick={() => setShowItemEditor(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={() => {
+                  setShowItemEditor(false);
+                  toast({
+                    title: "Success",
+                    description: `${selectedItem.title} has been updated`,
+                  });
+                }}>
+                  Save changes
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+      
+      {/* Add to Campaign Dialog */}
+      <Dialog open={showCampaignDialog} onOpenChange={setShowCampaignDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Add to Campaign</DialogTitle>
+            <DialogDescription>
+              Select a campaign to add this item to or create a new one.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Select Campaign</Label>
+              <Select>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a campaign" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="summer-2023">Summer 2023 Collection</SelectItem>
+                  <SelectItem value="fall-promo">Fall Promotion</SelectItem>
+                  <SelectItem value="holiday">Holiday Campaign</SelectItem>
+                  <SelectItem value="new-year">New Year 2024</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="p-3 border rounded-md bg-blue-50 border-blue-200 mb-2">
+              <h3 className="font-medium text-blue-800 mb-1">Create New Campaign</h3>
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <Label htmlFor="campaign-name" className="text-sm text-blue-700">Campaign Name</Label>
+                  <Input id="campaign-name" placeholder="Enter campaign name" />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="campaign-dates" className="text-sm text-blue-700">Date Range</Label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Input type="date" id="start-date" />
+                    <Input type="date" id="end-date" />
+                  </div>
+                </div>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                  <Plus className="h-4 w-4 mr-1" /> Create Campaign
+                </Button>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setShowCampaignDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => {
+              setShowCampaignDialog(false);
+              toast({
+                title: "Added to Campaign",
+                description: selectedItem ? `${selectedItem.title} added to campaign` : "Item added to campaign"
+              });
+            }}>
+              Add to Campaign
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Schedule Dialog */}
+      <Dialog open={showScheduleDialog} onOpenChange={setShowScheduleDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Schedule Post</DialogTitle>
+            <DialogDescription>
+              Choose when to publish this post on selected platforms.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Date and Time</Label>
+              <div className="grid grid-cols-2 gap-2">
+                <Input type="date" />
+                <Input type="time" />
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Platforms</Label>
+              <div className="flex flex-wrap gap-2">
+                <Button variant="outline" className="flex items-center gap-1 bg-blue-50 border-blue-200">
+                  <Facebook className="h-4 w-4 text-blue-600" /> 
+                  <span>Facebook</span>
+                  <CheckCircle className="h-3.5 w-3.5 ml-1 text-blue-600" />
+                </Button>
+                <Button variant="outline" className="flex items-center gap-1 bg-pink-50 border-pink-200">
+                  <Instagram className="h-4 w-4 text-pink-600" /> 
+                  <span>Instagram</span>
+                  <CheckCircle className="h-3.5 w-3.5 ml-1 text-pink-600" />
+                </Button>
+                <Button variant="outline" className="flex items-center gap-1">
+                  <Twitter className="h-4 w-4 text-blue-400" /> 
+                  <span>Twitter</span>
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <Label>Caption Adjustments</Label>
+                <Badge variant="outline" className="bg-blue-50 border-blue-200 text-blue-700">AI Suggested</Badge>
+              </div>
+              <Textarea className="min-h-[80px]" defaultValue={selectedItem?.content} />
+            </div>
+            
+            <div className="p-3 border rounded-md bg-blue-50 border-blue-200">
+              <h3 className="font-medium text-blue-800 flex items-center gap-1">
+                <Sparkles className="h-4 w-4" /> AI Recommendation
+              </h3>
+              <p className="text-sm text-blue-700 mt-1">
+                Based on your audience analysis, Tuesday at 6:30 PM KST is the optimal posting time for 28% higher engagement.
+              </p>
+              <Button variant="link" className="text-blue-700 p-0 h-auto text-sm">
+                Apply recommended time
+              </Button>
+            </div>
+          </div>
+          
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setShowScheduleDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={() => {
+              setShowScheduleDialog(false);
+              toast({
+                title: "Post Scheduled",
+                description: selectedItem ? `${selectedItem.title} has been scheduled` : "Post has been scheduled"
+              });
+            }}>
+              Schedule Post
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };

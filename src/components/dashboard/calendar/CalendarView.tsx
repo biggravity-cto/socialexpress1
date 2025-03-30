@@ -1,11 +1,12 @@
-
 import React from 'react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, addDays, getDay, parseISO } from 'date-fns';
-import { Twitter, Instagram, Facebook, Trash2, Edit, Calendar as CalendarIcon } from 'lucide-react';
+import { Twitter, Instagram, Facebook, Trash2, Edit, Calendar as CalendarIcon, PlusCircle, Clock, Share2, Bookmark, MoreHorizontal } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Post, Campaign } from '@/types/calendar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 interface CalendarViewProps {
   posts: Post[];
@@ -16,6 +17,7 @@ interface CalendarViewProps {
   onEditPost?: (post: Post) => void;
   onDeletePost?: (id: string) => void;
   viewMode: string;
+  onCreatePost?: (date: Date) => void;
 }
 
 export const CalendarView: React.FC<CalendarViewProps> = ({ 
@@ -26,8 +28,11 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   selectedDate,
   onEditPost,
   onDeletePost,
-  viewMode
+  viewMode,
+  onCreatePost
 }) => {
+  const [dayDetailOpen, setDayDetailOpen] = React.useState(false);
+  
   // If we're in day view, just show the selected date's posts
   if (viewMode === 'list') {
     return (
@@ -37,6 +42,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
         selectedDate={selectedDate} 
         onEditPost={onEditPost}
         onDeletePost={onDeletePost}
+        onCreatePost={onCreatePost}
       />
     );
   }
@@ -48,9 +54,13 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
         posts={posts} 
         campaigns={campaigns} 
         selectedDate={selectedDate}
-        onSelectDate={onSelectDate}
+        onSelectDate={(date) => {
+          onSelectDate(date);
+          setDayDetailOpen(true);
+        }}
         onEditPost={onEditPost}
         onDeletePost={onDeletePost}
+        onCreatePost={onCreatePost}
       />
     );
   }
@@ -134,147 +144,184 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
     }
   };
   
+  // Handle day click
+  const handleDayClick = (day: Date) => {
+    onSelectDate(day);
+    setDayDetailOpen(true);
+  };
+  
   return (
-    <div className="w-full overflow-x-auto">
-      <div className="min-w-[800px]">
-        {/* Calendar header with weekday names */}
-        <div className="grid grid-cols-7 border-b border-gray-200">
-          {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day) => (
-            <div key={day} className="py-2 text-center font-medium">
-              {day}
-            </div>
-          ))}
-        </div>
-        
-        {/* Calendar grid with weeks and days */}
-        <div className="divide-y divide-gray-200">
-          {weeks.map((week, weekIndex) => (
-            <div key={`week-${weekIndex}`} className="grid grid-cols-7 divide-x divide-gray-200">
-              {week.map((day, dayIndex) => {
-                const dateStr = format(day, 'yyyy-MM-dd');
-                const dayPosts = postsByDate[dateStr] || [];
-                const isCurrentMonth = day.getMonth() === currentMonth.getMonth();
-                const isSelected = isSameDay(day, selectedDate);
-                const dayIsToday = isToday(day);
-                const activeCampaigns = getActiveCampaignsForDate(day);
-                
-                return (
-                  <div 
-                    key={`day-${weekIndex}-${dayIndex}`}
-                    className={`min-h-[120px] p-1 relative ${isCurrentMonth ? 'bg-white' : 'bg-gray-50'} 
-                      ${isSelected ? 'ring-2 ring-blue-500 ring-inset' : ''} 
-                      ${dayIsToday ? 'bg-blue-50' : ''} 
-                      cursor-pointer transition-colors hover:bg-gray-50`}
-                    onClick={() => onSelectDate(day)}
-                  >
-                    {/* Campaign stripes at the top of the day */}
-                    {activeCampaigns.length > 0 && (
-                      <div className="absolute top-0 left-0 right-0 flex h-1.5 overflow-hidden">
-                        {activeCampaigns.map((campaign, idx) => (
-                          <div 
-                            key={campaign.id}
-                            className="h-full flex-1"
-                            style={{ backgroundColor: campaign.color || '#e5e7eb' }}
-                            title={campaign.name}
-                          />
-                        ))}
-                      </div>
-                    )}
-                    
-                    <div className="flex justify-between items-start mt-1.5">
-                      <span className={`text-sm p-1 rounded-full w-6 h-6 flex items-center justify-center
-                        ${dayIsToday ? 'bg-blue-500 text-white' : ''} 
-                        ${!isCurrentMonth ? 'text-gray-400' : ''}`}
-                      >
-                        {format(day, 'd')}
-                      </span>
-                      
-                      {/* Show campaign badges */}
+    <>
+      <div className="w-full overflow-x-auto">
+        <div className="min-w-[800px]">
+          {/* Calendar header with weekday names */}
+          <div className="grid grid-cols-7 border-b border-gray-200">
+            {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day) => (
+              <div key={day} className="py-2 text-center font-medium">
+                {day}
+              </div>
+            ))}
+          </div>
+          
+          {/* Calendar grid with weeks and days */}
+          <div className="divide-y divide-gray-200">
+            {weeks.map((week, weekIndex) => (
+              <div key={`week-${weekIndex}`} className="grid grid-cols-7 divide-x divide-gray-200">
+                {week.map((day, dayIndex) => {
+                  const dateStr = format(day, 'yyyy-MM-dd');
+                  const dayPosts = postsByDate[dateStr] || [];
+                  const isCurrentMonth = day.getMonth() === currentMonth.getMonth();
+                  const isSelected = isSameDay(day, selectedDate);
+                  const dayIsToday = isToday(day);
+                  const activeCampaigns = getActiveCampaignsForDate(day);
+                  
+                  return (
+                    <div 
+                      key={`day-${weekIndex}-${dayIndex}`}
+                      className={`min-h-[120px] p-1 relative ${isCurrentMonth ? 'bg-white' : 'bg-gray-50'} 
+                        ${isSelected ? 'ring-2 ring-blue-500 ring-inset' : ''} 
+                        ${dayIsToday ? 'bg-blue-50' : ''} 
+                        cursor-pointer transition-colors hover:bg-gray-50`}
+                      onClick={() => handleDayClick(day)}
+                    >
+                      {/* Campaign stripes at the top of the day */}
                       {activeCampaigns.length > 0 && (
-                        <div className="flex flex-wrap gap-1 max-w-[70%] justify-end">
-                          {activeCampaigns.slice(0, 2).map((campaign) => (
-                            <TooltipProvider key={campaign.id}>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <Badge 
-                                    variant="outline" 
-                                    className="text-[0.6rem] px-1 py-0 h-4"
-                                    style={{ 
-                                      backgroundColor: campaign.color || '#e5e7eb',
-                                      borderColor: campaign.color || '#e5e7eb'
-                                    }}
-                                  >
-                                    {campaign.name.length > 10 ? `${campaign.name.substring(0, 10)}...` : campaign.name}
-                                  </Badge>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>{campaign.name}</p>
-                                  <p className="text-xs">{campaign.startdate} - {campaign.enddate}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
+                        <div className="absolute top-0 left-0 right-0 flex h-1.5 overflow-hidden">
+                          {activeCampaigns.map((campaign, idx) => (
+                            <div 
+                              key={campaign.id}
+                              className="h-full flex-1"
+                              style={{ backgroundColor: campaign.color || '#e5e7eb' }}
+                              title={campaign.name}
+                            />
                           ))}
-                          {activeCampaigns.length > 2 && (
-                            <Badge variant="outline" className="text-[0.6rem] px-1 py-0 h-4">
-                              +{activeCampaigns.length - 2}
-                            </Badge>
-                          )}
                         </div>
                       )}
-                    </div>
-                    
-                    {/* Posts for this day */}
-                    <div className="mt-1 space-y-1">
-                      {dayPosts.slice(0, 3).map((post) => {
-                        const postCampaign = getCampaignById(post.campaign_id);
-                        
-                        return (
-                          <div 
-                            key={post.id} 
-                            className="text-xs p-1 rounded bg-gray-50 hover:bg-gray-100 flex items-center gap-1 group"
-                            style={{
-                              borderLeft: postCampaign ? `3px solid ${postCampaign.color || '#e5e7eb'}` : 'none'
-                            }}
-                          >
-                            {getPlatformIcon(post.platform)}
-                            <span className="truncate flex-1">{post.title}</span>
-                            
-                            <div className="opacity-0 group-hover:opacity-100 transition-opacity flex">
-                              <button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onEditPost && onEditPost(post);
-                                }}
-                                className="p-0.5 text-gray-400 hover:text-blue-500"
-                              >
-                                <Edit className="h-3 w-3" />
-                              </button>
-                              <button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  onDeletePost && onDeletePost(post.id);
-                                }}
-                                className="p-0.5 text-gray-400 hover:text-red-500"
-                              >
-                                <Trash2 className="h-3 w-3" />
-                              </button>
-                            </div>
-                          </div>
-                        );
-                      })}
                       
-                      {dayPosts.length > 3 && (
-                        <div className="text-xs text-gray-500 pl-1">+{dayPosts.length - 3} more</div>
-                      )}
+                      <div className="flex justify-between items-start mt-1.5">
+                        <span className={`text-sm p-1 rounded-full w-6 h-6 flex items-center justify-center
+                          ${dayIsToday ? 'bg-blue-500 text-white' : ''} 
+                          ${!isCurrentMonth ? 'text-gray-400' : ''}`}
+                        >
+                          {format(day, 'd')}
+                        </span>
+                        
+                        {/* Show campaign badges */}
+                        {activeCampaigns.length > 0 && (
+                          <div className="flex flex-wrap gap-1 max-w-[70%] justify-end">
+                            {activeCampaigns.slice(0, 2).map((campaign) => (
+                              <TooltipProvider key={campaign.id}>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Badge 
+                                      variant="outline" 
+                                      className="text-[0.6rem] px-1 py-0 h-4"
+                                      style={{ 
+                                        backgroundColor: campaign.color || '#e5e7eb',
+                                        borderColor: campaign.color || '#e5e7eb'
+                                      }}
+                                    >
+                                      {campaign.name.length > 10 ? `${campaign.name.substring(0, 10)}...` : campaign.name}
+                                    </Badge>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{campaign.name}</p>
+                                    <p className="text-xs">{campaign.startdate} - {campaign.enddate}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            ))}
+                            {activeCampaigns.length > 2 && (
+                              <Badge variant="outline" className="text-[0.6rem] px-1 py-0 h-4">
+                                +{activeCampaigns.length - 2}
+                              </Badge>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Posts for this day */}
+                      <div className="mt-1 space-y-1">
+                        {dayPosts.slice(0, 3).map((post) => {
+                          const postCampaign = getCampaignById(post.campaign_id);
+                          
+                          return (
+                            <div 
+                              key={post.id} 
+                              className="text-xs p-1 rounded bg-gray-50 hover:bg-gray-100 flex items-center gap-1 group"
+                              style={{
+                                borderLeft: postCampaign ? `3px solid ${postCampaign.color || '#e5e7eb'}` : 'none'
+                              }}
+                            >
+                              {getPlatformIcon(post.platform)}
+                              <span className="truncate flex-1">{post.title}</span>
+                              
+                              <div className="opacity-0 group-hover:opacity-100 transition-opacity flex">
+                                <button 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onEditPost && onEditPost(post);
+                                  }}
+                                  className="p-0.5 text-gray-400 hover:text-blue-500"
+                                >
+                                  <Edit className="h-3 w-3" />
+                                </button>
+                                <button 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onDeletePost && onDeletePost(post.id);
+                                  }}
+                                  className="p-0.5 text-gray-400 hover:text-red-500"
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        
+                        {dayPosts.length > 3 && (
+                          <div className="text-xs text-gray-500 pl-1">+{dayPosts.length - 3} more</div>
+                        )}
+                      </div>
+                      
+                      {/* "Add" button appears on hover */}
+                      <div className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 hover:opacity-100">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          className="h-6 w-6 p-0 rounded-full bg-blue-50 hover:bg-blue-100"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onCreatePost && onCreatePost(day);
+                          }}
+                        >
+                          <PlusCircle className="h-4 w-4 text-blue-600" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+                  );
+                })}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      
+      {/* Day Detail Dialog */}
+      <Dialog open={dayDetailOpen} onOpenChange={setDayDetailOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DayDetailDialog 
+            date={selectedDate} 
+            posts={posts.filter(post => isSameDay(parseISO(post.date), selectedDate))}
+            campaigns={campaigns}
+            onEditPost={onEditPost}
+            onDeletePost={onDeletePost}
+            onCreatePost={() => onCreatePost && onCreatePost(selectedDate)}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
@@ -285,7 +332,8 @@ const DayView: React.FC<{
   selectedDate: Date;
   onEditPost?: (post: Post) => void;
   onDeletePost?: (id: string) => void;
-}> = ({ posts, campaigns, selectedDate, onEditPost, onDeletePost }) => {
+  onCreatePost?: (date: Date) => void;
+}> = ({ posts, campaigns, selectedDate, onEditPost, onDeletePost, onCreatePost }) => {
   // Filter posts for the selected date
   const dayPosts = posts.filter(post => {
     return isSameDay(parseISO(post.date), selectedDate);
@@ -329,10 +377,19 @@ const DayView: React.FC<{
   
   return (
     <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">
-        {format(selectedDate, 'MMMM d, yyyy')}
-        {isToday(selectedDate) && <Badge className="ml-2 bg-blue-500">Today</Badge>}
-      </h2>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold flex items-center">
+          {format(selectedDate, 'MMMM d, yyyy')}
+          {isToday(selectedDate) && <Badge className="ml-2 bg-blue-500">Today</Badge>}
+        </h2>
+        
+        <Button 
+          onClick={() => onCreatePost && onCreatePost(selectedDate)}
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          <PlusCircle className="h-4 w-4 mr-1" /> Add Post
+        </Button>
+      </div>
       
       {dayPosts.length > 0 ? (
         <div className="space-y-3">
@@ -409,6 +466,13 @@ const DayView: React.FC<{
         <div className="text-center py-10 border rounded-lg bg-gray-50">
           <CalendarIcon className="h-12 w-12 mx-auto mb-2 text-gray-300" />
           <p className="text-gray-500">No posts scheduled for this day</p>
+          <Button 
+            variant="outline"
+            className="mt-4"
+            onClick={() => onCreatePost && onCreatePost(selectedDate)}
+          >
+            <PlusCircle className="h-4 w-4 mr-1" /> Create Post
+          </Button>
         </div>
       )}
     </div>
@@ -423,7 +487,8 @@ const WeekView: React.FC<{
   onSelectDate: (date: Date) => void;
   onEditPost?: (post: Post) => void;
   onDeletePost?: (id: string) => void;
-}> = ({ posts, campaigns, selectedDate, onSelectDate, onEditPost, onDeletePost }) => {
+  onCreatePost?: (date: Date) => void;
+}> = ({ posts, campaigns, selectedDate, onSelectDate, onEditPost, onDeletePost, onCreatePost }) => {
   // Get the start of the week (Sunday)
   const startOfWeek = new Date(selectedDate);
   startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay());
@@ -474,6 +539,21 @@ const WeekView: React.FC<{
     }
   };
   
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'published':
+        return 'bg-green-100 text-green-800';
+      case 'draft':
+        return 'bg-gray-100 text-gray-800';
+      case 'scheduled':
+        return 'bg-blue-100 text-blue-800';
+      case 'pending_approval':
+        return 'bg-amber-100 text-amber-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+  
   return (
     <div className="w-full overflow-x-auto">
       <div className="min-w-[800px]">
@@ -504,7 +584,7 @@ const WeekView: React.FC<{
             return (
               <div 
                 key={dateStr}
-                className={`min-h-[300px] p-2 ${isSameDay(day, selectedDate) ? 'bg-blue-50' : 'bg-white'} cursor-pointer`}
+                className={`min-h-[300px] p-2 relative ${isSameDay(day, selectedDate) ? 'bg-blue-50' : 'bg-white'} cursor-pointer`}
                 onClick={() => onSelectDate(day)}
               >
                 {/* Campaign indicators */}
@@ -577,6 +657,21 @@ const WeekView: React.FC<{
                     <div className="text-xs text-gray-400 text-center py-2">No posts</div>
                   )}
                 </div>
+                
+                {/* "Add" button appears on hover */}
+                <div className="absolute bottom-2 right-2 opacity-0 hover:opacity-100 group-hover:opacity-100">
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-7 w-7 p-0 rounded-full bg-blue-50 hover:bg-blue-100"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onCreatePost && onCreatePost(day);
+                    }}
+                  >
+                    <PlusCircle className="h-4 w-4 text-blue-600" />
+                  </Button>
+                </div>
               </div>
             );
           })}
@@ -585,3 +680,157 @@ const WeekView: React.FC<{
     </div>
   );
 };
+
+// Day Detail Dialog Component
+const DayDetailDialog: React.FC<{
+  date: Date;
+  posts: Post[];
+  campaigns: Campaign[];
+  onEditPost?: (post: Post) => void;
+  onDeletePost?: (id: string) => void;
+  onCreatePost?: () => void;
+}> = ({ date, posts, campaigns, onEditPost, onDeletePost, onCreatePost }) => {
+  // Helper function to get campaign by ID
+  const getCampaignById = (campaignId?: string) => {
+    if (!campaignId) return null;
+    return campaigns.find(camp => camp.id === campaignId);
+  };
+  
+  // Platform icons
+  const getPlatformIcon = (platform: string) => {
+    switch (platform) {
+      case 'twitter':
+        return <Twitter className="h-4 w-4 text-blue-400" />;
+      case 'instagram':
+        return <Instagram className="h-4 w-4 text-pink-500" />;
+      case 'facebook':
+        return <Facebook className="h-4 w-4 text-blue-600" />;
+      default:
+        return null;
+    }
+  };
+  
+  // Status classes
+  const getStatusClass = (status: string) => {
+    switch (status) {
+      case 'published':
+        return 'bg-green-100 text-green-800';
+      case 'draft':
+        return 'bg-gray-100 text-gray-800';
+      case 'scheduled':
+        return 'bg-blue-100 text-blue-800';
+      case 'pending_approval':
+        return 'bg-amber-100 text-amber-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+  
+  // Group posts by time
+  const postsByTime = posts.reduce((acc, post) => {
+    const time = post.time || 'No time';
+    if (!acc[time]) {
+      acc[time] = [];
+    }
+    acc[time].push(post);
+    return acc;
+  }, {} as Record<string, Post[]>);
+  
+  // Sort times
+  const sortedTimes = Object.keys(postsByTime).sort((a, b) => {
+    if (a === 'No time') return 1;
+    if (b === 'No time') return -1;
+    return a.localeCompare(b);
+  });
+  
+  return (
+    <>
+      <DialogHeader>
+        <div className="flex justify-between items-center">
+          <DialogTitle className="text-xl flex items-center">
+            {format(date, 'EEEE, MMMM d, yyyy')}
+            {isToday(date) && <Badge className="ml-2 bg-blue-500">Today</Badge>}
+          </DialogTitle>
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700"
+            onClick={onCreatePost}
+          >
+            <PlusCircle className="h-4 w-4 mr-1" /> Add Post
+          </Button>
+        </div>
+      </DialogHeader>
+      
+      <div className="max-h-[60vh] overflow-y-auto mt-4">
+        {posts.length > 0 ? (
+          <div className="space-y-4">
+            {sortedTimes.map(time => (
+              <div key={time} className="border-b pb-4 last:border-b-0 last:pb-0">
+                <h3 className="font-medium text-sm text-gray-500 mb-2 flex items-center">
+                  <Clock className="h-4 w-4 mr-1" /> {time}
+                </h3>
+                <div className="space-y-3">
+                  {postsByTime[time].map(post => {
+                    const postCampaign = getCampaignById(post.campaign_id);
+                    
+                    return (
+                      <div 
+                        key={post.id}
+                        className="border rounded-lg p-3 hover:shadow-sm transition-shadow"
+                        style={{
+                          borderLeft: postCampaign ? `4px solid ${postCampaign.color || '#e5e7eb'}` : undefined
+                        }}
+                      >
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-medium flex items-center gap-2">
+                            {getPlatformIcon(post.platform)}
+                            {post.title}
+                          </h3>
+                          
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => onEditPost && onEditPost(post)}>
+                                <Edit className="h-4 w-4 mr-2" /> Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Clock className="h-4 w-4 mr-2" /> Reschedule
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Bookmark className="h-4 w-4 mr-2" /> Add to Campaign
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Share2 className="h-4 w-4 mr-2" /> Share
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator />
+                              <DropdownMenuItem 
+                                className="text-red-600"
+                                onClick={() => onDeletePost && onDeletePost(post.id)}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" /> Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                        
+                        {post.content && (
+                          <p className="text-sm text-gray-700 mb-3">{post.content}</p>
+                        )}
+                        
+                        {post.imgurl && (
+                          <div className="mb-3 bg-gray-100 rounded-md p-1">
+                            <img 
+                              src={post.imgurl} 
+                              alt={post.title} 
+                              className="w-full h-32 object-cover rounded"
+                            />
+                          </div>
+                        )}
+                        
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Badge className={getStatusClass(post.status)}>
+                            {post.status.replace('_', ' ')}
+                          </Badge>

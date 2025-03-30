@@ -127,6 +127,12 @@ export const CalendarContainer: React.FC<CalendarContainerProps> = ({
     setEditingPost(post);
     setShowPostCreator(true);
   };
+  
+  const handleCreateNewPost = (date: Date) => {
+    setSelectedDate(date);
+    setEditingPost(null);
+    setShowPostCreator(true);
+  };
 
   // Filter posts based on selected criteria
   const filteredPosts = posts.filter(post => {
@@ -181,8 +187,7 @@ export const CalendarContainer: React.FC<CalendarContainerProps> = ({
   };
   
   const openPostCreator = () => {
-    setEditingPost(null);
-    setShowPostCreator(true);
+    handleCreateNewPost(selectedDate);
   };
   
   const totalFilterCount = filteredPlatforms.length + filteredCampaigns.length + filteredStatus.length;
@@ -229,6 +234,7 @@ export const CalendarContainer: React.FC<CalendarContainerProps> = ({
         onEditPost={handleEditPost}
         onDeletePost={handleDeletePost}
         viewMode={viewMode}
+        onCreatePost={handleCreateNewPost}
       />
       
       <Dialog open={showPostCreator} onOpenChange={setShowPostCreator}>
