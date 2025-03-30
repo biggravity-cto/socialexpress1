@@ -57,7 +57,7 @@ const CalendarPage = () => {
     loadData();
   }, [toast]);
 
-  const handleCreatePost = async (postData: any) => {
+  const handleCreatePost = async (postData: Omit<Post, 'id'>) => {
     try {
       const newPost = await createPost(postData);
       if (newPost) {

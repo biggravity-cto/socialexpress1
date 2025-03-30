@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import {
   AlertDialog,
@@ -23,29 +24,25 @@ import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-
-interface Post {
-  id?: string;
-  title: string;
-  date: string;
-  time: string;
-  platform: string;
-  type: string;
-  content: string;
-  status: string;
-  campaign_id?: string;
-}
+import { Post } from '@/types/calendar';
 
 interface PostCreatorDialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
-  addPost: (post: Post) => void;
+  addPost: (post: Omit<Post, 'id'>) => void;
   editingPost?: Post | null;
-  updatePost: (post: Post) => void;
+  updatePost: (id: string, post: Partial<Post>) => void;
   deletePost: (postId: string) => void;
 }
 
-export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({ open, setOpen, addPost, editingPost, updatePost, deletePost }) => {
+export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({ 
+  open, 
+  setOpen, 
+  addPost, 
+  editingPost, 
+  updatePost, 
+  deletePost 
+}) => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [time, setTime] = useState('');
@@ -61,7 +58,7 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({ open, setO
       setTime(editingPost.time);
       setPlatform(editingPost.platform);
       setType(editingPost.type);
-      setContent(editingPost.content);
+      setContent(editingPost.content || '');
       setStatus(editingPost.status);
     } else {
       // Reset form if not editing
@@ -90,12 +87,17 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({ open, setO
       type,
       content,
       status,
+      campaign_id: editingPost?.campaign_id
     };
 
-    if (editingPost) {
-      updatePost(newPost);
+    if (editingPost?.id) {
+      const { id, ...updates } = newPost;
+      if (id) {
+        updatePost(id, updates);
+      }
     } else {
-      addPost(newPost);
+      const { id, ...postData } = newPost;
+      addPost(postData);
     }
 
     setOpen(false);
@@ -152,6 +154,7 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({ open, setO
                     date < new Date()
                   }
                   initialFocus
+                  className="pointer-events-auto"
                 />
               </PopoverContent>
             </Popover>
@@ -218,7 +221,7 @@ export const PostCreatorDialog: React.FC<PostCreatorDialogProps> = ({ open, setO
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           {editingPost && (
-            <AlertDialogAction variant="destructive" onClick={handleDelete}>Delete</AlertDialogAction>
+            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
           )}
           <AlertDialogAction onClick={handleSubmit}>{editingPost ? 'Update' : 'Save'}</AlertDialogAction>
         </AlertDialogFooter>
