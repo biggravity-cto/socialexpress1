@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -14,6 +13,11 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import GlassPanel from '../ui/GlassPanel';
 import AnimatedCard from '../ui/AnimatedCard';
+
+// Add the interface for the component's props
+interface PostCreatorProps {
+  onCancel?: () => void;
+}
 
 const platforms = [
   {
@@ -77,7 +81,7 @@ const templates = [
   },
 ];
 
-const PostCreator = () => {
+const PostCreator: React.FC<PostCreatorProps> = ({ onCancel }) => {
   const [content, setContent] = useState('');
   const [date, setDate] = useState<Date>();
   const [attachedImage, setAttachedImage] = useState<string | null>(null);
