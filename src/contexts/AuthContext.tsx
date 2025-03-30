@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,7 +9,7 @@ interface AuthContextType {
   profile: any | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, metadata?: any) => Promise<void>;
+  signUp: (email: string, password: string, metadata?: any) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: any) => Promise<void>;
 }
@@ -109,6 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password,
         options: {
           data: metadata,
+          emailRedirectTo: `${window.location.origin}/auth`,
         },
       });
 
@@ -118,13 +118,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         title: "Account created",
         description: "Please check your email to confirm your account.",
       });
+      
+      return { success: true };
     } catch (error: any) {
       toast({
         title: "Error creating account",
         description: error.message,
         variant: "destructive",
       });
-      throw error;
+      return { success: false, message: error.message };
     }
   };
 

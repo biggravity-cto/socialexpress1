@@ -9,9 +9,9 @@ const Layout = () => {
   const location = useLocation();
   const { user, loading } = useAuth();
   
-  const publicPages = ['/', '/login', '/auth', '/features', '/pricing', '/blog', '/guides', '/case-studies'];
+  const publicPages = ['/', '/login', '/auth', '/email-confirmation', '/features', '/pricing', '/blog', '/guides', '/case-studies'];
   const isPublicPage = publicPages.includes(location.pathname);
-  const isLoginPage = location.pathname === '/login' || location.pathname === '/auth';
+  const isLoginPage = location.pathname === '/login' || location.pathname === '/auth' || location.pathname === '/email-confirmation';
   
   // Show loading state
   if (loading) {

@@ -1,6 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRedirectIfAuthenticated } from '@/hooks/useAuthCheck';
 import { Card } from '@/components/ui/card';
@@ -13,6 +14,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { supabase } from '@/integrations/supabase/client';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -36,6 +38,31 @@ const Auth = () => {
   const { signIn, signUp } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Handle the redirect from email confirmation
+    const handleEmailConfirmation = async () => {
+      const { hash, search } = window.location;
+      const hasEmailConfirm = hash.includes('access_token') || search.includes('access_token');
+      
+      if (hasEmailConfirm) {
+        try {
+          const { data, error } = await supabase.auth.getSession();
+          if (error) throw error;
+          if (data.session) {
+            // Successfully confirmed email, redirect to dashboard
+            navigate('/dashboard');
+          }
+        } catch (error) {
+          console.error('Error confirming email:', error);
+        }
+      }
+    };
+    
+    handleEmailConfirmation();
+  }, [navigate]);
   
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -74,10 +101,17 @@ const Auth = () => {
     setError(null);
     
     try {
-      await signUp(values.email, values.password, {
+      const result = await signUp(values.email, values.password, {
         first_name: values.firstName,
         last_name: values.lastName,
       });
+      
+      if (result.success) {
+        // Redirect to email confirmation page
+        navigate('/email-confirmation');
+      } else if (result.message) {
+        setError(result.message);
+      }
     } catch (error: any) {
       setError(error.message);
     } finally {

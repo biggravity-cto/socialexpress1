@@ -23,7 +23,11 @@ export const fetchNotifications = async (userId: string): Promise<Notification[]
       .order('created_at', { ascending: false });
     
     if (error) throw error;
-    return data || [];
+    // Cast the data to ensure it matches the Notification type
+    return (data || []).map(item => ({
+      ...item,
+      type: item.type as 'info' | 'success' | 'warning' | 'error'
+    }));
   } catch (error) {
     console.error('Error fetching notifications:', error);
     return [];
@@ -85,7 +89,11 @@ export const createNotification = async (notification: Omit<Notification, 'id' |
       .single();
     
     if (error) throw error;
-    return data;
+    // Cast the response to ensure it matches the Notification type
+    return data ? {
+      ...data,
+      type: data.type as 'info' | 'success' | 'warning' | 'error'
+    } : null;
   } catch (error) {
     console.error('Error creating notification:', error);
     return null;
@@ -109,7 +117,11 @@ export const useNotifications = (userId: string | undefined) => {
           filter: `user_id=eq.${userId}`,
         },
         (payload) => {
-          const newNotification = payload.new as Notification;
+          const newNotification = {
+            ...payload.new,
+            type: payload.new.type as 'info' | 'success' | 'warning' | 'error'
+          } as Notification;
+          
           callback(newNotification);
           
           toast({

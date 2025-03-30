@@ -16,6 +16,7 @@ import Settings from '@/pages/Settings'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
 import Auth from '@/pages/Auth'
+import EmailConfirmation from '@/pages/EmailConfirmation'
 import Posts from '@/pages/Posts'
 import Features from '@/pages/Features'
 import Pricing from '@/pages/Pricing'
@@ -51,6 +52,7 @@ function App() {
           {/* Public/Marketing Pages */}
           <Route path="login" element={<Login />} />
           <Route path="auth" element={<Auth />} />
+          <Route path="email-confirmation" element={<EmailConfirmation />} />
           <Route path="posts" element={<Posts />} />
           <Route path="features" element={<Features />} />
           <Route path="pricing" element={<Pricing />} />
