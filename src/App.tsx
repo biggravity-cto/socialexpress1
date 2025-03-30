@@ -16,7 +16,7 @@ import ContentLibrary from "./pages/ContentLibrary";
 import Messages from "./pages/Messages";
 import Approvals from "./pages/Approvals";
 import Analytics from "./pages/Analytics";
-import CampaignPlanner from "./pages/CampaignPlanner";
+import Campaigns from "./pages/Campaigns";
 import MarketIntelligence from "./pages/MarketIntelligence";
 import Team from "./pages/Team";
 import Settings from "./pages/Settings";
@@ -42,7 +42,7 @@ const AnimatedRoutes = () => {
         <Route path="/messages" element={<Messages />} />
         <Route path="/approvals" element={<Approvals />} />
         <Route path="/analytics" element={<Analytics />} />
-        <Route path="/campaign-planner" element={<CampaignPlanner />} />
+        <Route path="/campaigns" element={<Campaigns />} />
         <Route path="/market-intelligence" element={<MarketIntelligence />} />
         <Route path="/team" element={<Team />} />
         <Route path="/settings" element={<Settings />} />

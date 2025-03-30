@@ -96,13 +96,13 @@ const Dashboard = () => {
           <Card className="p-6 bg-white/80 backdrop-blur-sm">
             <h3 className="text-lg font-medium text-resort-800 mb-4">AI Tools</h3>
             <div className="space-y-3">
-              <Link to="/campaign-planner" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+              <Link to="/campaigns" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center">
                   <div className="p-2 rounded-full bg-purple-50 mr-3">
                     <BrainCircuit className="h-5 w-5 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-resort-800">Campaign Planner</p>
+                    <p className="text-sm font-medium text-resort-800">Campaigns</p>
                     <p className="text-xs text-resort-500">Create data-driven marketing campaigns</p>
                   </div>
                 </div>

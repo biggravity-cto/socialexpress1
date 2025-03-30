@@ -20,10 +20,12 @@ import {
   MessageSquare,
   ArrowRight,
   CheckCircle2,
-  Lightbulb
+  Lightbulb,
+  LayoutDashboard,
+  Archive
 } from 'lucide-react';
 
-const CampaignPlanner = () => {
+const Campaigns = () => {
   const [currentStep, setCurrentStep] = useState(1);
   
   const steps = [
@@ -43,8 +45,8 @@ const CampaignPlanner = () => {
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">AI Campaign Planner</h1>
-          <p className="text-resort-500">Create data-driven marketing campaigns with AI assistance</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">Campaigns</h1>
+          <p className="text-resort-500">Create and manage data-driven marketing campaigns</p>
         </div>
         <div className="flex gap-2">
           <Button variant="outline">
@@ -58,7 +60,9 @@ const CampaignPlanner = () => {
 
       <Tabs defaultValue="new">
         <TabsList className="mb-4">
-          <TabsTrigger value="new">New Campaign</TabsTrigger>
+          <TabsTrigger value="new">Plan New Campaign</TabsTrigger>
+          <TabsTrigger value="briefs">Campaign Briefs</TabsTrigger>
+          <TabsTrigger value="active">Active Campaigns</TabsTrigger>
           <TabsTrigger value="repository">Campaign Repository</TabsTrigger>
         </TabsList>
         
@@ -320,6 +324,142 @@ const CampaignPlanner = () => {
           </div>
         </TabsContent>
         
+        <TabsContent value="briefs">
+          <Card className="p-6">
+            <div className="space-y-1 mb-6">
+              <h2 className="text-xl font-medium text-resort-800">Campaign Briefs</h2>
+              <p className="text-sm text-resort-500">Generate, refine and manage approval status of your campaign briefs</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                { id: 1, title: 'Summer Promotion', status: 'Pending Approval', date: '2023-06-01', target: 'Families' },
+                { id: 2, title: 'Korean Wellness Retreat', status: 'Draft', date: '2023-07-15', target: 'Korean Market' },
+                { id: 3, title: 'Business Conference Package', status: 'Approved', date: '2023-05-10', target: 'Business Travelers' }
+              ].map((brief) => (
+                <Card key={brief.id} className="overflow-hidden hover:shadow-md transition-shadow">
+                  <div className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-sm font-medium text-resort-800">{brief.title}</h3>
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        brief.status === 'Approved' ? 'bg-green-100 text-green-800' :
+                        brief.status === 'Draft' ? 'bg-amber-100 text-amber-800' :
+                        'bg-blue-100 text-blue-800'
+                      }`}>
+                        {brief.status}
+                      </span>
+                    </div>
+                    
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center">
+                        <Calendar className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="text-resort-600">{brief.date}</span>
+                      </div>
+                      <div className="flex items-center">
+                        <Users className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="text-resort-600">{brief.target}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex mt-4 pt-3 border-t border-gray-100">
+                      <Button variant="ghost" size="sm" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50 mr-2">
+                        View
+                      </Button>
+                      <Button variant="ghost" size="sm" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50">
+                        Edit
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="active">
+          <Card className="p-6">
+            <div className="space-y-1 mb-6">
+              <h2 className="text-xl font-medium text-resort-800">Active Campaigns Overview</h2>
+              <p className="text-sm text-resort-500">Track status and performance of your active campaigns</p>
+            </div>
+            
+            <div className="space-y-6">
+              {[
+                { 
+                  id: 1, 
+                  title: 'Summer Family Getaway', 
+                  status: 'Active', 
+                  progress: 75, 
+                  startDate: '2023-06-01', 
+                  endDate: '2023-08-31',
+                  metrics: { impressions: '125K', engagement: '4.8%', conversions: '321' }
+                },
+                { 
+                  id: 2, 
+                  title: 'Korean Wellness Retreat', 
+                  status: 'Active', 
+                  progress: 40, 
+                  startDate: '2023-07-15', 
+                  endDate: '2023-10-15',
+                  metrics: { impressions: '82K', engagement: '5.2%', conversions: '168' }
+                }
+              ].map((campaign) => (
+                <Card key={campaign.id} className="p-5 border-l-4 border-green-500">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-lg font-medium text-resort-800">{campaign.title}</h3>
+                      <div className="flex items-center text-sm text-resort-500 mt-1">
+                        <Calendar className="h-4 w-4 mr-1" />
+                        {campaign.startDate} to {campaign.endDate}
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="text-xs font-medium px-2 py-1 rounded-full bg-green-100 text-green-800 mr-3">
+                        {campaign.status}
+                      </span>
+                      <span className="text-sm font-medium text-resort-800">{campaign.progress}% Complete</span>
+                    </div>
+                  </div>
+                  
+                  <div className="h-2 w-full bg-gray-100 rounded-full overflow-hidden mb-4">
+                    <div 
+                      className="h-full bg-green-500 rounded-full" 
+                      style={{ width: `${campaign.progress}%` }}
+                    ></div>
+                  </div>
+                  
+                  <div className="grid grid-cols-3 gap-4 mb-4">
+                    <div className="bg-gray-50 p-3 rounded-md text-center">
+                      <p className="text-xs text-resort-500 mb-1">Impressions</p>
+                      <p className="text-sm font-medium text-resort-800">{campaign.metrics.impressions}</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded-md text-center">
+                      <p className="text-xs text-resort-500 mb-1">Engagement</p>
+                      <p className="text-sm font-medium text-resort-800">{campaign.metrics.engagement}</p>
+                    </div>
+                    <div className="bg-gray-50 p-3 rounded-md text-center">
+                      <p className="text-xs text-resort-500 mb-1">Conversions</p>
+                      <p className="text-sm font-medium text-resort-800">{campaign.metrics.conversions}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    <Button variant="outline" size="sm" className="text-xs">
+                      <Calendar className="h-3 w-3 mr-1" /> View in Calendar
+                    </Button>
+                    <Button variant="outline" size="sm" className="text-xs">
+                      <BarChart className="h-3 w-3 mr-1" /> Analytics Report
+                    </Button>
+                    <Button variant="outline" size="sm" className="text-xs">
+                      <LayoutDashboard className="h-3 w-3 mr-1" /> Campaign Details
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </Card>
+        </TabsContent>
+        
         <TabsContent value="repository">
           <Card className="p-6">
             <div className="space-y-1 mb-6">
@@ -329,19 +469,15 @@ const CampaignPlanner = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { id: 1, title: 'Summer Promotion', status: 'Active', date: '2023-06-01', target: 'Families' },
-                { id: 2, title: 'Korean Wellness Retreat', status: 'Draft', date: '2023-07-15', target: 'Korean Market' },
-                { id: 3, title: 'Business Conference Package', status: 'Completed', date: '2023-05-10', target: 'Business Travelers' }
+                { id: 1, title: 'Summer Promotion 2022', status: 'Completed', date: '2022-06-01', target: 'Families', roi: '+12%' },
+                { id: 2, title: 'Korean Wellness Launch', status: 'Completed', date: '2022-11-15', target: 'Korean Market', roi: '+28%' },
+                { id: 3, title: 'Business Conference', status: 'Completed', date: '2023-01-10', target: 'Business Travelers', roi: '+8%' }
               ].map((campaign) => (
                 <Card key={campaign.id} className="overflow-hidden hover:shadow-md transition-shadow">
                   <div className="p-4">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="text-sm font-medium text-resort-800">{campaign.title}</h3>
-                      <span className={`text-xs px-2 py-1 rounded-full ${
-                        campaign.status === 'Active' ? 'bg-green-100 text-green-800' :
-                        campaign.status === 'Draft' ? 'bg-amber-100 text-amber-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-800">
                         {campaign.status}
                       </span>
                     </div>
@@ -355,14 +491,18 @@ const CampaignPlanner = () => {
                         <Users className="h-4 w-4 text-gray-400 mr-2" />
                         <span className="text-resort-600">{campaign.target}</span>
                       </div>
+                      <div className="flex items-center">
+                        <BarChart className="h-4 w-4 text-gray-400 mr-2" />
+                        <span className="text-green-600 font-medium">ROI: {campaign.roi}</span>
+                      </div>
                     </div>
                     
                     <div className="flex mt-4 pt-3 border-t border-gray-100">
                       <Button variant="ghost" size="sm" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50 mr-2">
-                        View
+                        View Report
                       </Button>
                       <Button variant="ghost" size="sm" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50">
-                        Duplicate
+                        <Archive className="h-4 w-4 mr-1" /> Clone
                       </Button>
                     </div>
                   </div>
@@ -376,4 +516,4 @@ const CampaignPlanner = () => {
   );
 };
 
-export default CampaignPlanner;
+export default Campaigns;
