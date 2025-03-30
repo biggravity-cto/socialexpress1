@@ -1,13 +1,12 @@
 
 import React from 'react';
-import PerformanceMetrics from '@/components/dashboard/PerformanceMetrics';
-import RecentActivity from '@/components/dashboard/RecentActivity';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, MessageSquare, Settings, Library, Plus, ArrowRight, ClipboardCheck } from 'lucide-react';
+import { Calendar, MessageSquare, Settings, Library, Plus, ArrowRight, ClipboardCheck, BrainCircuit, LineChart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AnimatedCard from '@/components/ui/AnimatedCard';
 import { motion } from 'framer-motion';
+import RecentActivity from '@/components/dashboard/RecentActivity';
 
 const Dashboard = () => {
   return (
@@ -95,40 +94,40 @@ const Dashboard = () => {
         </div>
         <div>
           <Card className="p-6 bg-white/80 backdrop-blur-sm">
-            <h3 className="text-lg font-medium text-resort-800 mb-4">Quick Settings</h3>
+            <h3 className="text-lg font-medium text-resort-800 mb-4">AI Tools</h3>
             <div className="space-y-3">
-              <Link to="/settings/profile" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="flex items-center">
-                  <div className="p-2 rounded-full bg-ocean-50 mr-3">
-                    <Settings className="h-5 w-5 text-ocean-600" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-resort-800">Account Settings</p>
-                    <p className="text-xs text-resort-500">Update your profile and preferences</p>
-                  </div>
-                </div>
-                <ArrowRight className="h-4 w-4 text-resort-400" />
-              </Link>
-              <Link to="/settings/team" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+              <Link to="/campaign-planner" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center">
                   <div className="p-2 rounded-full bg-purple-50 mr-3">
-                    <Settings className="h-5 w-5 text-purple-600" />
+                    <BrainCircuit className="h-5 w-5 text-purple-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-resort-800">Team Settings</p>
-                    <p className="text-xs text-resort-500">Manage team members and permissions</p>
+                    <p className="text-sm font-medium text-resort-800">Campaign Planner</p>
+                    <p className="text-xs text-resort-500">Create data-driven marketing campaigns</p>
                   </div>
                 </div>
                 <ArrowRight className="h-4 w-4 text-resort-400" />
               </Link>
-              <Link to="/settings/integrations" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+              <Link to="/market-intelligence" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                <div className="flex items-center">
+                  <div className="p-2 rounded-full bg-blue-50 mr-3">
+                    <LineChart className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-resort-800">Market Intelligence</p>
+                    <p className="text-xs text-resort-500">Monitor trends and track competitors</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-resort-400" />
+              </Link>
+              <Link to="/settings" className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center">
                   <div className="p-2 rounded-full bg-green-50 mr-3">
                     <Settings className="h-5 w-5 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-resort-800">Integrations</p>
-                    <p className="text-xs text-resort-500">Connect your social media accounts</p>
+                    <p className="text-sm font-medium text-resort-800">Settings</p>
+                    <p className="text-xs text-resort-500">Configure integrations and preferences</p>
                   </div>
                 </div>
                 <ArrowRight className="h-4 w-4 text-resort-400" />
