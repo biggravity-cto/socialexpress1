@@ -41,12 +41,9 @@ function App() {
         {/* Standalone - Unified Social Inbox */}
         <Route path="messages" element={<Messages />} />
         
-        {/* Settings Section and Sub-pages */}
+        {/* Settings and Team Pages */}
         <Route path="settings" element={<Settings />} />
         <Route path="team" element={<Team />} />
-        <Route path="integrations" element={<Settings />} /> {/* Replace with proper page once created */}
-        <Route path="brand-kit" element={<Settings />} /> {/* Replace with proper page once created */}
-        <Route path="account" element={<Settings />} /> {/* Replace with proper page once created */}
         
         {/* Public/Marketing Pages */}
         <Route path="login" element={<Login />} />

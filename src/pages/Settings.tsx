@@ -59,7 +59,6 @@ const Settings = () => {
           <TabsTrigger value="team">Team</TabsTrigger>
           <TabsTrigger value="brand">Brand Kit</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
-          <TabsTrigger value="notifications">Notifications</TabsTrigger>
         </TabsList>
         
         <TabsContent value="account">
@@ -382,19 +381,6 @@ const Settings = () => {
                   ))}
                 </div>
               </div>
-            </div>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="notifications">
-          <Card className="p-6">
-            <div className="space-y-1 mb-6">
-              <h2 className="text-xl font-medium text-resort-800">Notification Settings</h2>
-              <p className="text-sm text-resort-500">Manage how you receive notifications</p>
-            </div>
-            
-            <div className="space-y-4">
-              <p className="text-resort-500 text-center py-10">Notification settings coming soon</p>
             </div>
           </Card>
         </TabsContent>

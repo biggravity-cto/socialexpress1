@@ -14,9 +14,6 @@ import {
   BrainCircuit,
   LineChart,
   ClipboardCheck,
-  Plug,
-  Palette,
-  UserCircle,
 } from 'lucide-react';
 import { 
   SidebarContent, 
@@ -49,19 +46,10 @@ const SidebarNavigation = () => {
           <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
           <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
           <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
+          <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        {/* Settings Section */}
-        <div className="px-3 py-2 border-t border-gray-100">
-          <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
-          <div className="pl-6 space-y-1 mt-1">
-            <SidebarLink to="/team" icon={<Users />}>Team</SidebarLink>
-            <SidebarLink to="/integrations" icon={<Plug />}>Integrations</SidebarLink>
-            <SidebarLink to="/brand-kit" icon={<Palette />}>Brand Kit</SidebarLink>
-            <SidebarLink to="/account" icon={<UserCircle />}>Account</SidebarLink>
-          </div>
-        </div>
         <div className="flex items-center justify-between px-3 py-2">
           <div className="flex items-center">
             <DropdownMenu>
