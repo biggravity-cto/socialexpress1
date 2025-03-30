@@ -1,12 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
-import { Calendar } from "@/components/ui/calendar";
-import { PostsList } from './PostsList';
-import { PostCreatorDialog } from './PostCreatorDialog';
-import { Button } from '@/components/ui/button';
-import { cn } from "@/lib/utils";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import React from 'react';
 import { format } from 'date-fns';
+import { Card } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 import { CalendarIcon } from 'lucide-react';
 import { Post, Campaign } from '@/types/calendar';
 
@@ -25,102 +22,21 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
   onUpdatePost, 
   onDeletePost 
 }) => {
-  const [date, setDate] = useState<Date>(new Date());
-  const [isCreatorDialogOpen, setIsCreatorDialogOpen] = useState(false);
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
-
-  useEffect(() => {
-    // Initialize if no posts provided
-    if (!posts.length) {
-      console.log('No posts provided, using mock data');
-    }
-  }, [posts]);
-
-  const handleDateSelect = (date: Date | undefined) => {
-    if (date) {
-      setDate(date);
-    }
-  };
-
-  const handleCreatePost = () => {
-    setEditingPost(null);
-    setIsCreatorDialogOpen(true);
-  };
-
-  const handleEditPost = (post: Post) => {
-    setEditingPost(post);
-    setIsCreatorDialogOpen(true);
-  };
-
-  const handleSavePost = (post: Omit<Post, 'id'> & { id?: string }) => {
-    if (post.id) {
-      onUpdatePost(post.id, post);
-    } else {
-      onCreatePost(post);
-    }
-    setIsCreatorDialogOpen(false);
-    setEditingPost(null);
-  };
+  const { toast } = useToast();
 
   return (
-    <div className="flex flex-col md:flex-row gap-4">
-      <div className="w-full md:w-1/2">
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-full justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="center">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={handleDateSelect}
-              initialFocus
-              className="pointer-events-auto"
-            />
-          </PopoverContent>
-        </Popover>
-        <div className="mt-4">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={handleDateSelect}
-            className="rounded-md border shadow-sm pointer-events-auto"
-          />
-        </div>
-      </div>
-      <div className="w-full md:w-1/2">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-semibold">Posts for {date ? format(date, "PPP") : 'Selected Date'}</h2>
-          <Button onClick={handleCreatePost}>Create Post</Button>
-        </div>
-        <PostsList
-          selectedDay={date}
-          posts={posts}
-          campaigns={campaigns}
-          setShowPostCreator={setIsCreatorDialogOpen}
-          onUpdatePost={onUpdatePost}
-          onDeletePost={onDeletePost}
-        />
-      </div>
-
-      {/* Post Creator Dialog */}
-      <PostCreatorDialog
-        open={isCreatorDialogOpen}
-        setOpen={setIsCreatorDialogOpen}
-        addPost={onCreatePost}
-        editingPost={editingPost}
-        updatePost={onUpdatePost}
-        deletePost={onDeletePost}
-      />
+    <div className="p-4 text-center">
+      <CalendarIcon className="h-12 w-12 mx-auto mb-2 text-gray-300" />
+      <p className="text-lg font-medium text-gray-700">Calendar View Outdated</p>
+      <p className="text-gray-500 mb-4">This component has been replaced by CalendarPage</p>
+      <Button 
+        onClick={() => toast({
+          title: "Info",
+          description: "Please use CalendarPage instead of CalendarView"
+        })}
+      >
+        Learn More
+      </Button>
     </div>
   );
 };
