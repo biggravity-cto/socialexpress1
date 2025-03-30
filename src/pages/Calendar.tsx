@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Calendar as CalendarIcon, ListFilter, Plus, ChevronLeft, ChevronRight, Settings2, Instagram, Twitter, Facebook, Filter, AlignLeft, Search, Download, MoreHorizontal, CircleUser, Clock, AlertTriangle } from 'lucide-react';
+import { CalendarIcon, ListFilter, Plus, ChevronLeft, ChevronRight, Settings2, Instagram, Twitter, Facebook, Filter, AlignLeft, Search, Download, MoreHorizontal, CircleUser, Clock, AlertTriangle } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -14,7 +13,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { format } from 'date-fns';
 
 // Define campaign type
 interface Campaign {
@@ -254,7 +254,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const Calendar = () => {
+const CalendarPage = () => {
   const isMobile = useIsMobile();
   const [currentMonth, setCurrentMonth] = useState(new Date(2023, 1)); // February 2023
   const [activeView, setActiveView] = useState('month');
@@ -559,8 +559,7 @@ const Calendar = () => {
                         <Button variant="outline" size="sm">Start Date</Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
+                        <CalendarComponent
                           selected={new Date(2023, 1, 1)}
                           onSelect={() => {}}
                           initialFocus
@@ -574,8 +573,7 @@ const Calendar = () => {
                         <Button variant="outline" size="sm">End Date</Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
+                        <CalendarComponent
                           selected={new Date(2023, 1, 28)}
                           onSelect={() => {}}
                           initialFocus
@@ -650,12 +648,11 @@ const Calendar = () => {
                       <PopoverTrigger asChild>
                         <Button variant="outline" className="w-full justify-start text-left">
                           <CalendarIcon className="mr-2 h-4 w-4" />
-                          {selectedDate.toLocaleDateString()}
+                          {format(selectedDate, "PPP")}
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
+                        <CalendarComponent
                           selected={selectedDate}
                           onSelect={(date) => date && setSelectedDate(date)}
                           initialFocus
@@ -850,130 +847,4 @@ const Calendar = () => {
                           >
                             {campaign.name}
                           </TableCell>
-                          {endDayIndex !== -1 && endDayIndex < week.length - 1 && (
-                            <TableCell colSpan={week.length - endDayIndex}></TableCell>
-                          )}
-                        </TableRow>
-                      ) : null;
-                    })}
-                    
-                    {/* Calendar Days */}
-                    <TableRow className="h-24">
-                      {week.map((day, dayIndex) => {
-                        const dayPosts = getPostsForDate(day.date);
-                        const isCurrentDay = day.date.getDate() === 1;
-                        
-                        return (
-                          <TableCell 
-                            key={dayIndex} 
-                            className={`relative border p-1 align-top ${
-                              day.isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'
-                            } ${isCurrentDay ? 'font-bold' : ''}`}
-                            onDrop={(e) => handleDrop(day.date, e)}
-                            onDragOver={handleDragOver}
-                            onClick={() => handleDayClick(day.date)}
-                          >
-                            <div className="mb-1 p-1">{day.date.getDate()}</div>
-                            
-                            {/* Day Posts */}
-                            <div className="space-y-1 max-h-[80px] overflow-y-auto">
-                              {dayPosts.slice(0, 3).map(post => (
-                                <div 
-                                  key={post.id}
-                                  className="flex items-center p-1 rounded text-xs bg-white border border-gray-200 cursor-pointer hover:bg-gray-50"
-                                  draggable
-                                  onDragStart={(e) => handleDragStart(post.id, e)}
-                                >
-                                  <div className={`p-1 rounded-full mr-1 ${
-                                    post.platform === 'instagram' ? 'bg-pink-50 text-pink-600' :
-                                    post.platform === 'twitter' ? 'bg-blue-50 text-blue-600' :
-                                    'bg-indigo-50 text-indigo-600'
-                                  }`}>
-                                    {getPlatformIcon(post.platform)}
-                                  </div>
-                                  <span className="truncate flex-1">{post.title}</span>
-                                </div>
-                              ))}
-                              
-                              {dayPosts.length > 3 && (
-                                <div className="text-xs text-center text-resort-500 p-1">
-                                  +{dayPosts.length - 3} more
-                                </div>
-                              )}
-                            </div>
-                            
-                            {dayPosts.length > 0 && (
-                              <DayDetailDialog date={day.date} />
-                            )}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  </React.Fragment>
-                );
-              })}
-            </TableBody>
-          </Table>
-          
-          {activeView === 'list' && (
-            <div className="p-4">
-              <h3 className="text-lg font-medium text-resort-800 mb-4">Content List</h3>
-              <div className="space-y-3">
-                {posts.map(post => (
-                  <Card key={post.id} className="p-3">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <div className="flex items-center mb-1">
-                          <span className={`mr-2 p-1 rounded-full ${
-                            post.platform === 'instagram' ? 'bg-pink-50 text-pink-600' :
-                            post.platform === 'twitter' ? 'bg-blue-50 text-blue-600' :
-                            'bg-indigo-50 text-indigo-600'
-                          }`}>
-                            {getPlatformIcon(post.platform)}
-                          </span>
-                          <Badge className={getStatusColor(post.status)}>
-                            {post.status.charAt(0).toUpperCase() + post.status.slice(1)}
-                          </Badge>
-                          <span className="ml-2 text-xs text-resort-500">
-                            {post.date.toLocaleDateString()} at {post.time}
-                          </span>
-                        </div>
-                        <h4 className="font-medium text-resort-800">{post.title}</h4>
-                        <div className="flex items-center mt-1 text-xs text-resort-500">
-                          <CircleUser className="h-3 w-3 mr-1" />
-                          {post.author}
-                        </div>
-                      </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Edit</DropdownMenuItem>
-                          <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                          <DropdownMenuItem>Change Date</DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-      
-      <div className="text-xs text-resort-500">
-        <div className="flex items-center">
-          <AlertTriangle className="h-3 w-3 mr-1 text-amber-500" />
-          <span>Tip: You can drag and drop posts to reschedule them to different dates.</span>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-export default Calendar;
+                          {endDayIndex
