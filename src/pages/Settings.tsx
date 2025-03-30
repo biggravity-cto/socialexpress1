@@ -6,7 +6,7 @@ import { LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
-// Import refactored components
+// Import settings components
 import AccountSettings from '@/components/settings/AccountSettings';
 import TeamSettings from '@/components/settings/TeamSettings';
 import BrandSettings from '@/components/settings/BrandSettings';
