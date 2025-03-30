@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -15,8 +16,11 @@ import {
   BellDot, 
   Megaphone,
   CheckCircle,
-  LayoutGrid,
-  GaugeCircle
+  Library,
+  BrainCircuit,
+  LineChart,
+  MessageSquare,
+  ClipboardCheck
 } from 'lucide-react';
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarLink, SidebarTrigger, SidebarFooter } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -80,17 +84,32 @@ const Navbar = () => {
       <div className="min-h-screen flex w-full">
         <Sidebar>
           <SidebarContent>
+            {/* Main */}
             <SidebarGroup>
               <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
-              <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
-              <SidebarLink to="/campaigns" icon={<Megaphone />}>Campaigns</SidebarLink>
-              <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
-              <SidebarLink to="/content" icon={<LayoutGrid />}>Content</SidebarLink>
-              <SidebarLink to="/market-intelligence" icon={<GaugeCircle />}>Market Intelligence</SidebarLink>
             </SidebarGroup>
+            
+            {/* Campaigns */}
             <SidebarGroup>
-              <SidebarLink to="/messages" icon={<MessagesSquare />}>Messages</SidebarLink>
-              <SidebarLink to="/approvals" icon={<CheckCircle />}>Approvals</SidebarLink>
+              <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Strategic Planner</SidebarLink>
+            </SidebarGroup>
+            
+            {/* Content Hub */}
+            <SidebarGroup>
+              <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
+              <SidebarLink to="/content" icon={<Library />}>Library</SidebarLink>
+              <SidebarLink to="/messages" icon={<MessageSquare />}>Messages</SidebarLink>
+              <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
+            </SidebarGroup>
+            
+            {/* Insights */}
+            <SidebarGroup>
+              <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
+              <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
+            </SidebarGroup>
+            
+            {/* Management */}
+            <SidebarGroup>
               <SidebarLink to="/team" icon={<Users />}>Team</SidebarLink>
               <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
             </SidebarGroup>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, Outlet } from 'react-router-dom';
 import { 
@@ -16,7 +17,10 @@ import {
   BrainCircuit,
   LineChart,
   PanelLeft,
-  Bell
+  Bell,
+  // New icons for reorganized menu
+  Layers,
+  FolderPlus
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -30,56 +34,82 @@ interface LayoutProps {
   children?: React.ReactNode;
 }
 
+// Reorganized menu structure with grouping
 const navItems = [
   {
-    name: 'Dashboard',
-    path: '/dashboard',
-    icon: <LayoutDashboard className="h-5 w-5" />
+    group: "Main",
+    items: [
+      {
+        name: 'Dashboard',
+        path: '/dashboard',
+        icon: <LayoutDashboard className="h-5 w-5" />
+      }
+    ]
   },
   {
-    name: 'Calendar',
-    path: '/calendar',
-    icon: <Calendar className="h-5 w-5" />
+    group: "Campaigns",
+    items: [
+      {
+        name: 'Strategic Planner',
+        path: '/campaigns',
+        icon: <BrainCircuit className="h-5 w-5" />
+      }
+    ]
   },
   {
-    name: 'Content',
-    path: '/content',
-    icon: <Library className="h-5 w-5" />
+    group: "Content Hub",
+    items: [
+      {
+        name: 'Calendar',
+        path: '/calendar',
+        icon: <Calendar className="h-5 w-5" />
+      },
+      {
+        name: 'Library',
+        path: '/content',
+        icon: <Library className="h-5 w-5" />
+      },
+      {
+        name: 'Messages',
+        path: '/messages',
+        icon: <MessageSquare className="h-5 w-5" />
+      },
+      {
+        name: 'Approvals',
+        path: '/approvals',
+        icon: <ClipboardCheck className="h-5 w-5" />
+      }
+    ]
   },
   {
-    name: 'Messages',
-    path: '/messages',
-    icon: <MessageSquare className="h-5 w-5" />
+    group: "Insights",
+    items: [
+      {
+        name: 'Analytics',
+        path: '/analytics',
+        icon: <BarChart3 className="h-5 w-5" />
+      },
+      {
+        name: 'Market Intelligence',
+        path: '/market-intelligence',
+        icon: <LineChart className="h-5 w-5" />
+      }
+    ]
   },
   {
-    name: 'Approvals',
-    path: '/approvals',
-    icon: <ClipboardCheck className="h-5 w-5" />
-  },
-  {
-    name: 'Analytics',
-    path: '/analytics',
-    icon: <BarChart3 className="h-5 w-5" />
-  },
-  {
-    name: 'Campaigns',
-    path: '/campaigns',
-    icon: <BrainCircuit className="h-5 w-5" />
-  },
-  {
-    name: 'Market Intelligence',
-    path: '/market-intelligence',
-    icon: <LineChart className="h-5 w-5" />
-  },
-  {
-    name: 'Team',
-    path: '/team',
-    icon: <Users className="h-5 w-5" />
-  },
-  {
-    name: 'Settings',
-    path: '/settings',
-    icon: <Settings className="h-5 w-5" />
+    group: "Management",
+    items: [
+      {
+        name: 'Team',
+        path: '/team',
+        icon: <Users className="h-5 w-5" />
+      },
+      {
+        name: 'Settings',
+        path: '/settings',
+        icon: <Settings className="h-5 w-5" />
+      }
+    ]
   }
 ];
 
@@ -115,7 +145,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="flex flex-col h-full">
       <div className="flex h-14 items-center px-4 border-b border-gray-100 justify-between">
         <span className="font-bold text-lg tracking-tight text-resort-800">
-          {sidebarOpen ? 'BG Social' : 'BG'}{sidebarOpen && <span className="text-ocean-600">Express</span>}
+          {sidebarOpen ? 'SocialSync' : 'SS'}
         </span>
         <Button 
           variant="ghost" 
@@ -128,20 +158,31 @@ const Layout = ({ children }: LayoutProps) => {
       </div>
       
       <div className="flex-1 overflow-auto py-2">
-        <nav className="space-y-1 px-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
-                location.pathname === item.path 
-                  ? "bg-ocean-50 text-ocean-600" 
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
-            >
-              <span className="mr-3">{item.icon}</span>
-              {sidebarOpen && <span>{item.name}</span>}
-            </Link>
+        <nav className="space-y-2 px-2">
+          {navItems.map((group, groupIndex) => (
+            <div key={groupIndex} className="mb-3">
+              {sidebarOpen && (
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 mb-1">
+                  {group.group}
+                </h3>
+              )}
+              <div className="space-y-1">
+                {group.items.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
+                      location.pathname === item.path 
+                        ? "bg-ocean-50 text-ocean-600" 
+                        : "text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    <span className="mr-3">{item.icon}</span>
+                    {sidebarOpen && <span>{item.name}</span>}
+                  </Link>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
       </div>

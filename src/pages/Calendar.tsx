@@ -4,6 +4,10 @@ import { fetchCampaigns, fetchPosts, createPost, updatePost, deletePost } from '
 import { Campaign, Post } from '@/types/calendar';
 import { useToast } from "@/hooks/use-toast";
 import { CalendarContainer } from '@/components/dashboard/calendar/CalendarContainer';
+import { motion } from 'framer-motion';
+import { BrainCircuit, Clock, RotateCw } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 const Calendar = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -36,11 +40,48 @@ const Calendar = () => {
   }, [toast]);
 
   return (
-    <div className="container mx-auto py-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-1">Content Calendar</h1>
-        <p className="text-gray-500">Plan and schedule your content across platforms</p>
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      className="space-y-6"
+    >
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-2xl font-bold mb-1">Content Calendar</h1>
+          <p className="text-gray-500">Plan and schedule your content across platforms</p>
+        </div>
+        
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" size="sm" className="flex items-center gap-1">
+            <Clock className="h-4 w-4" />
+            <span>AI Scheduling Suggestions</span>
+          </Button>
+          <Button variant="outline" size="sm" className="flex items-center gap-1">
+            <RotateCw className="h-4 w-4" />
+            <span>Refresh Data</span>
+          </Button>
+          <Button variant="outline" size="sm" className="flex items-center gap-1">
+            <BrainCircuit className="h-4 w-4" />
+            <span>Content Ideas</span>
+          </Button>
+        </div>
       </div>
+      
+      <Card className="p-4 bg-blue-50 border-blue-200">
+        <div className="flex items-start gap-3">
+          <div className="bg-blue-100 p-2 rounded-full">
+            <BrainCircuit className="h-5 w-5 text-blue-600" />
+          </div>
+          <div>
+            <h3 className="font-medium text-blue-800">AI Scheduling Optimization</h3>
+            <p className="text-sm text-blue-700">
+              Our AI analysis suggests posting on Instagram at 6-8pm KST for 32% higher engagement with your Korean audience.
+              <Button variant="link" className="text-blue-700 p-0 h-auto">Apply suggested times</Button>
+            </p>
+          </div>
+        </div>
+      </Card>
       
       {loading ? (
         <div className="flex justify-center items-center h-64">
@@ -58,7 +99,7 @@ const Calendar = () => {
           deletePost={deletePost}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
 
