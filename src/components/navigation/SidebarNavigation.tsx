@@ -33,8 +33,8 @@ import { Button } from '@/components/ui/button';
 const SidebarNavigation = () => {
   return (
     <>
-      <SidebarContent>
-        {/* Flat menu structure in specified order */}
+      <SidebarContent className="flex flex-col h-full justify-between">
+        {/* Main navigation group */}
         <SidebarGroup>
           <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
           <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Campaigns</SidebarLink>
@@ -43,6 +43,10 @@ const SidebarNavigation = () => {
           <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
           <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
           <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
+        </SidebarGroup>
+        
+        {/* Settings navigation group (positioned at bottom, above footer) */}
+        <SidebarGroup>
           <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
         </SidebarGroup>
       </SidebarContent>

@@ -1,6 +1,5 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import Navbar from '@/components/navigation/Navbar';
 import HeroSection from '@/components/landing/HeroSection';
 import FeatureSection from '@/components/landing/FeatureSection';
 import CtaSection from '@/components/landing/CtaSection';
@@ -28,7 +27,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-resort-50">
-      <Navbar />
       <HeroSection scrollToFeatures={scrollToFeatures} />
       <FeatureSection featureRef={featuresRef} />
       <CtaSection />

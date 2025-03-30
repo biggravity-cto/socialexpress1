@@ -16,8 +16,8 @@ interface NavigationMenuProps {
   sidebarOpen: boolean;
 }
 
-// Simplified flat menu structure in specified order
-const navItems = [
+// Main navigation items (excluding Settings which will be positioned at bottom)
+const mainNavItems = [
   {
     name: 'Dashboard',
     path: '/dashboard',
@@ -52,33 +52,53 @@ const navItems = [
     name: 'Unified Social Inbox',
     path: '/messages',
     icon: <MessageSquare className="h-5 w-5" />
-  },
-  {
-    name: 'Settings',
-    path: '/settings',
-    icon: <Settings className="h-5 w-5" />
   }
 ];
+
+// Settings navigation item (to be positioned at bottom)
+const settingsNavItem = {
+  name: 'Settings',
+  path: '/settings',
+  icon: <Settings className="h-5 w-5" />
+};
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen }) => {
   const location = useLocation();
 
   return (
-    <nav className="space-y-1 px-2">
-      {navItems.map((item) => (
+    <nav className="flex flex-col h-full justify-between">
+      {/* Main navigation items */}
+      <div className="space-y-1 px-2">
+        {mainNavItems.map((item) => (
+          <Link
+            key={item.path}
+            to={item.path}
+            className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
+              location.pathname === item.path 
+                ? "bg-ocean-50 text-ocean-600" 
+                : "text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            <span className="mr-3">{item.icon}</span>
+            {sidebarOpen && <span>{item.name}</span>}
+          </Link>
+        ))}
+      </div>
+      
+      {/* Settings at the bottom */}
+      <div className="mt-auto px-2 mb-4">
         <Link
-          key={item.path}
-          to={item.path}
+          to={settingsNavItem.path}
           className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
-            location.pathname === item.path 
+            location.pathname === settingsNavItem.path 
               ? "bg-ocean-50 text-ocean-600" 
               : "text-gray-600 hover:bg-gray-100"
           }`}
         >
-          <span className="mr-3">{item.icon}</span>
-          {sidebarOpen && <span>{item.name}</span>}
+          <span className="mr-3">{settingsNavItem.icon}</span>
+          {sidebarOpen && <span>{settingsNavItem.name}</span>}
         </Link>
-      ))}
+      </div>
     </nav>
   );
 };
