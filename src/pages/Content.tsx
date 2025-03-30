@@ -19,38 +19,33 @@ import {
   Clock, 
   CalendarIcon, 
   Layers, 
-  Copy, 
   Share2, 
   Trash2, 
-  CloudLightning, 
-  Sparkles, 
-  ChevronRight, 
   CloudUpload, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Database,
-  MessageSquare,
-  AlertCircle,
+  Bot,
+  Sparkles,
+  BookCopy,
   CheckCircle2,
+  ChevronRight,
   RefreshCw,
-  BarChart,
-  TrendingUp,
-  Zap,
-  Bot
+  FlameKindling,
+  Folder,
+  FolderTree,
+  Stars,
+  PenLine,
+  Copy,
+  MessageSquare,
+  FileImage
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
+import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
+import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPosts } from '@/services/calendarService';
 import { Post } from '@/types/calendar';
@@ -66,39 +61,32 @@ interface ContentItem {
   platform?: 'instagram' | 'twitter' | 'facebook';
   tags?: string[];
   content?: string;
+  size?: string;
+  views?: number;
+  interactions?: number;
 }
 
 const Content = () => {
   const { toast } = useToast();
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showAIGenerator, setShowAIGenerator] = useState(false);
-  const [generationType, setGenerationType] = useState<'image' | 'video' | 'text'>('image');
-  const [showGoogleDriveConnect, setShowGoogleDriveConnect] = useState(false);
-  const [showMarketInsights, setShowMarketInsights] = useState(false);
+  const [activeTab, setActiveTab] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
   const [contentItems, setContentItems] = useState<ContentItem[]>([]);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [filteredItems, setFilteredItems] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [sortBy, setSortBy] = useState('newest');
+  const [showCreateContentDialog, setShowCreateContentDialog] = useState(false);
+  const [contentType, setContentType] = useState<'post' | 'image' | 'video' | 'document'>('post');
 
-  // AI Generator form state
-  const [prompt, setPrompt] = useState('');
-  const [generating, setGenerating] = useState(false);
-  const [generatedContent, setGeneratedContent] = useState<string | null>(null);
-  const [suggestedTopics, setSuggestedTopics] = useState([
-    'Summer vacation destinations',
-    'Product features showcase',
-    'Customer success stories',
-    'Industry trends for 2023',
-    'Behind the scenes of our team'
-  ]);
-  const [generationProgress, setGenerationProgress] = useState(0);
-
+  // Load content data
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       try {
         // Fetch actual posts from calendar service
         const postsData = await fetchPosts();
-        setPosts(postsData);
         
         // Convert posts to content items
         const convertedItems: ContentItem[] = postsData.map((post, index) => ({
@@ -106,7 +94,7 @@ const Content = () => {
           type: post.type === 'image' || post.type === 'video' 
             ? post.type as 'image' | 'video' 
             : 'post',
-          title: post.title,
+          title: post.title || `Untitled ${post.type}`,
           date: post.date,
           status: post.status === 'published' 
             ? 'published' 
@@ -116,10 +104,68 @@ const Content = () => {
           thumbnail: '/placeholder.svg',
           platform: post.platform as 'instagram' | 'twitter' | 'facebook',
           content: post.content,
-          tags: ['content', post.platform, post.type]
+          tags: ['content', post.platform, post.type],
+          size: Math.floor(Math.random() * 5 + 1) + 'MB',
+          views: Math.floor(Math.random() * 1000),
+          interactions: Math.floor(Math.random() * 100)
         }));
         
-        setContentItems(convertedItems);
+        // Add more mock content items for a fuller experience
+        const additionalItems: ContentItem[] = [
+          {
+            id: postsData.length + 1,
+            type: 'image',
+            title: 'Product Feature Highlight',
+            date: '2023-09-15',
+            status: 'published',
+            thumbnail: '/placeholder.svg',
+            platform: 'instagram',
+            tags: ['product', 'feature', 'highlight'],
+            size: '2.4MB',
+            views: 754,
+            interactions: 89
+          },
+          {
+            id: postsData.length + 2,
+            type: 'video',
+            title: 'How-To Tutorial',
+            date: '2023-09-10',
+            status: 'published',
+            thumbnail: '/placeholder.svg',
+            platform: 'instagram',
+            tags: ['tutorial', 'howto', 'video'],
+            size: '15.7MB',
+            views: 1250,
+            interactions: 176
+          },
+          {
+            id: postsData.length + 3,
+            type: 'document',
+            title: 'Brand Guidelines 2023',
+            date: '2023-08-22',
+            status: 'published',
+            tags: ['brand', 'guidelines', 'design'],
+            size: '4.2MB',
+            views: 48,
+            interactions: 5
+          },
+          {
+            id: postsData.length + 4,
+            type: 'post',
+            title: 'Weekly Update Post',
+            date: '2023-09-18',
+            status: 'draft',
+            platform: 'twitter',
+            content: 'We\'re excited to announce our latest features coming next week! Stay tuned for more details.',
+            tags: ['update', 'announcement', 'features'],
+            views: 0,
+            interactions: 0
+          }
+        ];
+        
+        const allItems = [...convertedItems, ...additionalItems];
+        setContentItems(allItems);
+        setFilteredItems(allItems);
       } catch (error) {
         console.error('Error loading content:', error);
         toast({
@@ -135,96 +181,123 @@ const Content = () => {
     loadData();
   }, [toast]);
 
-  // Would connect to Supabase or API in a real application
-  const handleGenerateContent = async () => {
-    if (!prompt.trim()) return;
+  // Filter content when tab or search changes
+  useEffect(() => {
+    let filtered = [...contentItems];
     
-    setGenerating(true);
-    setGenerationProgress(0);
-    
-    // Simulate AI generation with progress updates
-    const interval = setInterval(() => {
-      setGenerationProgress(prev => {
-        const newProgress = prev + Math.random() * 20;
-        return newProgress > 100 ? 100 : newProgress;
-      });
-    }, 500);
-    
-    try {
-      // Simulate API call to AI service
-      setTimeout(() => {
-        setGeneratedContent('/placeholder.svg');
-        setGenerating(false);
-        clearInterval(interval);
-        setGenerationProgress(100);
-        
-        toast({
-          title: "Content Generated",
-          description: "Your AI-generated content is ready to use!",
-        });
-      }, 3000);
-    } catch (error) {
-      console.error('Error generating content:', error);
-      setGenerating(false);
-      clearInterval(interval);
-      
-      toast({
-        title: "Generation Failed",
-        description: "There was an error generating your content. Please try again.",
-        variant: "destructive"
-      });
+    // Filter by type (tab)
+    if (activeTab !== 'all') {
+      filtered = filtered.filter(item => item.type === activeTab);
     }
+    
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(item => 
+        item.title.toLowerCase().includes(query) || 
+        item.tags?.some(tag => tag.toLowerCase().includes(query)) ||
+        item.content?.toLowerCase().includes(query) ||
+        item.platform?.toLowerCase().includes(query)
+      );
+    }
+    
+    // Sort items
+    if (sortBy === 'newest') {
+      filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    } else if (sortBy === 'oldest') {
+      filtered.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    } else if (sortBy === 'popular') {
+      filtered.sort((a, b) => (b.views || 0) - (a.views || 0));
+    } else if (sortBy === 'name') {
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    
+    setFilteredItems(filtered);
+  }, [contentItems, activeTab, searchQuery, sortBy]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
   };
 
-  // Connect to Google Drive (mock implementation)
-  const handleConnectGoogleDrive = () => {
-    // In a real app, we'd implement OAuth flow here
-    setShowGoogleDriveConnect(false);
-    toast({
-      title: "Connected",
-      description: "Google Drive connected successfully!",
+  const toggleItemSelection = (id: number) => {
+    setSelectedItems(prev => {
+      if (prev.includes(id)) {
+        return prev.filter(itemId => itemId !== id);
+      } else {
+        return [...prev, id];
+      }
     });
   };
 
-  // Helper functions
+  const handleSelectAll = () => {
+    if (selectedItems.length === filteredItems.length) {
+      setSelectedItems([]);
+    } else {
+      setSelectedItems(filteredItems.map(item => item.id));
+    }
+  };
+
+  const handleBulkDelete = () => {
+    if (selectedItems.length === 0) return;
+    
+    setContentItems(prev => prev.filter(item => !selectedItems.includes(item.id)));
+    toast({
+      title: `${selectedItems.length} items deleted`,
+      description: "The selected items have been removed"
+    });
+    setSelectedItems([]);
+  };
+
+  const handleCreateContent = () => {
+    // Add a new content item
+    const newItem: ContentItem = {
+      id: contentItems.length + 1,
+      type: contentType,
+      title: `New ${contentType.charAt(0).toUpperCase() + contentType.slice(1)}`,
+      date: new Date().toISOString().split('T')[0],
+      status: 'draft',
+      thumbnail: contentType === 'image' ? '/placeholder.svg' : undefined,
+      tags: [contentType],
+      size: contentType === 'document' ? '0.1MB' : contentType === 'video' ? '0MB' : undefined,
+      views: 0,
+      interactions: 0
+    };
+
+    setContentItems(prev => [newItem, ...prev]);
+    setShowCreateContentDialog(false);
+    
+    toast({
+      title: "Content created",
+      description: `Your new ${contentType} has been created as a draft`
+    });
+  };
+
+  // Helpers for rendering items
   const getIcon = (type: string) => {
     switch (type) {
-      case 'image':
-        return <Image className="h-5 w-5" />;
-      case 'video':
-        return <Video className="h-5 w-5" />;
-      case 'document':
-        return <FileText className="h-5 w-5" />;
-      case 'post':
-        return <MessageSquare className="h-5 w-5" />;
-      default:
-        return <FileText className="h-5 w-5" />;
+      case 'image': return <FileImage className="h-5 w-5" />;
+      case 'video': return <Video className="h-5 w-5" />;
+      case 'document': return <FileText className="h-5 w-5" />;
+      case 'post': return <MessageSquare className="h-5 w-5" />;
+      default: return <FileText className="h-5 w-5" />;
     }
   };
 
   const getPlatformIcon = (platform?: string) => {
     switch (platform) {
-      case 'instagram':
-        return <Instagram className="h-4 w-4" />;
-      case 'twitter':
-        return <Twitter className="h-4 w-4" />;
-      case 'facebook':
-        return <Facebook className="h-4 w-4" />;
-      default:
-        return null;
+      case 'instagram': return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>;
+      case 'twitter': return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>;
+      case 'facebook': return <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>;
+      default: return null;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'published':
-        return 'bg-green-100 text-green-800';
-      case 'draft':
-        return 'bg-gray-100 text-gray-800';
-      case 'reviewing':
-        return 'bg-amber-100 text-amber-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
+      case 'published': return 'bg-green-100 text-green-800';
+      case 'draft': return 'bg-gray-100 text-gray-800';
+      case 'reviewing': return 'bg-amber-100 text-amber-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -233,497 +306,407 @@ const Content = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="space-y-6 container mx-auto p-4"
+      className="space-y-6"
     >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Header Section */}
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold mb-1">Content Studio</h1>
-          <p className="text-gray-500">Create, manage and publish your digital assets</p>
+          <h1 className="text-2xl md:text-3xl font-bold">Content Studio</h1>
+          <p className="text-muted-foreground">Create, manage, and publish your digital assets</p>
         </div>
+        
+        {/* Quick Action Buttons */}
         <div className="flex flex-wrap gap-2">
-          <Dialog open={showGoogleDriveConnect} onOpenChange={setShowGoogleDriveConnect}>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="flex items-center">
-                <Database className="mr-1.5 h-4 w-4" /> Connect Storage
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Connect External Storage</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label>Select Storage Provider</Label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <Card className="p-4 cursor-pointer border-blue-200 bg-blue-50">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 rounded-full">
-                          <svg className="h-5 w-5 text-blue-600" viewBox="0 0 87 78" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M27.5 22.5L43.5 0L59.5 22.5H27.5Z" fill="#4285F4"/>
-                            <path d="M69.5 32.5L86.5 55.5L76.5 77.5H36.5L27.5 55.5L43.5 32.5H69.5Z" fill="#4285F4"/>
-                            <path d="M0.5 55.5L17.5 32.5L43.5 32.5L27.5 55.5L36.5 77.5H10.5L0.5 55.5Z" fill="#4285F4"/>
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Google Drive</h3>
-                          <p className="text-xs text-gray-500">Connect your Google Drive account</p>
-                        </div>
-                      </div>
-                    </Card>
-                    <Card className="p-4 cursor-pointer opacity-60">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 rounded-full">
-                          <svg className="h-5 w-5 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 5.5C13.9891 5.5 15.8968 6.29018 17.3033 7.6967C18.7098 9.10322 19.5 11.0109 19.5 13C19.5 14.9891 18.7098 16.8968 17.3033 18.3033C15.8968 19.7098 13.9891 20.5 12 20.5C10.0109 20.5 8.10322 19.7098 6.6967 18.3033C5.29018 16.8968 4.5 14.9891 4.5 13C4.5 11.0109 5.29018 9.10322 6.6967 7.6967C8.10322 6.29018 10.0109 5.5 12 5.5Z" fill="#0072C6"/>
-                            <path d="M15.9058 3.5H8.09422C7.79922 3.5 7.54422 3.755 7.54422 4.05V8.5H4.87922C4.58422 8.5 4.32922 8.755 4.32922 9.05V16.95C4.32922 17.245 4.58422 17.5 4.87922 17.5H7.54422V21.95C7.54422 22.245 7.79922 22.5 8.09422 22.5H15.9058C16.2008 22.5 16.4558 22.245 16.4558 21.95V17.5H19.1208C19.4158 17.5 19.6708 17.245 19.6708 16.95V9.05C19.6708 8.755 19.4158 8.5 19.1208 8.5H16.4558V4.05C16.4558 3.755 16.2008 3.5 15.9058 3.5Z" fill="#0072C6"/>
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Dropbox</h3>
-                          <p className="text-xs text-gray-500">Coming soon</p>
-                        </div>
-                      </div>
-                    </Card>
-                    <Card className="p-4 cursor-pointer opacity-60">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-blue-100 rounded-full">
-                          <svg className="h-5 w-5 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6.5 8C6.5 7.17157 7.17157 6.5 8 6.5H16C16.8284 6.5 17.5 7.17157 17.5 8V16C17.5 16.8284 16.8284 17.5 16 17.5H8C7.17157 17.5 6.5 16.8284 6.5 16V8Z" fill="#00A2ED"/>
-                            <path d="M12 3.5C7.30558 3.5 3.5 7.30558 3.5 12C3.5 16.6944 7.30558 20.5 12 20.5C16.6944 20.5 20.5 16.6944 20.5 12C20.5 7.30558 16.6944 3.5 12 3.5Z" fill="#00A2ED"/>
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="font-medium">OneDrive</h3>
-                          <p className="text-xs text-gray-500">Coming soon</p>
-                        </div>
-                      </div>
-                    </Card>
-                    <Card className="p-4 cursor-pointer opacity-60">
-                      <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-green-100 rounded-full">
-                          <svg className="h-5 w-5 text-green-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="24" height="24" rx="3" fill="#24292E"/>
-                            <path d="M12 2.25C6.62391 2.25 2.25 6.62391 2.25 12C2.25 17.3761 6.62391 21.75 12 21.75C17.3761 21.75 21.75 17.3761 21.75 12C21.75 6.62391 17.3761 2.25 12 2.25Z" fill="#24292E"/>
-                            <path d="M12 2.25C6.62391 2.25 2.25 6.62391 2.25 12C2.25 17.3761 6.62391 21.75 12 21.75C17.3761 21.75 21.75 17.3761 21.75 12C21.75 6.62391 17.3761 2.25 12 2.25Z" fill="#24292E"/>
-                            <path d="M9.75 18.1875C9.75 18.0056 9.66937 17.8413 9.53033 17.7303C9.39129 17.6194 9.20245 17.5781 9.02094 17.6157C6.72187 18.1204 5.625 16.8799 5.625 16.875C5.49187 16.6781 5.27812 16.5615 5.04844 16.5615C4.81875 16.5615 4.605 16.6781 4.47187 16.875C4.33875 17.0719 4.32 17.325 4.43437 17.5406C4.96687 18.4406 5.91562 21 9.02094 20.2594C9.20245 20.222 9.39129 20.1806 9.53033 20.0697C9.66937 19.9587 9.75 19.7944 9.75 19.6125V18.1875Z" fill="white"/>
-                            <path d="M18.2344 15.8906C18.3938 15.8906 18.5391 15.975 18.6094 16.1156C18.9844 16.95 18.3844 18.3938 16.9172 18.3938C16.7719 18.3938 16.6453 18.3281 16.5562 18.2156C16.4672 18.1031 16.4297 17.9578 16.4578 17.8172C16.6781 16.5 16.2984 15.8906 16.2984 15.8906C16.1953 15.7688 16.1672 15.6 16.2141 15.45C16.2609 15.3 16.3734 15.1828 16.5187 15.1312C17.0016 14.9766 17.85 14.9625 18.2344 15.8906Z" fill="white"/>
-                            <path d="M18.375 11.0625C18.375 11.8088 18.0563 12.5484 17.5592 13.0455C17.0622 13.5425 16.3226 13.8612 15.5763 13.8612C14.83 13.8612 14.0903 13.5425 13.5933 13.0455C13.0963 12.5484 12.7775 11.8088 12.7775 11.0625C12.7775 10.3162 13.0963 9.57656 13.5933 9.07954C14.0903 8.58252 14.83 8.26375 15.5763 8.26375C16.3226 8.26375 17.0622 8.58252 17.5592 9.07954C18.0563 9.57656 18.375 10.3162 18.375 11.0625Z" fill="white"/>
-                            <path d="M11.2122 8.58188C11.2122 9.60563 10.8084 10.5875 10.0884 11.3075C9.36844 12.0275 8.38656 12.4312 7.36281 12.4312C6.33906 12.4312 5.35719 12.0275 4.63719 11.3075C3.91719 10.5875 3.51344 9.60563 3.51344 8.58188C3.51344 7.55813 3.91719 6.57626 4.63719 5.85626C5.35719 5.13626 6.33906 4.73251 7.36281 4.73251C8.38656 4.73251 9.36844 5.13626 10.0884 5.85626C10.8084 6.57626 11.2122 7.55813 11.2122 8.58188Z" fill="white"/>
-                          </svg>
-                        </div>
-                        <div>
-                          <h3 className="font-medium">Custom SFTP</h3>
-                          <p className="text-xs text-gray-500">Coming soon</p>
-                        </div>
-                      </div>
-                    </Card>
-                  </div>
-                </div>
-                
-                <div className="pt-4">
-                  <Button 
-                    className="w-full bg-blue-600 hover:bg-blue-700"
-                    onClick={handleConnectGoogleDrive}
-                  >
-                    Connect Google Drive
-                  </Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-          
-          <Dialog open={showMarketInsights} onOpenChange={setShowMarketInsights}>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="flex items-center">
-                <BarChart className="mr-1.5 h-4 w-4" /> Market Insights
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[700px]">
-              <DialogHeader>
-                <DialogTitle>Content Market Insights</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <Alert className="bg-blue-50 border-blue-200">
-                  <TrendingUp className="h-4 w-4 text-blue-600" />
-                  <AlertTitle>Content Performance Analysis</AlertTitle>
-                  <AlertDescription>
-                    Based on your analytics, these topics are trending in your industry and audience segment.
-                  </AlertDescription>
-                </Alert>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Top Performing Content Types</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm">Video Content</span>
-                          <span className="text-sm font-medium">85%</span>
-                        </div>
-                        <Progress value={85} className="h-2" />
-                        
-                        <div className="flex justify-between">
-                          <span className="text-sm">Carousels</span>
-                          <span className="text-sm font-medium">72%</span>
-                        </div>
-                        <Progress value={72} className="h-2" />
-                        
-                        <div className="flex justify-between">
-                          <span className="text-sm">Single Images</span>
-                          <span className="text-sm font-medium">64%</span>
-                        </div>
-                        <Progress value={64} className="h-2" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                  
-                  <Card>
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base">Optimal Posting Times</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        <div className="flex justify-between">
-                          <span className="text-sm">Instagram</span>
-                          <span className="text-sm font-medium">6-7pm</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm">Twitter</span>
-                          <span className="text-sm font-medium">8-10am</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm">Facebook</span>
-                          <span className="text-sm font-medium">1-3pm</span>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-                
-                <div className="space-y-3">
-                  <h3 className="text-md font-medium">AI-Suggested Content Topics</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {[
-                      "Product tutorials with real use cases",
-                      "Behind the scenes workplace culture",
-                      "Customer success stories and testimonials",
-                      "Industry trends and insights",
-                      "Interactive polls and questions",
-                      "Seasonal promotions and offers"
-                    ].map((topic, i) => (
-                      <Button 
-                        key={i} 
-                        variant="outline" 
-                        className="justify-start text-left h-auto py-2 bg-blue-50 hover:bg-blue-100"
-                        onClick={() => {
-                          setPrompt(topic);
-                          setShowMarketInsights(false);
-                          setShowAIGenerator(true);
-                        }}
-                      >
-                        <Zap className="h-4 w-4 mr-2 text-blue-600" />
-                        {topic}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="pt-4">
-                  <Button 
-                    className="w-full bg-blue-600 hover:bg-blue-700"
-                    onClick={() => {
-                      setShowMarketInsights(false);
-                      setShowAIGenerator(true);
-                    }}
-                  >
-                    Generate Content with AI
-                  </Button>
-                </div>
-              </div>
-            </DialogContent>
-          </Dialog>
-          
-          <Dialog open={showAIGenerator} onOpenChange={setShowAIGenerator}>
-            <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm">
-                <Sparkles className="mr-1.5 h-4 w-4" /> AI Generator
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[650px]">
-              <DialogHeader>
-                <DialogTitle className="flex items-center">
-                  <Sparkles className="h-5 w-5 mr-2 text-blue-600" />
-                  AI Content Generator
-                </DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label>What would you like to create?</Label>
-                  <ToggleGroup 
-                    type="single" 
-                    defaultValue="image" 
-                    className="justify-center"
-                    value={generationType}
-                    onValueChange={(value) => value && setGenerationType(value as any)}
-                  >
-                    <ToggleGroupItem value="image" className="flex-1">
-                      <Image className="h-4 w-4 mr-2" />
-                      Image
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="video" className="flex-1">
-                      <Video className="h-4 w-4 mr-2" />
-                      Video
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="text" className="flex-1">
-                      <MessageSquare className="h-4 w-4 mr-2" />
-                      Text
-                    </ToggleGroupItem>
-                  </ToggleGroup>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <Label htmlFor="prompt">Describe what you want</Label>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-xs text-blue-600 h-7 px-2" 
-                      onClick={() => setShowMarketInsights(true)}
-                    >
-                      <TrendingUp className="h-3 w-3 mr-1" />
-                      Get topic ideas
+          <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="bg-primary text-primary-foreground">
+                  <Plus className="mr-2 h-4 w-4" /> Create Content
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid gap-3 p-4 w-[400px] md:w-[500px] grid-cols-2">
+                    <li className="row-span-3">
+                      <NavigationMenuLink asChild>
+                        <a
+                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-blue-500 to-blue-900 p-6 no-underline outline-none focus:shadow-md"
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setContentType('post');
+                            setShowCreateContentDialog(true);
+                          }}
+                        >
+                          <div className="mt-4 mb-2 text-lg font-medium text-white">
+                            Quick Post
+                          </div>
+                          <p className="text-sm leading-tight text-white/90">
+                            Create and schedule a text post for your social media platforms
+                          </p>
+                        </a>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <a
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setContentType('image');
+                            setShowCreateContentDialog(true);
+                          }}
+                        >
+                          <div className="text-sm font-medium leading-none flex items-center">
+                            <Image className="h-4 w-4 mr-2" />
+                            Image or Graphic
+                          </div>
+                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            Upload or create images for social media posts
+                          </p>
+                        </a>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <a
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setContentType('video');
+                            setShowCreateContentDialog(true);
+                          }}
+                        >
+                          <div className="text-sm font-medium leading-none flex items-center">
+                            <Video className="h-4 w-4 mr-2" />
+                            Video Content
+                          </div>
+                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            Upload video content to your library
+                          </p>
+                        </a>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <a
+                          className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setContentType('document');
+                            setShowCreateContentDialog(true);
+                          }}
+                        >
+                          <div className="text-sm font-medium leading-none flex items-center">
+                            <FileText className="h-4 w-4 mr-2" />
+                            Document
+                          </div>
+                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                            Upload documents, PDFs, or other reference materials
+                          </p>
+                        </a>
+                      </NavigationMenuLink>
+                    </li>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              
+              <NavigationMenuItem>
+                <Dialog open={showAIGenerator} onOpenChange={setShowAIGenerator}>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" className="bg-blue-50 hover:bg-blue-100 border-blue-200">
+                      <Sparkles className="mr-2 h-4 w-4 text-blue-500" /> AI Assistant
                     </Button>
-                  </div>
-                  <Textarea 
-                    id="prompt" 
-                    placeholder={`Describe the ${generationType} you want to generate...`} 
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    className="min-h-[100px]"
-                  />
-                </div>
-                
-                <div className="flex flex-wrap gap-1">
-                  {suggestedTopics.map((topic, i) => (
-                    <Badge 
-                      key={i}
-                      variant="outline"
-                      className="cursor-pointer hover:bg-blue-50"
-                      onClick={() => setPrompt(topic)}
-                    >
-                      {topic}
-                    </Badge>
-                  ))}
-                </div>
-                
-                {generationType === 'image' && (
-                  <div className="space-y-2">
-                    <Label>Image Style</Label>
-                    <Select defaultValue="realistic">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select style" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="realistic">Realistic</SelectItem>
-                        <SelectItem value="cartoon">Cartoon</SelectItem>
-                        <SelectItem value="abstract">Abstract</SelectItem>
-                        <SelectItem value="painting">Painting</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-                
-                {generationType === 'video' && (
-                  <div className="space-y-2">
-                    <Label>Video Length</Label>
-                    <Select defaultValue="15">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select length" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="15">15 seconds</SelectItem>
-                        <SelectItem value="30">30 seconds</SelectItem>
-                        <SelectItem value="60">1 minute</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-                
-                {generationType === 'text' && (
-                  <div className="space-y-2">
-                    <Label>Text Type</Label>
-                    <Select defaultValue="post">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="post">Social Media Post</SelectItem>
-                        <SelectItem value="caption">Caption</SelectItem>
-                        <SelectItem value="article">Article</SelectItem>
-                        <SelectItem value="email">Email</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-                
-                <div className="space-y-2">
-                  <Label>Platform Intent</Label>
-                  <Select defaultValue="instagram">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select platform" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="instagram">Instagram</SelectItem>
-                      <SelectItem value="twitter">Twitter</SelectItem>
-                      <SelectItem value="facebook">Facebook</SelectItem>
-                      <SelectItem value="multi">Multi-platform</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <Button 
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  onClick={handleGenerateContent}
-                  disabled={generating || !prompt.trim()}
-                >
-                  {generating ? (
-                    <>
-                      <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                      Generating... {Math.round(generationProgress)}%
-                    </>
-                  ) : (
-                    <>Generate {generationType.charAt(0).toUpperCase() + generationType.slice(1)}</>
-                  )}
-                </Button>
-                
-                {generating && (
-                  <div className="space-y-1">
-                    <Progress value={generationProgress} className="h-2" />
-                    <p className="text-xs text-center text-gray-500 flex items-center justify-center">
-                      <Bot className="h-3 w-3 mr-1" />
-                      AI is analyzing your prompt and creating content...
-                    </p>
-                  </div>
-                )}
-                
-                {generatedContent && (
-                  <div className="mt-4 border rounded-md p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium">Generated Content</h4>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
-                          <Share2 className="h-4 w-4 mr-1" /> Share
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Download className="h-4 w-4 mr-1" /> Save
-                        </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[550px]">
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center text-xl">
+                        <Sparkles className="h-5 w-5 mr-2 text-blue-500" />
+                        AI Content Assistant
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-6 py-4">
+                      <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
+                        <h3 className="font-semibold flex items-center mb-2">
+                          <Stars className="h-4 w-4 mr-2 text-blue-500" />
+                          What would you like to create?
+                        </h3>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button variant="outline" className="justify-start h-16 p-3">
+                            <div className="text-left flex flex-col items-start">
+                              <span className="flex items-center text-sm font-medium">
+                                <PenLine className="h-3.5 w-3.5 mr-1.5" />
+                                Social Post
+                              </span>
+                              <span className="text-xs text-muted-foreground">Engagement focused content</span>
+                            </div>
+                          </Button>
+                          <Button variant="outline" className="justify-start h-16 p-3">
+                            <div className="text-left flex flex-col items-start">
+                              <span className="flex items-center text-sm font-medium">
+                                <FileImage className="h-3.5 w-3.5 mr-1.5" />
+                                Image Caption
+                              </span>
+                              <span className="text-xs text-muted-foreground">Compelling descriptions</span>
+                            </div>
+                          </Button>
+                          <Button variant="outline" className="justify-start h-16 p-3">
+                            <div className="text-left flex flex-col items-start">
+                              <span className="flex items-center text-sm font-medium">
+                                <BookCopy className="h-3.5 w-3.5 mr-1.5" />
+                                Blog Article
+                              </span>
+                              <span className="text-xs text-muted-foreground">In-depth content</span>
+                            </div>
+                          </Button>
+                          <Button variant="outline" className="justify-start h-16 p-3">
+                            <div className="text-left flex flex-col items-start">
+                              <span className="flex items-center text-sm font-medium">
+                                <FlameKindling className="h-3.5 w-3.5 mr-1.5" />
+                                Trending Topic
+                              </span>
+                              <span className="text-xs text-muted-foreground">Timely & relevant</span>
+                            </div>
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                    {generationType === 'image' && (
-                      <img 
-                        src={generatedContent} 
-                        alt="AI generated" 
-                        className="w-full h-48 object-cover rounded-md"
-                      />
-                    )}
-                    {generationType === 'video' && (
-                      <div className="bg-gray-100 w-full h-48 flex items-center justify-center rounded-md">
-                        <Video className="h-8 w-8 text-gray-400" />
+                      
+                      <div className="space-y-3">
+                        <Label htmlFor="prompt">Tell me what you want to create</Label>
+                        <Textarea 
+                          id="prompt" 
+                          placeholder="Describe what you want to create. Be specific about tone, audience, and goals..." 
+                          className="h-24"
+                        />
+                        
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <Label htmlFor="platform" className="text-sm">Platform</Label>
+                            <Select defaultValue="instagram">
+                              <SelectTrigger id="platform">
+                                <SelectValue placeholder="Select platform" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="instagram">Instagram</SelectItem>
+                                <SelectItem value="twitter">Twitter</SelectItem>
+                                <SelectItem value="facebook">Facebook</SelectItem>
+                                <SelectItem value="linkedin">LinkedIn</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <Label htmlFor="tone" className="text-sm">Tone</Label>
+                            <Select defaultValue="professional">
+                              <SelectTrigger id="tone">
+                                <SelectValue placeholder="Select tone" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="professional">Professional</SelectItem>
+                                <SelectItem value="casual">Casual</SelectItem>
+                                <SelectItem value="humorous">Humorous</SelectItem>
+                                <SelectItem value="inspirational">Inspirational</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </div>
                       </div>
-                    )}
-                    {generationType === 'text' && (
-                      <div className="bg-gray-50 p-3 rounded-md">
-                        <p>
-                          {prompt.length > 30 
-                            ? `${prompt.substring(0, 30)}... `
-                            : `${prompt} `}
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                          Nullam at justo vel eros faucibus lacinia. Praesent 
-                          egestas diam in eros tincidunt, nec gravida ex pulvinar.
-                        </p>
-                      </div>
-                    )}
-                    
-                    <div className="flex justify-between items-center mt-4">
-                      <div className="flex space-x-1">
-                        <Badge variant="outline" className="bg-blue-50">
-                          <CheckCircle2 className="h-3 w-3 mr-1 text-blue-600" />
-                          Ready to use
-                        </Badge>
-                      </div>
-                      <Button 
-                        variant="default" 
-                        size="sm"
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        Schedule Post
+                      
+                      <Button className="w-full bg-primary">
+                        <Sparkles className="mr-2 h-4 w-4" /> Generate Content
                       </Button>
                     </div>
-                  </div>
-                )}
-              </div>
-            </DialogContent>
-          </Dialog>
+                  </DialogContent>
+                </Dialog>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
           
-          <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm">
-            <Plus className="mr-1.5 h-4 w-4" /> Add Content
+          <Button variant="outline" className="flex items-center">
+            <CloudUpload className="mr-2 h-4 w-4" /> Upload Assets
           </Button>
         </div>
       </div>
 
-      <Card className="p-4">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-grow">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Search content..."
-              className="pl-9"
-            />
+      {/* Search and Filter Bar */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search content..."
+                className="pl-9"
+                value={searchQuery}
+                onChange={handleSearch}
+              />
+            </div>
+            
+            <div className="flex gap-2">
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-[160px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                  <SelectItem value="popular">Most Viewed</SelectItem>
+                  <SelectItem value="name">Name (A-Z)</SelectItem>
+                </SelectContent>
+              </Select>
+              
+              <div className="flex rounded-md shadow-sm">
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'outline'}
+                  className={`rounded-r-none ${viewMode === 'grid' ? '' : ''}`}
+                  onClick={() => setViewMode('grid')}
+                  size="icon"
+                >
+                  <Grid className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant={viewMode === 'list' ? 'default' : 'outline'}
+                  className={`rounded-l-none ${viewMode === 'list' ? '' : ''}`}
+                  onClick={() => setViewMode('list')}
+                  size="icon"
+                >
+                  <List className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </div>
-          <Button variant="outline" className="justify-center sm:w-auto">
-            <Filter className="mr-2 h-4 w-4" /> Filter
-          </Button>
-          <div className="flex rounded-md shadow-sm">
-            <Button
-              variant={viewMode === 'grid' ? 'default' : 'outline'}
-              className={`rounded-r-none border-r-0 ${viewMode === 'grid' ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
-              onClick={() => setViewMode('grid')}
-            >
-              <Grid className="h-4 w-4" />
-            </Button>
-            <Button
-              variant={viewMode === 'list' ? 'default' : 'outline'}
-              className={`rounded-l-none ${viewMode === 'list' ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
-              onClick={() => setViewMode('list')}
-            >
-              <List className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
+          
+          {/* Bulk Actions Bar - shows when items are selected */}
+          {selectedItems.length > 0 && (
+            <div className="flex items-center justify-between mt-4 p-2 bg-muted rounded-md">
+              <div className="text-sm">
+                <span className="font-medium">{selectedItems.length}</span> items selected
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => setSelectedItems([])}>
+                  Cancel
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Download className="h-4 w-4 mr-1" /> Download
+                </Button>
+                <Button variant="outline" size="sm">
+                  <Share2 className="h-4 w-4 mr-1" /> Share
+                </Button>
+                <Button variant="destructive" size="sm" onClick={handleBulkDelete}>
+                  <Trash2 className="h-4 w-4 mr-1" /> Delete
+                </Button>
+              </div>
+            </div>
+          )}
+        </CardContent>
       </Card>
 
-      <Tabs defaultValue="all">
-        <TabsList className="mb-4">
-          <TabsTrigger value="all">All Content</TabsTrigger>
-          <TabsTrigger value="posts">Posts</TabsTrigger>
-          <TabsTrigger value="images">Images</TabsTrigger>
-          <TabsTrigger value="videos">Videos</TabsTrigger>
-          <TabsTrigger value="documents">Documents</TabsTrigger>
-        </TabsList>
+      {/* Content Tabs */}
+      <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
+        <div className="flex justify-between items-center">
+          <TabsList>
+            <TabsTrigger value="all" className="relative">
+              All
+              {contentItems.length > 0 && (
+                <Badge variant="secondary" className="ml-2">{contentItems.length}</Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="image" className="relative">
+              Images
+              {contentItems.filter(i => i.type === 'image').length > 0 && (
+                <Badge variant="secondary" className="ml-2">
+                  {contentItems.filter(i => i.type === 'image').length}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="video" className="relative">
+              Videos
+              {contentItems.filter(i => i.type === 'video').length > 0 && (
+                <Badge variant="secondary" className="ml-2">
+                  {contentItems.filter(i => i.type === 'video').length}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="post" className="relative">
+              Posts
+              {contentItems.filter(i => i.type === 'post').length > 0 && (
+                <Badge variant="secondary" className="ml-2">
+                  {contentItems.filter(i => i.type === 'post').length}
+                </Badge>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="document" className="relative">
+              Documents
+              {contentItems.filter(i => i.type === 'document').length > 0 && (
+                <Badge variant="secondary" className="ml-2">
+                  {contentItems.filter(i => i.type === 'document').length}
+                </Badge>
+              )}
+            </TabsTrigger>
+          </TabsList>
+          
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleSelectAll}
+            className="hidden sm:flex"
+          >
+            {selectedItems.length === filteredItems.length && filteredItems.length > 0 
+              ? "Deselect All" 
+              : "Select All"}
+          </Button>
+        </div>
 
-        <TabsContent value="all">
+        <TabsContent value="all" className="mt-4">
           {loading ? (
             <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+              <div className="flex items-center gap-2">
+                <RefreshCw className="h-5 w-5 animate-spin text-primary" />
+                <span>Loading content...</span>
+              </div>
+            </div>
+          ) : filteredItems.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-64 text-center">
+              <FolderTree className="h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium">No content found</h3>
+              <p className="text-muted-foreground mt-1 mb-4">
+                {searchQuery ? `No results for "${searchQuery}"` : "Your content library is empty"}
+              </p>
+              <Button onClick={() => setShowCreateContentDialog(true)}>Create Content</Button>
             </div>
           ) : (
-            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-              {contentItems.map((item) => (
+            <div className={viewMode === 'grid' 
+              ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' 
+              : 'space-y-3'
+            }>
+              {filteredItems.map((item) => (
                 viewMode === 'grid' ? (
-                  <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                    <div className="relative h-40 bg-gray-100">
+                  <Card 
+                    key={item.id} 
+                    className={cn(
+                      "overflow-hidden border hover:shadow-md transition-shadow",
+                      selectedItems.includes(item.id) && "ring-2 ring-primary"
+                    )}
+                  >
+                    <div className="relative h-40 bg-muted">
+                      {/* Selection checkbox */}
+                      <div className="absolute top-2 left-2 z-20">
+                        <Button 
+                          variant="outline" 
+                          size="icon" 
+                          className={cn(
+                            "h-7 w-7 rounded-full bg-background/80 backdrop-blur-sm",
+                            selectedItems.includes(item.id) && "bg-primary text-primary-foreground"
+                          )}
+                          onClick={() => toggleItemSelection(item.id)}
+                        >
+                          {selectedItems.includes(item.id) 
+                            ? <CheckCircle2 className="h-4 w-4" /> 
+                            : <div className="h-4 w-4 rounded-full border-2" />
+                          }
+                        </Button>
+                      </div>
+                      
                       <div className="absolute top-2 right-2 flex space-x-1 z-10">
                         <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
                         {item.platform && (
@@ -732,26 +715,44 @@ const Content = () => {
                           </Badge>
                         )}
                       </div>
-                      <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-sm p-1 rounded-md z-10">
-                        {getIcon(item.type)}
-                      </div>
-                      {item.thumbnail && (
+                      
+                      {item.type === 'image' && item.thumbnail && (
                         <img 
                           src={item.thumbnail} 
                           alt={item.title}
                           className="w-full h-full object-cover"
                         />
                       )}
+                      
+                      {item.type === 'video' && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/20">
+                          <Video className="h-10 w-10 text-white" />
+                          {item.thumbnail && (
+                            <img 
+                              src={item.thumbnail} 
+                              alt={item.title}
+                              className="w-full h-full object-cover opacity-80"
+                            />
+                          )}
+                        </div>
+                      )}
+                      
+                      {item.type === 'document' && (
+                        <div className="h-full flex items-center justify-center bg-blue-50">
+                          <FileText className="h-12 w-12 text-blue-300" />
+                        </div>
+                      )}
+                      
                       {item.type === 'post' && (
-                        <div className="absolute inset-0 flex items-center justify-center p-4 bg-gray-50">
+                        <div className="absolute inset-0 flex items-center justify-center p-4 bg-purple-50">
                           <p className="text-sm text-gray-600 line-clamp-4">{item.content || 'No content'}</p>
                         </div>
                       )}
                     </div>
-                    <div className="p-3">
-                      <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                      <div className="flex justify-between items-center">
-                        <p className="text-xs text-gray-500">{item.date}</p>
+                    
+                    <div className="p-3 space-y-2">
+                      <div className="flex justify-between">
+                        <h3 className="font-medium text-sm truncate">{item.title}</h3>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -768,60 +769,146 @@ const Content = () => {
                             <DropdownMenuItem>
                               <Download className="mr-2 h-4 w-4" /> Download
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">
+                            <DropdownMenuItem 
+                              className="text-destructive"
+                              onClick={() => {
+                                setContentItems(prev => prev.filter(i => i.id !== item.id));
+                                toast({
+                                  title: "Item deleted",
+                                  description: "The content has been removed"
+                                });
+                              }}
+                            >
                               <Trash2 className="mr-2 h-4 w-4" /> Delete
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
+                      
+                      <div className="flex justify-between items-center text-xs text-muted-foreground">
+                        <div>{item.date}</div>
+                        {item.size && <div>{item.size}</div>}
+                      </div>
+                      
+                      {(item.views !== undefined || item.interactions !== undefined) && (
+                        <div className="flex gap-3 text-xs text-muted-foreground pt-1">
+                          {item.views !== undefined && (
+                            <div className="flex items-center">
+                              <svg className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                              </svg>
+                              {item.views}
+                            </div>
+                          )}
+                          {item.interactions !== undefined && (
+                            <div className="flex items-center">
+                              <svg className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905a3.61 3.61 0 01-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                              </svg>
+                              {item.interactions}
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </Card>
                 ) : (
-                  <Card key={item.id} className="flex overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                    <div className="w-16 h-16 bg-gray-100 flex items-center justify-center shrink-0">
+                  <Card 
+                    key={item.id} 
+                    className={cn(
+                      "flex overflow-hidden hover:shadow-md transition-shadow",
+                      selectedItems.includes(item.id) && "ring-2 ring-primary"
+                    )}
+                  >
+                    <div className="flex items-center pl-2">
+                      <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className={cn(
+                          "h-8 w-8 rounded-full",
+                          selectedItems.includes(item.id) && "bg-primary text-primary-foreground"
+                        )}
+                        onClick={() => toggleItemSelection(item.id)}
+                      >
+                        {selectedItems.includes(item.id) 
+                          ? <CheckCircle2 className="h-4 w-4" /> 
+                          : <div className="h-4 w-4 rounded-full border-2" />
+                        }
+                      </Button>
+                    </div>
+                    
+                    <div className="w-12 h-12 flex items-center justify-center shrink-0 bg-muted">
                       {getIcon(item.type)}
                     </div>
-                    <div className="p-3 flex-grow">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-medium text-sm mb-1">{item.title}</h3>
-                          <p className="text-xs text-gray-500">{item.date}</p>
+                    
+                    <div className="p-3 flex-grow flex flex-col sm:flex-row sm:items-center justify-between">
+                      <div>
+                        <div className="flex items-center">
+                          <h3 className="font-medium text-sm">{item.title}</h3>
+                          <div className="flex ml-2 space-x-1">
+                            <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
+                            {item.platform && (
+                              <Badge variant="outline" className="bg-white/80">
+                                {getPlatformIcon(item.platform)}
+                              </Badge>
+                            )}
+                          </div>
                         </div>
-                        <div className="flex space-x-1">
-                          <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                          {item.platform && (
-                            <Badge variant="outline" className="bg-white/80">
-                              {getPlatformIcon(item.platform)}
-                            </Badge>
+                        
+                        <div className="flex gap-3 text-xs text-muted-foreground mt-1">
+                          <div>{item.date}</div>
+                          {item.size && <div>{item.size}</div>}
+                          {item.views !== undefined && (
+                            <div className="flex items-center">
+                              <svg className="h-3.5 w-3.5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                              </svg>
+                              {item.views}
+                            </div>
                           )}
                         </div>
                       </div>
-                      {item.type === 'post' && item.content && (
-                        <p className="mt-2 text-sm text-gray-600 line-clamp-2">{item.content}</p>
-                      )}
-                    </div>
-                    <div className="p-2 flex items-center">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Copy className="mr-2 h-4 w-4" /> Copy
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Share2 className="mr-2 h-4 w-4" /> Share
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Download className="mr-2 h-4 w-4" /> Download
-                          </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
-                            <Trash2 className="mr-2 h-4 w-4" /> Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      
+                      <div className="flex items-center mt-2 sm:mt-0">
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Share2 className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Download className="h-4 w-4" />
+                        </Button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                              <Copy className="mr-2 h-4 w-4" /> Duplicate
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Share2 className="mr-2 h-4 w-4" /> Share
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Download className="mr-2 h-4 w-4" /> Download
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="text-destructive"
+                              onClick={() => {
+                                setContentItems(prev => prev.filter(i => i.id !== item.id));
+                                toast({
+                                  title: "Item deleted",
+                                  description: "The content has been removed"
+                                });
+                              }}
+                            >
+                              <Trash2 className="mr-2 h-4 w-4" /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </div>
                   </Card>
                 )
@@ -830,136 +917,122 @@ const Content = () => {
           )}
         </TabsContent>
         
-        <TabsContent value="posts">
-          {/* Similar to 'all' tab but filtered for posts */}
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.filter(item => item.type === 'post').map(item => (
-              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-40 bg-gray-50 flex items-center justify-center p-4">
-                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                    {item.platform && (
-                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-                        {getPlatformIcon(item.platform)}
-                      </Badge>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-600 line-clamp-5">{item.content || 'No content'}</p>
-                </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="images">
-          {/* Display only image content items */}
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.filter(item => item.type === 'image').map(item => (
-              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-40 bg-gray-100">
-                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                    {item.platform && (
-                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-                        {getPlatformIcon(item.platform)}
-                      </Badge>
-                    )}
-                  </div>
-                  {item.thumbnail && (
-                    <img 
-                      src={item.thumbnail} 
-                      alt={item.title}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="videos">
-          {/* Display only video content items */}
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.filter(item => item.type === 'video').map(item => (
-              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-40 bg-gray-100">
-                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                    {item.platform && (
-                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
-                        {getPlatformIcon(item.platform)}
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Video className="h-10 w-10 text-gray-400" />
-                  </div>
-                  {item.thumbnail && (
-                    <img 
-                      src={item.thumbnail} 
-                      alt={item.title}
-                      className="w-full h-full object-cover opacity-70"
-                    />
-                  )}
-                </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="documents">
-          {/* Display only document content items */}
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
-            {contentItems.filter(item => item.type === 'document').map(item => (
-              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
-                <div className="relative h-40 bg-gray-50 flex items-center justify-center">
-                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
-                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
-                  </div>
-                  <FileText className="h-16 w-16 text-gray-300" />
-                </div>
-                <div className="p-3">
-                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
-                  <div className="flex justify-between items-center">
-                    <p className="text-xs text-gray-500">{item.date}</p>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
+        {/* Similar setup for other tabs */}
+        {['image', 'video', 'post', 'document'].map(tabValue => (
+          <TabsContent key={tabValue} value={tabValue} className="mt-4">
+            {filteredItems.length === 0 ? (
+              <div className="flex flex-col items-center justify-center h-64 text-center">
+                <FolderTree className="h-12 w-12 text-muted-foreground mb-4" />
+                <h3 className="text-lg font-medium">No {tabValue}s found</h3>
+                <p className="text-muted-foreground mt-1 mb-4">
+                  {searchQuery ? `No results for "${searchQuery}"` : `You don't have any ${tabValue}s yet`}
+                </p>
+                <Button onClick={() => {
+                  setContentType(tabValue as any);
+                  setShowCreateContentDialog(true);
+                }}>
+                  Create {tabValue.charAt(0).toUpperCase() + tabValue.slice(1)}
+                </Button>
+              </div>
+            ) : (
+              <div className={viewMode === 'grid' 
+                ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4' 
+                : 'space-y-3'
+              }>
+                {/* Content is rendered by the filtered items, which are already filtered by tab */}
+              </div>
+            )}
+          </TabsContent>
+        ))}
       </Tabs>
+      
+      {/* Create Content Dialog */}
+      <Dialog open={showCreateContentDialog} onOpenChange={setShowCreateContentDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Create New {contentType.charAt(0).toUpperCase() + contentType.slice(1)}</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Title</Label>
+              <Input 
+                id="title" 
+                placeholder="Enter a title..." 
+                defaultValue={`New ${contentType.charAt(0).toUpperCase() + contentType.slice(1)}`}
+              />
+            </div>
+            
+            {contentType === 'post' && (
+              <div className="space-y-2">
+                <Label htmlFor="content">Content</Label>
+                <Textarea 
+                  id="content" 
+                  placeholder="Write your post content..." 
+                  className="h-24"
+                />
+              </div>
+            )}
+            
+            {(contentType === 'image' || contentType === 'video' || contentType === 'document') && (
+              <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center bg-muted/50">
+                <CloudUpload className="h-10 w-10 text-muted-foreground mb-2" />
+                <p className="text-muted-foreground text-sm mb-2">Drag & drop your file here or click to browse</p>
+                <Button variant="outline" size="sm">Select File</Button>
+              </div>
+            )}
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="platform">Platform</Label>
+                <Select defaultValue="instagram">
+                  <SelectTrigger id="platform">
+                    <SelectValue placeholder="Select platform" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="instagram">Instagram</SelectItem>
+                    <SelectItem value="twitter">Twitter</SelectItem>
+                    <SelectItem value="facebook">Facebook</SelectItem>
+                    <SelectItem value="linkedin">LinkedIn</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="status">Status</Label>
+                <Select defaultValue="draft">
+                  <SelectTrigger id="status">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="draft">Draft</SelectItem>
+                    <SelectItem value="reviewing">In Review</SelectItem>
+                    <SelectItem value="published">Published</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="tags">Tags (comma separated)</Label>
+              <Input 
+                id="tags" 
+                placeholder="e.g. campaign, summer, product" 
+                defaultValue={contentType}
+              />
+            </div>
+          </div>
+          
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setShowCreateContentDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleCreateContent}>
+              Create {contentType.charAt(0).toUpperCase() + contentType.slice(1)}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </motion.div>
   );
 };

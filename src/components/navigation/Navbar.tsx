@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation, Outlet } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -14,8 +13,6 @@ import {
   Menu, 
   X, 
   BellDot, 
-  Megaphone,
-  CheckCircle,
   Library,
   BrainCircuit,
   LineChart,
@@ -102,36 +99,16 @@ const Navbar = () => {
       <div className="min-h-screen flex w-full">
         <Sidebar>
           <SidebarContent>
-            {/* Dashboard (Standalone) */}
+            {/* Flat menu structure in specified order */}
             <SidebarGroup>
               <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
-            </SidebarGroup>
-            
-            {/* MARKETING Section - now with static heading */}
-            <SidebarGroup>
-              <div className="flex items-center px-3 py-2 text-sm font-semibold text-gray-800 uppercase tracking-wider">
-                <Megaphone className="mr-2 h-4 w-4" />
-                <span>Marketing</span>
-              </div>
               <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Campaigns</SidebarLink>
               <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
-              <SidebarLink to="/content" icon={<Library />}>Library</SidebarLink>
+              <SidebarLink to="/content" icon={<Library />}>Content Studio</SidebarLink>
               <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
-            </SidebarGroup>
-            
-            {/* INSIGHTS Section - now with static heading */}
-            <SidebarGroup>
-              <div className="flex items-center px-3 py-2 text-sm font-semibold text-gray-800 uppercase tracking-wider">
-                <BarChart3 className="mr-2 h-4 w-4" />
-                <span>Insights</span>
-              </div>
+              <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
               <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
               <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
-            </SidebarGroup>
-            
-            {/* Unified Social Inbox (Moved below INSIGHTS) */}
-            <SidebarGroup>
-              <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
             </SidebarGroup>
           </SidebarContent>
           <SidebarFooter>
