@@ -18,12 +18,6 @@ import Login from '@/pages/Login'
 import Auth from '@/pages/Auth'
 import EmailConfirmation from '@/pages/EmailConfirmation'
 import ForgotPassword from '@/pages/ForgotPassword'
-import Posts from '@/pages/Posts'
-import Features from '@/pages/Features'
-import Pricing from '@/pages/Pricing'
-import Blog from '@/pages/Blog'
-import Guides from '@/pages/Guides'
-import CaseStudies from '@/pages/CaseStudies'
 import { Toaster } from '@/components/ui/toaster'
 
 function App() {
@@ -57,13 +51,6 @@ function App() {
           <Route path="email-confirmation" element={<EmailConfirmation />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           
-          {/* Public/Marketing Pages */}
-          <Route path="posts" element={<Posts />} />
-          <Route path="features" element={<Features />} />
-          <Route path="pricing" element={<Pricing />} />
-          <Route path="blog" element={<Blog />} />
-          <Route path="guides" element={<Guides />} />
-          <Route path="case-studies" element={<CaseStudies />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

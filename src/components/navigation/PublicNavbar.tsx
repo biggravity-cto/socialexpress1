@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Menu, X } from 'lucide-react';
@@ -9,6 +9,14 @@ const PublicNavbar = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const scrollToSection = (sectionId: string) => {
+    setIsMenuOpen(false);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm py-3">
       <div className="container flex items-center justify-between">
@@ -16,10 +24,10 @@ const PublicNavbar = () => {
           BG Social Express
         </Link>
         <div className="hidden md:flex items-center space-x-6">
-          <NavLink to="/features" className="text-gray-600 hover:text-gray-900">Features</NavLink>
-          <NavLink to="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</NavLink>
-          <NavLink to="/blog" className="text-gray-600 hover:text-gray-900">Blog</NavLink>
-          <NavLink to="/guides" className="text-gray-600 hover:text-gray-900">Guides</NavLink>
+          <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Features</button>
+          <button onClick={() => scrollToSection('pricing')} className="text-gray-600 hover:text-gray-900">Pricing</button>
+          <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Testimonials</button>
+          <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>
         </div>
         <div className="flex items-center space-x-3">
           <Link to="/login">
@@ -38,10 +46,10 @@ const PublicNavbar = () => {
       {isMenuOpen && isMobile && (
         <div className="absolute top-16 left-0 right-0 bg-white shadow-md p-4 md:hidden">
           <div className="flex flex-col space-y-4">
-            <NavLink to="/features" className="text-gray-600 hover:text-gray-900">Features</NavLink>
-            <NavLink to="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</NavLink>
-            <NavLink to="/blog" className="text-gray-600 hover:text-gray-900">Blog</NavLink>
-            <NavLink to="/guides" className="text-gray-600 hover:text-gray-900">Guides</NavLink>
+            <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Features</button>
+            <button onClick={() => scrollToSection('pricing')} className="text-gray-600 hover:text-gray-900">Pricing</button>
+            <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Testimonials</button>
+            <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>
             <div className="pt-2 border-t border-gray-100">
               <Link to="/login" className="w-full">
                 <Button className="w-full">Log in</Button>

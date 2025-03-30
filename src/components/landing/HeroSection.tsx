@@ -1,9 +1,9 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Calendar, BrainCircuit, MessageSquare } from 'lucide-react';
+import { ArrowRight, BrainCircuit, Calendar, MessageSquare, BarChart3, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface HeroSectionProps {
   scrollToFeatures: () => void;
@@ -11,7 +11,7 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
   return (
-    <div className="relative pt-28 pb-20 md:pt-32 md:pb-24 overflow-hidden">
+    <div className="relative pt-28 pb-20 md:pt-32 md:pb-24 overflow-hidden bg-gradient-to-b from-ocean-50/50 to-white">
       <div className="container px-4 mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
@@ -19,35 +19,50 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
-              Simplify Your Social Media Management
+            <span className="inline-block bg-ocean-100 text-ocean-600 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
+              AI-Powered Social Media for Hospitality
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+              Elevate Your Resort's Social Presence
             </h1>
             <p className="text-xl text-slate-600 mb-8 max-w-lg">
-              BG Social Express is an all-in-one platform for hospitality brands to create, schedule, and analyze content across all social channels with AI-powered tools.
+              The all-in-one platform for hospitality businesses to create, schedule, and analyze content across all social channels with powerful AI tools.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/login">
-                <Button size="lg" className="bg-ocean-600 hover:bg-ocean-700 text-white px-8">
-                  Start Free Trial <ArrowRight className="ml-2 h-5 w-5" />
+                <Button size="lg" className="bg-ocean-600 hover:bg-ocean-700 text-white px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                  Start 14-Day Free Trial <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
-              <Button variant="outline" size="lg" onClick={scrollToFeatures}>
+              <Button variant="outline" size="lg" onClick={scrollToFeatures} className="py-6 rounded-xl">
                 Explore Features
               </Button>
             </div>
             
-            <div className="mt-12 flex flex-wrap gap-8">
-              <div className="flex items-center gap-2">
-                <BrainCircuit className="h-5 w-5 text-ocean-600" />
-                <span className="text-slate-700">AI-Powered Content Creation</span>
+            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                <div className="bg-ocean-50 p-2 rounded-md">
+                  <BrainCircuit className="h-5 w-5 text-ocean-600" />
+                </div>
+                <span className="text-slate-700 font-medium">AI Content Creation</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-ocean-600" />
-                <span className="text-slate-700">Smart Scheduling</span>
+              <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                <div className="bg-purple-50 p-2 rounded-md">
+                  <Calendar className="h-5 w-5 text-purple-600" />
+                </div>
+                <span className="text-slate-700 font-medium">Smart Scheduling</span>
               </div>
-              <div className="flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-ocean-600" />
-                <span className="text-slate-700">Unified Social Inbox</span>
+              <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                <div className="bg-amber-50 p-2 rounded-md">
+                  <MessageSquare className="h-5 w-5 text-amber-600" />
+                </div>
+                <span className="text-slate-700 font-medium">Unified Social Inbox</span>
+              </div>
+              <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
+                <div className="bg-green-50 p-2 rounded-md">
+                  <BarChart3 className="h-5 w-5 text-green-600" />
+                </div>
+                <span className="text-slate-700 font-medium">Performance Analytics</span>
               </div>
             </div>
           </motion.div>
@@ -58,8 +73,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="relative"
           >
-            <div className="bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-100">
-              <div className="bg-ocean-600 h-12 flex items-center px-4">
+            <div className="relative bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+              <div className="bg-gradient-to-r from-ocean-500 to-ocean-600 h-14 flex items-center px-4">
                 <div className="flex space-x-2">
                   <div className="w-3 h-3 rounded-full bg-red-500"></div>
                   <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
@@ -75,6 +90,34 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
                   e.currentTarget.src = "https://placehold.co/600x400/ocean/white?text=BG+Social+Express";
                 }}
               />
+              
+              {/* Floating elements */}
+              <motion.div 
+                className="absolute -top-6 -right-6 bg-white rounded-xl shadow-lg p-4 max-w-[180px]"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <CheckCircle className="h-5 w-5 text-green-500" />
+                  <span className="font-semibold text-resort-800">Engagement up 37%</span>
+                </div>
+                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-full bg-green-500 rounded-full" style={{ width: '74%' }}></div>
+                </div>
+              </motion.div>
+              
+              <motion.div 
+                className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg p-3"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-5 w-5 text-ocean-500" />
+                  <span className="font-medium text-sm text-resort-800">12 posts scheduled</span>
+                </div>
+              </motion.div>
             </div>
             
             {/* Decorative elements */}
