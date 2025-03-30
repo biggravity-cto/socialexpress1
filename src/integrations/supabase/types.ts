@@ -9,7 +9,98 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      campaigns: {
+        Row: {
+          color: string
+          created_at: string | null
+          description: string | null
+          enddate: string
+          id: string
+          name: string
+          startdate: string
+          user_id: string | null
+        }
+        Insert: {
+          color: string
+          created_at?: string | null
+          description?: string | null
+          enddate: string
+          id?: string
+          name: string
+          startdate: string
+          user_id?: string | null
+        }
+        Update: {
+          color?: string
+          created_at?: string | null
+          description?: string | null
+          enddate?: string
+          id?: string
+          name?: string
+          startdate?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      posts: {
+        Row: {
+          author: string | null
+          author_id: string | null
+          campaign_id: string | null
+          content: string | null
+          created_at: string | null
+          date: string
+          id: string
+          imgurl: string | null
+          platform: string
+          status: string
+          time: string
+          title: string
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          author?: string | null
+          author_id?: string | null
+          campaign_id?: string | null
+          content?: string | null
+          created_at?: string | null
+          date: string
+          id?: string
+          imgurl?: string | null
+          platform: string
+          status: string
+          time: string
+          title: string
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          author?: string | null
+          author_id?: string | null
+          campaign_id?: string | null
+          content?: string | null
+          created_at?: string | null
+          date?: string
+          id?: string
+          imgurl?: string | null
+          platform?: string
+          status?: string
+          time?: string
+          title?: string
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

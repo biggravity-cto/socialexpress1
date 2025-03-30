@@ -15,7 +15,7 @@ export interface Campaign {
 export interface Post {
   id: string;
   title: string;
-  date: Date;
+  date: string; // ISO date string format
   time: string;
   platform: 'instagram' | 'twitter' | 'facebook';
   type: string;

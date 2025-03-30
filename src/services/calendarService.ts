@@ -76,11 +76,7 @@ export const fetchPosts = async (): Promise<Post[]> => {
     
     if (error) throw error;
     
-    // Convert string dates to Date objects
-    return (data || []).map(post => ({
-      ...post,
-      date: new Date(post.date)
-    }));
+    return data || [];
   } catch (error) {
     console.error('Error fetching posts:', error);
     return [];
@@ -89,25 +85,14 @@ export const fetchPosts = async (): Promise<Post[]> => {
 
 export const createPost = async (postData: PostCreationData): Promise<Post | null> => {
   try {
-    // Convert Date to ISO string for storage
-    const formattedPostData = {
-      ...postData,
-      date: postData.date.toISOString().split('T')[0]
-    };
-    
     const { data, error } = await supabase
       .from('posts')
-      .insert([formattedPostData])
+      .insert([postData])
       .select()
       .single();
     
     if (error) throw error;
-    
-    // Convert back to Date for frontend use
-    return {
-      ...data,
-      date: new Date(data.date)
-    };
+    return data;
   } catch (error) {
     console.error('Error creating post:', error);
     return null;
@@ -116,26 +101,15 @@ export const createPost = async (postData: PostCreationData): Promise<Post | nul
 
 export const updatePost = async (id: string, updates: Partial<Post>): Promise<Post | null> => {
   try {
-    // If date is included in updates, convert it to ISO string
-    const formattedUpdates = { ...updates };
-    if (updates.date) {
-      formattedUpdates.date = updates.date.toISOString().split('T')[0];
-    }
-    
     const { data, error } = await supabase
       .from('posts')
-      .update(formattedUpdates)
+      .update(updates)
       .eq('id', id)
       .select()
       .single();
     
     if (error) throw error;
-    
-    // Convert back to Date for frontend use
-    return {
-      ...data,
-      date: new Date(data.date)
-    };
+    return data;
   } catch (error) {
     console.error('Error updating post:', error);
     return null;

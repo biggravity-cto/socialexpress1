@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import AnimatedCard from '../ui/AnimatedCard';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Campaign, Post } from '@/types/calendar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,101 +16,55 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { parseISO, format } from 'date-fns';
 
-interface CalendarEvent {
-  id: string;
-  title: string;
-  date: Date;
-  time: string;
-  platform: 'instagram' | 'twitter' | 'facebook';
-  status: 'scheduled' | 'draft' | 'published' | 'pending_approval';
-  language?: string;
+interface CalendarViewProps {
+  posts: Post[];
+  campaigns: Campaign[];
+  onCreatePost?: (postData: any) => void;
+  onUpdatePost?: (id: string, updates: Partial<Post>) => void;
+  onDeletePost?: (id: string) => void;
 }
 
-// Sample data
-const dummyEvents: CalendarEvent[] = [
-  {
-    id: '1',
-    title: 'Beach sunset promotional post',
-    date: new Date(new Date().setDate(new Date().getDate() - 2)),
-    time: '18:30',
-    platform: 'instagram',
-    status: 'published'
-  },
-  {
-    id: '2',
-    title: 'Weekend spa package announcement',
-    date: new Date(),
-    time: '10:00',
-    platform: 'facebook',
-    status: 'scheduled'
-  },
-  {
-    id: '3',
-    title: 'New luxury suite launch',
-    date: new Date(new Date().setDate(new Date().getDate() + 1)),
-    time: '14:15',
-    platform: 'twitter',
-    status: 'draft'
-  },
-  {
-    id: '4',
-    title: 'Summer cocktail promotion',
-    date: new Date(new Date().setDate(new Date().getDate() + 3)),
-    time: '16:45',
-    platform: 'instagram',
-    status: 'scheduled'
-  },
-  {
-    id: '5',
-    title: '객실 프로모션 안내',
-    date: new Date(new Date().setDate(new Date().getDate() + 2)),
-    time: '09:30',
-    platform: 'instagram',
-    status: 'pending_approval',
-    language: 'Korean'
-  },
-  {
-    id: '6',
-    title: 'Chef\'s special dining experience',
-    date: new Date(),
-    time: '12:00',
-    platform: 'facebook',
-    status: 'pending_approval'
-  }
-];
-
-const CalendarView = () => {
+export const Calendar: React.FC<CalendarViewProps> = ({ 
+  posts = [], 
+  campaigns = [],
+  onCreatePost,
+  onUpdatePost,
+  onDeletePost
+}) => {
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [selectedDateEvents, setSelectedDateEvents] = useState<CalendarEvent[]>([]);
-  const [draggingEvent, setDraggingEvent] = useState<string | null>(null);
+  const [selectedDatePosts, setSelectedDatePosts] = useState<Post[]>([]);
+  const [draggingPost, setDraggingPost] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
-  // Update events when date changes
+  // Convert ISO date strings to Date objects
+  const convertToDate = (dateStr: string) => {
+    return parseISO(dateStr);
+  };
+
+  // Update posts when date changes
   React.useEffect(() => {
     if (date) {
-      const events = dummyEvents.filter(
-        event => 
-          event.date.getDate() === date.getDate() &&
-          event.date.getMonth() === date.getMonth() &&
-          event.date.getFullYear() === date.getFullYear()
-      );
-      setSelectedDateEvents(events);
+      const formattedSelectedDate = format(date, 'yyyy-MM-dd');
+      const filteredPosts = posts.filter(post => {
+        return post.date === formattedSelectedDate;
+      });
+      setSelectedDatePosts(filteredPosts);
     } else {
-      setSelectedDateEvents([]);
+      setSelectedDatePosts([]);
     }
-  }, [date]);
+  }, [date, posts]);
 
   // Function to generate highlighted dates for the calendar
   const getHighlightedDates = () => {
     const uniqueDates = new Set<string>();
     
-    dummyEvents.forEach(event => {
-      const dateStr = event.date.toDateString();
-      uniqueDates.add(dateStr);
+    posts.forEach(post => {
+      uniqueDates.add(post.date);
     });
     
-    return Array.from(uniqueDates).map(dateStr => new Date(dateStr));
+    return Array.from(uniqueDates).map(dateStr => parseISO(dateStr));
   };
 
   const getPlatformIcon = (platform: string) => {
@@ -140,20 +95,38 @@ const CalendarView = () => {
     }
   };
 
-  const handleDragStart = (eventId: string) => {
-    setDraggingEvent(eventId);
+  const handleDragStart = (postId: string) => {
+    setDraggingPost(postId);
   };
 
   const handleDragEnd = () => {
-    setDraggingEvent(null);
+    setDraggingPost(null);
   };
 
   const handleDrop = (newDate: Date) => {
-    if (draggingEvent) {
-      // In a real app, this would update the event date in the database
-      console.log(`Moving event ${draggingEvent} to ${newDate.toDateString()}`);
-      // Reset the dragging state
-      setDraggingEvent(null);
+    if (draggingPost && onUpdatePost) {
+      const formattedNewDate = format(newDate, 'yyyy-MM-dd');
+      onUpdatePost(draggingPost, { date: formattedNewDate });
+      setDraggingPost(null);
+    }
+  };
+
+  const handleCreateClick = () => {
+    if (onCreatePost && date) {
+      onCreatePost({
+        title: "New post",
+        date: format(date, 'yyyy-MM-dd'),
+        time: "12:00",
+        platform: "instagram",
+        type: "Post",
+        status: "draft"
+      });
+    }
+  };
+
+  const handleDeletePost = (postId: string) => {
+    if (onDeletePost) {
+      onDeletePost(postId);
     }
   };
 
@@ -163,7 +136,7 @@ const CalendarView = () => {
         <AnimatedCard className="h-full">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-medium text-resort-800">Select Date</h3>
-            <Button variant="outline" size="sm" className="text-xs h-8">
+            <Button variant="outline" size="sm" className="text-xs h-8" onClick={() => setDate(new Date())}>
               <CalendarIcon className="mr-1 h-3 w-3" /> Today
             </Button>
           </div>
@@ -184,13 +157,13 @@ const CalendarView = () => {
               }
             }}
             onDayMouseEnter={(day) => {
-              if (draggingEvent) {
+              if (draggingPost) {
                 // Show visual feedback that this day is a drop target
-                console.log(`Hovering over ${day.toDateString()} with event ${draggingEvent}`);
+                console.log(`Hovering over ${day.toDateString()} with post ${draggingPost}`);
               }
             }}
             onDayClick={(day) => {
-              if (draggingEvent) {
+              if (draggingPost) {
                 handleDrop(day);
               }
             }}
@@ -198,7 +171,7 @@ const CalendarView = () => {
           
           <div className="mt-4 text-sm text-resort-500">
             <p>
-              {date ? date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) : ''}
+              {date ? format(date, 'MMMM yyyy') : ''}
             </p>
             <div className="flex flex-col space-y-2 mt-3">
               <div className="flex items-center space-x-2">
@@ -226,56 +199,48 @@ const CalendarView = () => {
         <AnimatedCard className="h-full">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-medium text-resort-800">
-              {date ? date.toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric'
-              }) : 'Events'}
+              {date ? format(date, 'EEEE, MMMM d') : 'Posts'}
             </h3>
-            <Button size="sm" className="bg-ocean-600 hover:bg-ocean-700 h-8 text-xs">
+            <Button 
+              size="sm" 
+              className="bg-ocean-600 hover:bg-ocean-700 h-8 text-xs"
+              onClick={handleCreateClick}
+            >
               + Add Content
             </Button>
           </div>
           
-          {selectedDateEvents.length > 0 ? (
+          {selectedDatePosts.length > 0 ? (
             <div className="space-y-3">
-              {selectedDateEvents.map((event) => (
+              {selectedDatePosts.map((post) => (
                 <div 
-                  key={event.id} 
+                  key={post.id} 
                   className={cn(
                     "group p-3 rounded-lg border border-gray-100 hover:border-ocean-200 hover:bg-ocean-50/30 transition-all duration-300",
-                    draggingEvent === event.id ? "opacity-50 border-dashed border-ocean-500" : "",
-                    event.status === 'pending_approval' ? "border-l-4 border-l-amber-400" : ""
+                    draggingPost === post.id ? "opacity-50 border-dashed border-ocean-500" : "",
+                    post.status === 'pending_approval' ? "border-l-4 border-l-amber-400" : ""
                   )}
                   draggable={true}
-                  onDragStart={() => handleDragStart(event.id)}
+                  onDragStart={() => handleDragStart(post.id)}
                   onDragEnd={handleDragEnd}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center mb-1 flex-wrap gap-2">
-                        <Badge className={cn("mr-2 px-2 py-0.5 text-xs font-normal", getStatusColor(event.status))}>
-                          {event.status.replace('_', ' ')}
+                        <Badge className={cn("mr-2 px-2 py-0.5 text-xs font-normal", getStatusColor(post.status))}>
+                          {post.status.replace('_', ' ')}
                         </Badge>
                         <span className="flex items-center text-resort-500 text-xs">
                           <span className="p-1 rounded-full bg-gray-50 mr-1.5">
-                            {getPlatformIcon(event.platform)}
+                            {getPlatformIcon(post.platform)}
                           </span>
-                          {event.platform.charAt(0).toUpperCase() + event.platform.slice(1)}
+                          {post.platform.charAt(0).toUpperCase() + post.platform.slice(1)}
                         </span>
-                        {event.language && (
-                          <span className="flex items-center text-resort-500 text-xs">
-                            <span className="p-1 rounded-full bg-gray-50 mr-1.5">
-                              <Globe className="h-3 w-3" />
-                            </span>
-                            {event.language}
-                          </span>
-                        )}
                       </div>
-                      <h4 className="font-medium text-resort-800">{event.title}</h4>
+                      <h4 className="font-medium text-resort-800">{post.title}</h4>
                       <div className="flex items-center mt-2 text-resort-500 text-xs">
                         <Clock className="mr-1 h-3 w-3" />
-                        {event.time}
+                        {post.time}
                       </div>
                     </div>
                     <div className="flex items-center">
@@ -304,11 +269,16 @@ const CalendarView = () => {
                           <DropdownMenuSeparator />
                           <DropdownMenuItem>Edit Post</DropdownMenuItem>
                           <DropdownMenuItem>Duplicate</DropdownMenuItem>
-                          {event.status === 'pending_approval' && (
+                          {post.status === 'pending_approval' && (
                             <DropdownMenuItem>Approve</DropdownMenuItem>
                           )}
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
+                          <DropdownMenuItem 
+                            className="text-red-600"
+                            onClick={() => handleDeletePost(post.id)}
+                          >
+                            Delete
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
@@ -321,18 +291,22 @@ const CalendarView = () => {
               <div className="text-resort-400 mb-3">
                 <CalendarIcon className="h-12 w-12 mx-auto" />
               </div>
-              <h3 className="text-lg font-medium text-resort-800 mb-2">No events scheduled</h3>
+              <h3 className="text-lg font-medium text-resort-800 mb-2">No posts scheduled</h3>
               <p className="text-resort-500 text-sm mb-6">
                 There are no posts scheduled for this date. Add a new post to get started.
               </p>
-              <Button size="sm" className="bg-ocean-600 hover:bg-ocean-700">
+              <Button 
+                size="sm" 
+                className="bg-ocean-600 hover:bg-ocean-700"
+                onClick={handleCreateClick}
+              >
                 Create New Post
               </Button>
             </div>
           )}
           <div className="mt-4 pt-4 border-t border-gray-100">
             <p className="text-xs text-resort-500">
-              Tip: You can drag and drop events to reschedule them to different dates.
+              Tip: You can drag and drop posts to reschedule them to different dates.
             </p>
           </div>
         </AnimatedCard>
@@ -341,4 +315,4 @@ const CalendarView = () => {
   );
 };
 
-export default CalendarView;
+export default Calendar;
