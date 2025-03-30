@@ -1,5 +1,2 @@
 
-[global]
 project_id = "tqsdbluknhotwkpjuvvp"
-environment = "production"
-timeout_ms = 5000

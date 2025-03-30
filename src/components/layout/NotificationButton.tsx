@@ -1,74 +1,35 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Bell, CheckCheck, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Notification, fetchNotifications, markAllNotificationsAsRead, markNotificationAsRead, deleteNotification, useNotifications } from '@/services/notificationService';
-import { useAuth } from '@/contexts/AuthContext';
+import { formatDistanceToNow } from 'date-fns';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { format, formatDistanceToNow } from 'date-fns';
+import { useNotificationSubscription } from '@/hooks/useNotificationSubscription';
+import { deleteNotification, markAllNotificationsAsRead } from '@/services/notificationService';
+import { useAuth } from '@/contexts/AuthContext';
 
 const NotificationButton: React.FC = () => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
-  const { subscribeToNotifications } = useNotifications(user?.id);
-
-  // Fetch notifications when user is available
-  useEffect(() => {
-    if (user) {
-      loadNotifications();
-    }
-  }, [user]);
-
-  // Listen for new notifications
-  useEffect(() => {
-    if (user) {
-      const unsubscribe = subscribeToNotifications((newNotification) => {
-        setNotifications(prev => [newNotification, ...prev]);
-        setUnreadCount(prev => prev + 1);
-      });
-      
-      return unsubscribe;
-    }
-  }, [user]);
-
-  const loadNotifications = async () => {
-    if (!user) return;
-    
-    const data = await fetchNotifications(user.id);
-    setNotifications(data);
-    setUnreadCount(data.filter(n => !n.is_read).length);
-  };
-
-  const handleMarkAsRead = async (id: string) => {
-    await markNotificationAsRead(id);
-    setNotifications(prev => 
-      prev.map(n => n.id === id ? { ...n, is_read: true } : n)
-    );
-    setUnreadCount(prev => Math.max(0, prev - 1));
-  };
+  const { 
+    notifications, 
+    unreadCount, 
+    handleMarkAsRead,
+    refreshNotifications 
+  } = useNotificationSubscription();
 
   const handleMarkAllAsRead = async () => {
     if (!user) return;
     
     await markAllNotificationsAsRead(user.id);
-    setNotifications(prev => 
-      prev.map(n => ({ ...n, is_read: true }))
-    );
-    setUnreadCount(0);
+    refreshNotifications();
   };
 
   const handleDelete = async (id: string) => {
     await deleteNotification(id);
-    const deleted = notifications.find(n => n.id === id);
-    setNotifications(prev => prev.filter(n => n.id !== id));
-    if (deleted && !deleted.is_read) {
-      setUnreadCount(prev => Math.max(0, prev - 1));
-    }
+    refreshNotifications();
   };
 
   const getTypeStyles = (type: string) => {

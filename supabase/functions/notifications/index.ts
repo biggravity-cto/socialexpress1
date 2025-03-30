@@ -1,86 +1,94 @@
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4';
+import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.43.1'
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
-};
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
 
 serve(async (req) => {
   // Handle CORS preflight requests
-  if (req.method === "OPTIONS") {
-    return new Response("ok", { headers: corsHeaders });
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders })
   }
+
+  // Get environment variables
+  const supabaseUrl = Deno.env.get('SUPABASE_URL') || ''
+  const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY') || ''
+  const supabaseServiceRole = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || ''
+
+  // Create Supabase client
+  const supabase = createClient(supabaseUrl, supabaseServiceRole)
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL') as string;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') as string;
+    // Check if request has a body
+    const body = await req.json()
     
-    if (!supabaseUrl || !supabaseServiceKey) {
-      throw new Error('Missing environment variables SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
+    if (!body.user_id || !body.title || !body.message) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Missing required fields. Please provide user_id, title, and message.' 
+        }),
+        { 
+          status: 400, 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders 
+          } 
+        }
+      )
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const body = await req.json();
-    
-    const { 
-      type, 
-      user_id, 
-      title, 
-      message, 
-      related_entity_type, 
-      related_entity_id 
-    } = body;
-    
-    if (!user_id || !title || !message) {
-      return new Response(
-        JSON.stringify({ error: 'Missing required fields' }),
-        {
-          status: 400,
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        }
-      );
+    // Prepare notification data
+    const notificationData = {
+      user_id: body.user_id,
+      title: body.title,
+      message: body.message,
+      type: body.type || 'info',
+      related_entity_type: body.related_entity_type || null,
+      related_entity_id: body.related_entity_id || null,
+      is_read: false,
     }
-    
-    // Create the notification
+
+    // Insert notification into database
+    console.log('Inserting notification:', notificationData)
     const { data, error } = await supabase
       .from('notifications')
-      .insert([
-        {
-          user_id,
-          title,
-          message,
-          type: type || 'info',
-          related_entity_type,
-          related_entity_id,
-          is_read: false
-        }
-      ])
+      .insert(notificationData)
       .select()
-      .single();
-    
+      .single()
+
     if (error) {
-      throw error;
+      throw error
     }
-    
+
+    console.log('Notification created:', data)
+
     return new Response(
       JSON.stringify({ success: true, notification: data }),
-      {
-        status: 200,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      { 
+        status: 200, 
+        headers: { 
+          'Content-Type': 'application/json',
+          ...corsHeaders 
+        } 
       }
-    );
+    )
   } catch (error) {
-    console.error('Error in notifications function:', error.message);
+    console.error('Error creating notification:', error)
     
     return new Response(
-      JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      JSON.stringify({ 
+        error: `Failed to create notification: ${error.message}` 
+      }),
+      { 
+        status: 500, 
+        headers: { 
+          'Content-Type': 'application/json',
+          ...corsHeaders 
+        } 
       }
-    );
+    )
   }
-});
+})

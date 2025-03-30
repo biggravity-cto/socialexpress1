@@ -1,23 +1,32 @@
 
-import React from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation, Navigate, useNavigate } from 'react-router-dom';
 import AuthenticatedLayout from './AuthenticatedLayout';
 import PublicLayout from './PublicLayout';
 import { useAuth } from '@/contexts/AuthContext';
+import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 
 const Layout = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, loading } = useAuth();
   
   const publicPages = ['/', '/login', '/auth', '/email-confirmation', '/features', '/pricing', '/blog', '/guides', '/case-studies'];
   const isPublicPage = publicPages.includes(location.pathname);
   const isLoginPage = location.pathname === '/login' || location.pathname === '/auth' || location.pathname === '/email-confirmation';
   
+  // Redirect to dashboard when user logs in
+  useEffect(() => {
+    if (user && isLoginPage) {
+      navigate('/dashboard');
+    }
+  }, [user, isLoginPage, navigate]);
+
   // Show loading state
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-ocean-600"></div>
+        <LoadingSpinner />
       </div>
     );
   }
