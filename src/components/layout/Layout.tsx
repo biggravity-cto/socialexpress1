@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, Outlet } from 'react-router-dom';
 import { 
@@ -129,7 +130,7 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="flex flex-col h-full">
       <div className="flex h-14 items-center px-4 border-b border-gray-100 justify-between">
         <span className="font-bold text-lg tracking-tight text-resort-800">
-          {sidebarOpen ? 'SocialSync' : 'SS'}
+          {sidebarOpen ? 'BG Social Express' : 'BG'}
         </span>
         <Button 
           variant="ghost" 
@@ -243,7 +244,7 @@ const Layout = ({ children }: LayoutProps) => {
         </div>
         <SheetContent 
           side="left" 
-          className="p-0 w-64 border-r border-gray-100 bg-white"
+          className="p-0 w-full sm:w-80 max-w-full border-r border-gray-100 bg-white"
         >
           <SidebarContent />
         </SheetContent>

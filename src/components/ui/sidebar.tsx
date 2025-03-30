@@ -63,7 +63,9 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
     >
       <div className="flex flex-1 flex-col border-r">
         <div className="flex h-14 items-center py-4 px-4 lg:h-[60px]">
-          <span className="text-xl font-bold">SocialSync</span>
+          <span className="text-xl font-bold">
+            {expanded ? "BG Social Express" : "BG"}
+          </span>
           <Button
             variant="ghost"
             size="icon"

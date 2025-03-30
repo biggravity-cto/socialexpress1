@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
@@ -12,12 +11,27 @@ import {
   Link as LinkIcon, 
   Settings as SettingsIcon,
   Save,
-  Upload
+  Upload,
+  LogOut,
+  UserPlus,
+  UserCog,
+  Shield,
+  Mail
 } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Here you would handle the actual logout logic
+    // For now, just navigate to the login page
+    navigate('/login');
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -25,14 +39,24 @@ const Settings = () => {
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      <div>
-        <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">Settings</h1>
-        <p className="text-resort-500">Manage your account, brand settings, and integrations</p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold text-resort-800 mb-1">Settings</h1>
+          <p className="text-resort-500">Manage your account, brand settings, and integrations</p>
+        </div>
+        <Button 
+          variant="destructive" 
+          onClick={handleLogout}
+          className="flex items-center"
+        >
+          <LogOut className="h-4 w-4 mr-2" /> Logout
+        </Button>
       </div>
 
       <Tabs defaultValue="account">
         <TabsList className="mb-4">
           <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="team">Team</TabsTrigger>
           <TabsTrigger value="brand">Brand Kit</TabsTrigger>
           <TabsTrigger value="integrations">Integrations</TabsTrigger>
           <TabsTrigger value="notifications">Notifications</TabsTrigger>
@@ -97,6 +121,84 @@ const Settings = () => {
                   <Button className="bg-ocean-600 hover:bg-ocean-700">
                     <Save className="h-4 w-4 mr-2" /> Save Changes
                   </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="team">
+          <Card className="p-6">
+            <div className="space-y-1 mb-6">
+              <h2 className="text-xl font-medium text-resort-800">Team Management</h2>
+              <p className="text-sm text-resort-500">Manage team members and their permissions</p>
+            </div>
+            
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-sm font-medium text-resort-800">Team Members</h3>
+                <Button>
+                  <UserPlus className="h-4 w-4 mr-2" /> Invite Member
+                </Button>
+              </div>
+              
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {[
+                    { name: 'John Doe', email: 'john.doe@example.com', role: 'Admin', status: 'Active' },
+                    { name: 'Jane Smith', email: 'jane.smith@example.com', role: 'Editor', status: 'Active' },
+                    { name: 'Mike Johnson', email: 'mike.j@example.com', role: 'Viewer', status: 'Pending' },
+                  ].map((member, i) => (
+                    <TableRow key={i}>
+                      <TableCell className="font-medium">{member.name}</TableCell>
+                      <TableCell>{member.email}</TableCell>
+                      <TableCell>{member.role}</TableCell>
+                      <TableCell>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          member.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {member.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="sm">
+                          <UserCog className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              
+              <Separator />
+              
+              <div className="space-y-4">
+                <h3 className="text-sm font-medium text-resort-800">Role Permissions</h3>
+                <div className="grid gap-4">
+                  {[
+                    { role: 'Admin', description: 'Full access to all features and settings', icon: Shield },
+                    { role: 'Editor', description: 'Can create and edit content, but cannot manage users or settings', icon: Mail },
+                    { role: 'Viewer', description: 'Read-only access to content and analytics', icon: User },
+                  ].map((role, i) => (
+                    <div key={i} className="flex items-start p-4 border rounded-lg">
+                      <div className="mr-4 mt-1">
+                        <role.icon className="h-5 w-5 text-resort-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-resort-800">{role.role}</h4>
+                        <p className="text-sm text-resort-500">{role.description}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

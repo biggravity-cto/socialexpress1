@@ -37,7 +37,7 @@ const Navbar = () => {
       <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm py-3">
         <div className="container flex items-center justify-between">
           <Link to="/" className="text-2xl font-bold">
-            SocialSync
+            BG Social Express
           </Link>
           <div className="hidden md:flex items-center space-x-6">
             <NavLink to="/features" className="text-gray-600 hover:text-gray-900">Features</NavLink>
