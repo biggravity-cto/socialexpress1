@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
@@ -849,3 +850,77 @@ const CalendarPage = () => {
                     })}
                     
                     {/* Calendar Days */}
+                    <TableRow>
+                      {week.map((day, dayIndex) => {
+                        const date = day.date;
+                        const isCurrentMonth = day.isCurrentMonth;
+                        const isToday = new Date(2023, 1, 1).toDateString() === date.toDateString();
+                        const hasEvents = getPostsForDate(date).length > 0;
+                        
+                        return (
+                          <TableCell 
+                            key={dayIndex}
+                            className={`p-1 border text-center align-top min-h-[100px] ${
+                              isCurrentMonth ? 'bg-white' : 'bg-gray-50 text-gray-400'
+                            } ${isToday ? 'bg-blue-50' : ''}`}
+                            onDragOver={handleDragOver}
+                            onDrop={(e) => handleDrop(date, e)}
+                            onClick={() => handleDayClick(date)}
+                          >
+                            <div className="flex flex-col h-full min-h-[100px]">
+                              <div className={`text-sm font-medium p-1 rounded-full w-7 h-7 mx-auto ${
+                                isToday ? 'bg-ocean-600 text-white' : ''
+                              }`}>
+                                {date.getDate()}
+                              </div>
+                              
+                              {/* Posts for this day */}
+                              <div className="flex-1">
+                                {hasEvents && getPostsForDate(date).slice(0, 3).map(post => (
+                                  <div 
+                                    key={post.id}
+                                    className="text-xs mb-1 p-1 rounded border bg-white shadow-sm cursor-pointer hover:bg-gray-50"
+                                    draggable
+                                    onDragStart={(e) => handleDragStart(post.id, e)}
+                                  >
+                                    <div className="flex items-center space-x-1">
+                                      <span className="w-2 h-2 rounded-full bg-ocean-500"></span>
+                                      <span className="truncate">{post.title}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center mt-1">
+                                      <span className="flex items-center text-resort-500">
+                                        {getPlatformIcon(post.platform)}
+                                      </span>
+                                      <span className="text-resort-400">{post.time}</span>
+                                    </div>
+                                  </div>
+                                ))}
+                                
+                                {hasEvents && getPostsForDate(date).length > 3 && (
+                                  <div className="text-xs text-center text-resort-500 mt-1">
+                                    + {getPostsForDate(date).length - 3} more
+                                  </div>
+                                )}
+                              </div>
+                              
+                              {/* View more button */}
+                              {hasEvents && (
+                                <DayDetailDialog date={date} />
+                              )}
+                            </div>
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  </React.Fragment>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CalendarPage;
