@@ -31,7 +31,7 @@ export const CalendarBody: React.FC<CalendarBodyProps> = ({
       selected={selectedDay}
       onSelect={setSelectedDay}
       month={currentMonth}
-      className="rounded-md border shadow-sm"
+      className="rounded-md border shadow-sm pointer-events-auto"
       modifiers={{
         highlighted: isDayHighlighted
       }}

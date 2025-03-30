@@ -1,4 +1,3 @@
 
-import { CalendarView } from './calendar/CalendarView';
-
-export { CalendarView };
+// This file is just a re-export
+export { CalendarView } from './calendar/CalendarView';
