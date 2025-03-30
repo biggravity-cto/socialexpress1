@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { fetchCampaigns, fetchPosts, createPost, updatePost, deletePost, createCampaign } from '@/services/calendarService';
 import { Campaign, Post } from '@/types/calendar';
@@ -15,6 +16,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { PostCreatorDialog } from './calendar/PostCreatorDialog';
+import { CalendarView } from './calendar/CalendarView';
 
 const CalendarPage = () => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
@@ -272,12 +274,6 @@ const CalendarPage = () => {
     );
   };
 
-  const getPostsForSelectedDate = () => {
-    return posts.filter(post => isSameDay(new Date(post.date), selectedDate));
-  };
-
-  const postsForSelectedDate = getPostsForSelectedDate();
-
   return (
     <div className="container mx-auto p-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
@@ -430,82 +426,15 @@ const CalendarPage = () => {
             {renderCalendar()}
           </Card>
           
-          <Card className="p-4">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold">{`Posts for ${format(selectedDate, 'MMMM d, yyyy')}`}</h2>
-              <Button onClick={handleCreateNewPost}>
-                Create Post
-              </Button>
-            </div>
-            
-            <div className="space-y-3">
-              {postsForSelectedDate.length > 0 ? (
-                postsForSelectedDate.map(post => {
-                  const campaign = campaigns.find(c => c.id === post.campaign_id);
-                  
-                  return (
-                    <div key={post.id} className="p-3 border rounded-lg hover:shadow-sm transition-shadow">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-medium">{post.title}</h3>
-                          <div className="flex items-center mt-1 space-x-2">
-                            <Badge variant="outline">{post.platform}</Badge>
-                            <Badge 
-                              className={
-                                post.status === 'published' ? 'bg-green-100 text-green-800' :
-                                post.status === 'scheduled' ? 'bg-blue-100 text-blue-800' :
-                                post.status === 'draft' ? 'bg-gray-100 text-gray-800' :
-                                'bg-orange-100 text-orange-800'
-                              }
-                            >
-                              {post.status}
-                            </Badge>
-                            {campaign && (
-                              <Badge style={{ backgroundColor: campaign.color }}>
-                                {campaign.name}
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-sm text-gray-500">{post.time}</div>
-                      </div>
-                      
-                      {post.content && (
-                        <p className="mt-2 text-sm text-gray-600">{post.content}</p>
-                      )}
-                      
-                      <div className="flex justify-end mt-2 space-x-2">
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => {
-                            setEditingPost(post);
-                            setShowPostCreator(true);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="sm" 
-                          className="text-red-500"
-                          onClick={() => handleDeletePost(post.id)}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="py-8 text-center">
-                  <CalendarIcon className="mx-auto h-12 w-12 text-gray-300 mb-2" />
-                  <p className="text-gray-500">No posts scheduled for this day</p>
-                  <Button className="mt-4" onClick={handleCreateNewPost}>Create Post</Button>
-                </div>
-              )}
-            </div>
-          </Card>
+          <CalendarView
+            posts={posts}
+            campaigns={campaigns}
+            selectedDay={selectedDate}
+            onCreatePost={handleCreatePost}
+            onUpdatePost={handleUpdatePost}
+            onDeletePost={handleDeletePost}
+            setShowPostCreator={setShowPostCreator}
+          />
         </div>
       )}
 
