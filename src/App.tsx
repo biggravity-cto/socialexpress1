@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -12,7 +11,7 @@ import Layout from "./components/layout/Layout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Calendar from "./pages/Calendar";
-import ContentLibrary from "./pages/ContentLibrary";
+import Library from "./pages/Library";
 import Messages from "./pages/Messages";
 import Approvals from "./pages/Approvals";
 import Analytics from "./pages/Analytics";
@@ -39,7 +38,7 @@ const AnimatedRoutes = () => {
         <Route path="/" element={<Index />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/calendar" element={<Calendar />} />
-        <Route path="/content-library" element={<ContentLibrary />} />
+        <Route path="/library" element={<Library />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/approvals" element={<Approvals />} />
         <Route path="/analytics" element={<Analytics />} />

@@ -1,9 +1,37 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Filter, Grid, List, Plus, Image, FileText, Video, MoreHorizontal, Upload, Download, Clock, CalendarIcon, Layers, Copy, Share2, Trash2, CloudLightning, Sparkles, ChevronRight, CloudUpload, Facebook, Twitter, Instagram, Database, MessageSquare } from 'lucide-react';
+import { 
+  Search, 
+  Filter, 
+  Grid, 
+  List, 
+  Plus, 
+  Image, 
+  FileText, 
+  Video, 
+  MoreHorizontal, 
+  Upload, 
+  Download, 
+  Clock, 
+  CalendarIcon, 
+  Layers, 
+  Copy, 
+  Share2, 
+  Trash2, 
+  CloudLightning, 
+  Sparkles, 
+  ChevronRight, 
+  CloudUpload, 
+  Facebook, 
+  Twitter, 
+  Instagram, 
+  Database,
+  MessageSquare
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -117,7 +145,7 @@ const contentItems: ContentItem[] = [
     platform: 'instagram',
     content: 'Hear what our guests are saying about their unforgettable experiences at our resort!',
     tags: ['testimonial', 'review', 'guest']
-  },
+  }
 ];
 
 // Helper functions
@@ -162,7 +190,7 @@ const getStatusColor = (status: string) => {
   }
 };
 
-const ContentLibrary = () => {
+const Library = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showAIGenerator, setShowAIGenerator] = useState(false);
   const [generationType, setGenerationType] = useState<'image' | 'video' | 'text'>('image');
@@ -755,4 +783,4 @@ const ContentLibrary = () => {
   );
 };
 
-export default ContentLibrary;
+export default Library;
