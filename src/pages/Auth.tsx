@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRedirectIfAuthenticated } from '@/hooks/useAuthCheck';
 import { Card } from '@/components/ui/card';
@@ -167,7 +167,12 @@ const Auth = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Password</FormLabel>
+                        <Link to="/forgot-password" className="text-xs text-ocean-600 hover:text-ocean-700">
+                          Forgot password?
+                        </Link>
+                      </div>
                       <FormControl>
                         <Input type="password" placeholder="Your password" {...field} />
                       </FormControl>

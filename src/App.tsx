@@ -17,12 +17,14 @@ import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
 import Auth from '@/pages/Auth'
 import EmailConfirmation from '@/pages/EmailConfirmation'
+import ForgotPassword from '@/pages/ForgotPassword'
 import Posts from '@/pages/Posts'
 import Features from '@/pages/Features'
 import Pricing from '@/pages/Pricing'
 import Blog from '@/pages/Blog'
 import Guides from '@/pages/Guides'
 import CaseStudies from '@/pages/CaseStudies'
+import { Toaster } from '@/components/ui/toaster'
 
 function App() {
   return (
@@ -49,10 +51,13 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="team" element={<Team />} />
           
-          {/* Public/Marketing Pages */}
+          {/* Authentication Pages */}
           <Route path="login" element={<Login />} />
           <Route path="auth" element={<Auth />} />
           <Route path="email-confirmation" element={<EmailConfirmation />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          
+          {/* Public/Marketing Pages */}
           <Route path="posts" element={<Posts />} />
           <Route path="features" element={<Features />} />
           <Route path="pricing" element={<Pricing />} />
@@ -62,6 +67,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      <Toaster />
     </AuthProvider>
   )
 }
