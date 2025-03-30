@@ -16,12 +16,16 @@ import {
   ChevronRight,
   BrainCircuit,
   LineChart,
-  PanelLeft
+  PanelLeft,
+  Bell
 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Badge } from '@/components/ui/badge';
+import RecentActivity from '../dashboard/RecentActivity';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -39,7 +43,7 @@ const navItems = [
     icon: <Calendar className="h-5 w-5" />
   },
   {
-    name: 'Content Library',
+    name: 'Content',
     path: '/content-library',
     icon: <Library className="h-5 w-5" />
   },
@@ -193,6 +197,24 @@ const Layout = ({ children }: LayoutProps) => {
           <h1 className="text-xl font-semibold text-resort-800 capitalize">
             {location.pathname.substring(1).replace('-', ' ') || 'Dashboard'}
           </h1>
+          
+          {/* Notification Bell */}
+          <div className="ml-auto">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="relative mr-2">
+                  <Bell className="h-5 w-5" />
+                  <Badge className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-red-500 text-white">5</Badge>
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-80 p-0">
+                <div className="p-4 border-b border-gray-100">
+                  <h3 className="font-medium text-resort-800">Recent Activity</h3>
+                </div>
+                <RecentActivity compact={true} />
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
         <SheetContent 
           side="left" 
@@ -205,18 +227,36 @@ const Layout = ({ children }: LayoutProps) => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Desktop Header */}
-        <div className="hidden md:flex items-center h-14 px-4 border-b border-gray-100">
-          <Button 
-            variant="outline" 
-            size="icon" 
-            className="mr-2"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
-          </Button>
-          <h1 className="text-xl font-semibold text-resort-800 capitalize">
-            {location.pathname.substring(1).replace(/-/g, ' ') || 'Dashboard'}
-          </h1>
+        <div className="hidden md:flex items-center h-14 px-4 border-b border-gray-100 justify-between">
+          <div className="flex items-center">
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="mr-2"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
+            </Button>
+            <h1 className="text-xl font-semibold text-resort-800 capitalize">
+              {location.pathname.substring(1).replace(/-/g, ' ') || 'Dashboard'}
+            </h1>
+          </div>
+          
+          {/* Notification Bell */}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="icon" className="relative">
+                <Bell className="h-5 w-5" />
+                <Badge className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-red-500 text-white">5</Badge>
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80 p-0">
+              <div className="p-4 border-b border-gray-100">
+                <h3 className="font-medium text-resort-800">Recent Activity</h3>
+              </div>
+              <RecentActivity compact={true} />
+            </PopoverContent>
+          </Popover>
         </div>
         
         {/* Content with padding for mobile header */}
