@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, Outlet } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Calendar,
@@ -27,7 +27,7 @@ import { Badge } from '@/components/ui/badge';
 import RecentActivity from '../dashboard/RecentActivity';
 
 interface LayoutProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 const navItems = [
@@ -42,8 +42,8 @@ const navItems = [
     icon: <Calendar className="h-5 w-5" />
   },
   {
-    name: 'Library',
-    path: '/content-library',
+    name: 'Content',
+    path: '/content',
     icon: <Library className="h-5 w-5" />
   },
   {
@@ -84,7 +84,6 @@ const navItems = [
 ];
 
 const Layout = ({ children }: LayoutProps) => {
-  // ... keep existing code (useState and useEffects)
   const location = useLocation();
   const isMobile = useIsMobile();
   const isPublicPage = ['/', '/login', '/features', '/pricing', '/blog', '/guides', '/case-studies'].includes(location.pathname);
@@ -167,7 +166,7 @@ const Layout = ({ children }: LayoutProps) => {
           {/* Navbar component would be here */}
         </div>}
         <main className="w-full">
-          {children}
+          {children || <Outlet />}
         </main>
       </div>
     );
@@ -195,7 +194,7 @@ const Layout = ({ children }: LayoutProps) => {
             </Button>
           </SheetTrigger>
           <h1 className="text-xl font-semibold text-resort-800 capitalize">
-            {location.pathname === '/content-library' ? 'Library' : 
+            {location.pathname === '/content' ? 'Content' : 
              location.pathname.substring(1).replace('-', ' ') || 'Dashboard'}
           </h1>
           
@@ -239,7 +238,7 @@ const Layout = ({ children }: LayoutProps) => {
               {sidebarOpen ? <ChevronLeft className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
             </Button>
             <h1 className="text-xl font-semibold text-resort-800 capitalize">
-              {location.pathname === '/content-library' ? 'Library' : 
+              {location.pathname === '/content' ? 'Content' : 
                location.pathname.substring(1).replace(/-/g, ' ') || 'Dashboard'}
             </h1>
           </div>
@@ -264,7 +263,7 @@ const Layout = ({ children }: LayoutProps) => {
         {/* Content with padding for mobile header */}
         <div className="flex-1 overflow-auto pt-14 md:pt-0">
           <div className="p-4 md:p-6">
-            {children}
+            {children || <Outlet />}
           </div>
         </div>
       </div>
