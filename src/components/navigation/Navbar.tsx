@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,6 @@ import {
   LineChart,
   MessageSquare,
   ClipboardCheck,
-  ChevronDown,
   Plug,
   Palette,
   UserCircle,
@@ -44,11 +42,6 @@ import {
   DropdownMenuSeparator, 
   DropdownMenuTrigger 
 } from '@/components/ui/dropdown-menu';
-import { 
-  Collapsible, 
-  CollapsibleContent, 
-  CollapsibleTrigger 
-} from '@/components/ui/collapsible';
 
 const Navbar = () => {
   const isMobile = useIsMobile();
@@ -113,67 +106,43 @@ const Navbar = () => {
               <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
             </SidebarGroup>
             
-            {/* MARKETING Section */}
+            {/* MARKETING Section - now with static heading */}
             <SidebarGroup>
-              <Collapsible className="w-full">
-                <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                  <div className="flex items-center">
-                    <Megaphone className="mr-2 h-4 w-4" />
-                    <span>Marketing</span>
-                  </div>
-                  <ChevronDown className="h-4 w-4" />
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Campaigns</SidebarLink>
-                  <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
-                  <SidebarLink to="/content" icon={<Library />}>Library</SidebarLink>
-                  <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
-                </CollapsibleContent>
-              </Collapsible>
+              <div className="flex items-center px-3 py-2 text-sm font-semibold text-gray-800 uppercase tracking-wider">
+                <Megaphone className="mr-2 h-4 w-4" />
+                <span>Marketing</span>
+              </div>
+              <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Campaigns</SidebarLink>
+              <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
+              <SidebarLink to="/content" icon={<Library />}>Library</SidebarLink>
+              <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
             </SidebarGroup>
             
-            {/* Messages (Standalone) */}
+            {/* INSIGHTS Section - now with static heading */}
             <SidebarGroup>
-              <SidebarLink to="/messages" icon={<MessageSquare />}>Messages</SidebarLink>
+              <div className="flex items-center px-3 py-2 text-sm font-semibold text-gray-800 uppercase tracking-wider">
+                <BarChart3 className="mr-2 h-4 w-4" />
+                <span>Insights</span>
+              </div>
+              <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
+              <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
             </SidebarGroup>
             
-            {/* INSIGHTS Section */}
+            {/* Unified Social Inbox (Moved below INSIGHTS) */}
             <SidebarGroup>
-              <Collapsible className="w-full">
-                <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                  <div className="flex items-center">
-                    <BarChart3 className="mr-2 h-4 w-4" />
-                    <span>Insights</span>
-                  </div>
-                  <ChevronDown className="h-4 w-4" />
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarLink to="/analytics" icon={<BarChart3 />}>Analytics</SidebarLink>
-                  <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
-                </CollapsibleContent>
-              </Collapsible>
+              <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
             </SidebarGroup>
           </SidebarContent>
           <SidebarFooter>
             {/* Settings Section */}
             <div className="px-3 py-2 border-t border-gray-100">
-              <Collapsible className="w-full">
-                <CollapsibleTrigger className="flex items-center justify-between w-full rounded-md px-3 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">
-                  <div className="flex items-center">
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </div>
-                  <ChevronDown className="h-4 w-4" />
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="pl-6 space-y-1 mt-1">
-                    <SidebarLink to="/team" icon={<Users />}>Team</SidebarLink>
-                    <SidebarLink to="/integrations" icon={<Plug />}>Integrations</SidebarLink>
-                    <SidebarLink to="/brand-kit" icon={<Palette />}>Brand Kit</SidebarLink>
-                    <SidebarLink to="/account" icon={<UserCircle />}>Account</SidebarLink>
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
+              <SidebarLink to="/settings" icon={<Settings />}>Settings</SidebarLink>
+              <div className="pl-6 space-y-1 mt-1">
+                <SidebarLink to="/team" icon={<Users />}>Team</SidebarLink>
+                <SidebarLink to="/integrations" icon={<Plug />}>Integrations</SidebarLink>
+                <SidebarLink to="/brand-kit" icon={<Palette />}>Brand Kit</SidebarLink>
+                <SidebarLink to="/account" icon={<UserCircle />}>Account</SidebarLink>
+              </div>
             </div>
             <div className="flex items-center justify-between px-3 py-2">
               <div className="flex items-center">
@@ -264,7 +233,7 @@ const Navbar = () => {
               </div>
             </div>
           </header>
-          <main className="flex-1">{/* The Outlet component from Layout will render here */}</main>
+          <main className="flex-1"><Outlet /></main>
         </div>
       </div>
     </SidebarProvider>

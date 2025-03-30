@@ -34,12 +34,12 @@ function App() {
         <Route path="content" element={<Content />} />
         <Route path="approvals" element={<Approvals />} />
         
-        {/* Standalone */}
-        <Route path="messages" element={<Messages />} />
-        
         {/* Insights Section */}
         <Route path="analytics" element={<Analytics />} />
         <Route path="market-intelligence" element={<MarketIntelligence />} />
+        
+        {/* Standalone - Unified Social Inbox */}
+        <Route path="messages" element={<Messages />} />
         
         {/* Settings Section and Sub-pages */}
         <Route path="settings" element={<Settings />} />

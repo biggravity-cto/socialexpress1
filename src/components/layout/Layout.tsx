@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, Link, Outlet } from 'react-router-dom';
 import { 
@@ -18,8 +17,6 @@ import {
   LineChart,
   Bell,
   Megaphone,
-  ChevronDown,
-  PanelLeft,
   Plug,
   Palette,
   UserCircle,
@@ -31,9 +28,8 @@ import { cn } from '@/lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Badge } from '@/components/ui/badge';
 import RecentActivity from '../dashboard/RecentActivity';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
-// Reorganized menu structure with new grouping
+// Reorganized menu structure with new grouping and order
 const navItems = [
   {
     name: 'Dashboard',
@@ -42,7 +38,7 @@ const navItems = [
     standalone: true
   },
   {
-    group: "Marketing",
+    group: "MARKETING",
     icon: <Megaphone className="h-5 w-5" />,
     items: [
       {
@@ -72,13 +68,7 @@ const navItems = [
     ]
   },
   {
-    name: 'Messages',
-    path: '/messages',
-    icon: <MessageSquare className="h-5 w-5" />,
-    standalone: true
-  },
-  {
-    group: "Insights",
+    group: "INSIGHTS",
     icon: <BarChart3 className="h-5 w-5" />,
     items: [
       {
@@ -94,6 +84,12 @@ const navItems = [
         description: 'Competitor & trend analysis'
       }
     ]
+  },
+  {
+    name: 'Unified Social Inbox',
+    path: '/messages',
+    icon: <MessageSquare className="h-5 w-5" />,
+    standalone: true
   }
 ];
 
@@ -134,20 +130,6 @@ const Layout = () => {
     }
     return !isMobile; // Default state based on device
   });
-
-  // State for expanded section groups
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    Marketing: true,
-    Insights: true
-  });
-
-  // Toggle section group expanded state
-  const toggleGroup = (group: string) => {
-    setExpandedGroups(prev => ({
-      ...prev,
-      [group]: !prev[group]
-    }));
-  };
 
   // Auto-collapse sidebar on mobile, and respect user preference on desktop
   useEffect(() => {
@@ -199,48 +181,37 @@ const Layout = () => {
               );
             }
             
-            // Group items
+            // Group items - now as static headings
             if (item.group) {
-              const isExpanded = expandedGroups[item.group];
               return (
                 <div key={item.group} className="space-y-1">
-                  <Collapsible 
-                    open={isExpanded} 
-                    onOpenChange={() => toggleGroup(item.group)}
-                    className="w-full"
-                  >
-                    <CollapsibleTrigger asChild>
-                      <button 
-                        className={`w-full flex items-center justify-between px-2 py-2 text-sm font-medium rounded-md transition-colors text-gray-600 hover:bg-gray-100 ${
-                          item.items?.some(subItem => location.pathname === subItem.path) ? "bg-gray-100" : ""
+                  {/* Group header as static label */}
+                  <div className="px-2 py-2 text-sm font-semibold text-gray-800">
+                    <div className="flex items-center">
+                      <span className="mr-3">{item.icon}</span>
+                      {sidebarOpen && (
+                        <span className="uppercase text-xs tracking-wider">{item.group}</span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Group items */}
+                  <div className="space-y-1 mt-1">
+                    {item.items?.map(subItem => (
+                      <Link
+                        key={subItem.path}
+                        to={subItem.path}
+                        className={`flex items-center px-2 py-2 ${sidebarOpen ? 'pl-10' : 'pl-2 justify-center'} text-sm font-medium rounded-md transition-colors ${
+                          location.pathname === subItem.path 
+                            ? "bg-ocean-50 text-ocean-600" 
+                            : "text-gray-600 hover:bg-gray-100"
                         }`}
                       >
-                        <div className="flex items-center">
-                          <span className="mr-3">{item.icon}</span>
-                          {sidebarOpen && (
-                            <span className="font-semibold uppercase text-xs tracking-wider">{item.group}</span>
-                          )}
-                        </div>
-                        {sidebarOpen && <ChevronDown className={`h-4 w-4 transition-transform ${isExpanded ? 'transform rotate-180' : ''}`} />}
-                      </button>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="space-y-1 mt-1">
-                      {item.items?.map(subItem => (
-                        <Link
-                          key={subItem.path}
-                          to={subItem.path}
-                          className={`flex items-center px-2 py-2 ${sidebarOpen ? 'pl-10' : 'pl-2 justify-center'} text-sm font-medium rounded-md transition-colors ${
-                            location.pathname === subItem.path 
-                              ? "bg-ocean-50 text-ocean-600" 
-                              : "text-gray-600 hover:bg-gray-100"
-                          }`}
-                        >
-                          <span className={sidebarOpen ? "mr-3" : ""}>{subItem.icon}</span>
-                          {sidebarOpen && <span>{subItem.name}</span>}
-                        </Link>
-                      ))}
-                    </CollapsibleContent>
-                  </Collapsible>
+                        <span className={sidebarOpen ? "mr-3" : ""}>{subItem.icon}</span>
+                        {sidebarOpen && <span>{subItem.name}</span>}
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               );
             }
@@ -251,42 +222,38 @@ const Layout = () => {
       </div>
       
       <div className="border-t border-gray-100 pt-2">
-        {/* Settings section with expandable items */}
+        {/* Settings section with static items */}
         <div className="px-2">
-          <Collapsible className="w-full">
-            <CollapsibleTrigger asChild>
+          {/* Settings header as static label */}
+          <Link
+            to="/settings"
+            className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
+              location.pathname === '/settings' || settingsItems.some(item => location.pathname === item.path)
+                ? "bg-ocean-50 text-ocean-600" 
+                : "text-gray-600 hover:bg-gray-100"
+            }`}
+          >
+            <Settings className="h-5 w-5 mr-3" />
+            {sidebarOpen && <span>Settings</span>}
+          </Link>
+          
+          {/* Settings sub-items */}
+          <div className="space-y-1 mt-1">
+            {settingsItems.map(item => (
               <Link
-                to="/settings"
-                className={`flex items-center justify-between px-2 py-2 text-sm font-medium rounded-md transition-colors ${
-                  location.pathname === '/settings' || settingsItems.some(item => location.pathname === item.path)
+                key={item.path}
+                to={item.path}
+                className={`flex items-center px-2 py-2 ${sidebarOpen ? 'pl-10' : 'pl-2 justify-center'} text-sm font-medium rounded-md transition-colors ${
+                  location.pathname === item.path 
                     ? "bg-ocean-50 text-ocean-600" 
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
-                <div className="flex items-center">
-                  <Settings className="h-5 w-5 mr-3" />
-                  {sidebarOpen && <span>Settings</span>}
-                </div>
-                {sidebarOpen && <ChevronDown className="h-4 w-4" />}
+                <span className={sidebarOpen ? "mr-3" : ""}>{item.icon}</span>
+                {sidebarOpen && <span>{item.name}</span>}
               </Link>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-1 mt-1">
-              {settingsItems.map(item => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center px-2 py-2 ${sidebarOpen ? 'pl-10' : 'pl-2 justify-center'} text-sm font-medium rounded-md transition-colors ${
-                    location.pathname === item.path 
-                      ? "bg-ocean-50 text-ocean-600" 
-                      : "text-gray-600 hover:bg-gray-100"
-                  }`}
-                >
-                  <span className={sidebarOpen ? "mr-3" : ""}>{item.icon}</span>
-                  {sidebarOpen && <span>{item.name}</span>}
-                </Link>
-              ))}
-            </CollapsibleContent>
-          </Collapsible>
+            ))}
+          </div>
         </div>
       </div>
     </div>
