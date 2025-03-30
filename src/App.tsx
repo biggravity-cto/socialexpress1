@@ -1,5 +1,6 @@
 
 import { Route, Routes } from 'react-router-dom'
+import { AuthProvider } from './contexts/AuthContext'
 import Layout from '@/components/layout/Layout'
 import Index from '@/pages/Index'
 import Dashboard from '@/pages/Dashboard'
@@ -14,6 +15,7 @@ import Team from '@/pages/Team'
 import Settings from '@/pages/Settings'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
+import Auth from '@/pages/Auth'
 import Posts from '@/pages/Posts'
 import Features from '@/pages/Features'
 import Pricing from '@/pages/Pricing'
@@ -23,39 +25,42 @@ import CaseStudies from '@/pages/CaseStudies'
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Index />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        
-        {/* Marketing Section */}
-        <Route path="campaigns" element={<Campaigns />} />
-        <Route path="calendar" element={<Calendar />} />
-        <Route path="content" element={<Content />} />
-        <Route path="approvals" element={<Approvals />} />
-        
-        {/* Insights Section */}
-        <Route path="analytics" element={<Analytics />} />
-        <Route path="market-intelligence" element={<MarketIntelligence />} />
-        
-        {/* Standalone - Unified Social Inbox */}
-        <Route path="messages" element={<Messages />} />
-        
-        {/* Settings and Team Pages */}
-        <Route path="settings" element={<Settings />} />
-        <Route path="team" element={<Team />} />
-        
-        {/* Public/Marketing Pages */}
-        <Route path="login" element={<Login />} />
-        <Route path="posts" element={<Posts />} />
-        <Route path="features" element={<Features />} />
-        <Route path="pricing" element={<Pricing />} />
-        <Route path="blog" element={<Blog />} />
-        <Route path="guides" element={<Guides />} />
-        <Route path="case-studies" element={<CaseStudies />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Index />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          
+          {/* Marketing Section */}
+          <Route path="campaigns" element={<Campaigns />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="content" element={<Content />} />
+          <Route path="approvals" element={<Approvals />} />
+          
+          {/* Insights Section */}
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="market-intelligence" element={<MarketIntelligence />} />
+          
+          {/* Standalone - Unified Social Inbox */}
+          <Route path="messages" element={<Messages />} />
+          
+          {/* Settings and Team Pages */}
+          <Route path="settings" element={<Settings />} />
+          <Route path="team" element={<Team />} />
+          
+          {/* Public/Marketing Pages */}
+          <Route path="login" element={<Login />} />
+          <Route path="auth" element={<Auth />} />
+          <Route path="posts" element={<Posts />} />
+          <Route path="features" element={<Features />} />
+          <Route path="pricing" element={<Pricing />} />
+          <Route path="blog" element={<Blog />} />
+          <Route path="guides" element={<Guides />} />
+          <Route path="case-studies" element={<CaseStudies />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   )
 }
 

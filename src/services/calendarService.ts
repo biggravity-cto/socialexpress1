@@ -1,6 +1,269 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { Campaign, Post, PostCreationData, isPlatform, isStatus } from '@/types/calendar';
+
+// Campaigns
+export const fetchCampaigns = async (): Promise<Campaign[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('campaigns')
+      .select('*')
+      .order('startdate', { ascending: true });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching campaigns:', error);
+    return [];
+  }
+};
+
+export const createCampaign = async (campaignData: Omit<Campaign, 'id'>): Promise<Campaign | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('campaigns')
+      .insert([campaignData])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error creating campaign:', error);
+    return null;
+  }
+};
+
+export const updateCampaign = async (id: string, updates: Partial<Campaign>): Promise<Campaign | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('campaigns')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error updating campaign:', error);
+    return null;
+  }
+};
+
+export const deleteCampaign = async (id: string): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('campaigns')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error deleting campaign:', error);
+    return false;
+  }
+};
+
+// Posts
+export const fetchPosts = async (): Promise<Post[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*')
+      .order('date', { ascending: true });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    return [];
+  }
+};
+
+export const createPost = async (postData: PostCreationData): Promise<Post | null> => {
+  try {
+    // Add current user ID as author_id if not provided
+    let newPostData = { ...postData };
+    if (!newPostData.author_id) {
+      const { user } = (await supabase.auth.getSession()).data.session || {};
+      if (user) {
+        newPostData.author_id = user.id;
+      }
+    }
+    
+    const { data, error } = await supabase
+      .from('posts')
+      .insert([newPostData])
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error creating post:', error);
+    return null;
+  }
+};
+
+export const updatePost = async (id: string, updates: Partial<Post>): Promise<Post | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('posts')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error updating post:', error);
+    return null;
+  }
+};
+
+export const deletePost = async (id: string): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', id);
+    
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    return false;
+  }
+};
+
+// Approvals
+export const requestApproval = async (postId: string): Promise<boolean> => {
+  try {
+    const { user } = (await supabase.auth.getSession()).data.session || {};
+    if (!user) throw new Error('Not authenticated');
+    
+    // Update post status to pending_approval
+    await supabase
+      .from('posts')
+      .update({ status: 'pending_approval' })
+      .eq('id', postId);
+    
+    // Create approval request
+    const { error } = await supabase
+      .from('approvals')
+      .insert([{
+        post_id: postId,
+        requested_by: user.id,
+        status: 'pending'
+      }]);
+    
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error requesting approval:', error);
+    return false;
+  }
+};
+
+export const approvePost = async (approvalId: string, feedback?: string): Promise<boolean> => {
+  try {
+    const { user } = (await supabase.auth.getSession()).data.session || {};
+    if (!user) throw new Error('Not authenticated');
+    
+    // Get the post ID from the approval
+    const { data: approval, error: approvalError } = await supabase
+      .from('approvals')
+      .select('post_id')
+      .eq('id', approvalId)
+      .single();
+    
+    if (approvalError) throw approvalError;
+    
+    // Update approval status
+    const { error: updateError } = await supabase
+      .from('approvals')
+      .update({
+        status: 'approved',
+        approved_by: user.id,
+        feedback
+      })
+      .eq('id', approvalId);
+    
+    if (updateError) throw updateError;
+    
+    // Update post status
+    await supabase
+      .from('posts')
+      .update({ status: 'scheduled' })
+      .eq('id', approval.post_id);
+    
+    return true;
+  } catch (error) {
+    console.error('Error approving post:', error);
+    return false;
+  }
+};
+
+export const rejectPost = async (approvalId: string, feedback: string): Promise<boolean> => {
+  try {
+    const { user } = (await supabase.auth.getSession()).data.session || {};
+    if (!user) throw new Error('Not authenticated');
+    
+    // Get the post ID from the approval
+    const { data: approval, error: approvalError } = await supabase
+      .from('approvals')
+      .select('post_id')
+      .eq('id', approvalId)
+      .single();
+    
+    if (approvalError) throw approvalError;
+    
+    // Update approval status
+    const { error: updateError } = await supabase
+      .from('approvals')
+      .update({
+        status: 'rejected',
+        approved_by: user.id,
+        feedback
+      })
+      .eq('id', approvalId);
+    
+    if (updateError) throw updateError;
+    
+    // Update post status
+    await supabase
+      .from('posts')
+      .update({ status: 'draft' })
+      .eq('id', approval.post_id);
+    
+    return true;
+  } catch (error) {
+    console.error('Error rejecting post:', error);
+    return false;
+  }
+};
+
+export const fetchApprovalRequests = async (): Promise<any[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('approvals')
+      .select(`
+        *,
+        posts (*),
+        requested_by:profiles!approvals_requested_by_fkey (first_name, last_name),
+        approved_by:profiles!approvals_approved_by_fkey (first_name, last_name)
+      `)
+      .order('created_at', { ascending: false });
+    
+    if (error) throw error;
+    return data || [];
+  } catch (error) {
+    console.error('Error fetching approval requests:', error);
+    return [];
+  }
+};
 
 // Mock campaigns data
 const mockCampaigns: Campaign[] = [
@@ -125,137 +388,3 @@ const mockPosts: Post[] = [
     content: 'Get an exclusive look behind the scenes of our creative process.'
   }
 ];
-
-// Campaigns
-export const fetchCampaigns = async (): Promise<Campaign[]> => {
-  try {
-    // In a real app, we would fetch from Supabase
-    // const { data, error } = await supabase
-    //   .from('campaigns')
-    //   .select('*')
-    //   .order('startdate', { ascending: true });
-    
-    // if (error) throw error;
-    // return data || [];
-    
-    // For now, return mock data
-    return mockCampaigns;
-  } catch (error) {
-    console.error('Error fetching campaigns:', error);
-    return [];
-  }
-};
-
-export const createCampaign = async (campaignData: Omit<Campaign, 'id'>): Promise<Campaign | null> => {
-  try {
-    // Simulate API call
-    const newCampaign: Campaign = {
-      ...campaignData,
-      id: Math.random().toString(36).substring(2, 9),
-    };
-    
-    mockCampaigns.push(newCampaign);
-    return newCampaign;
-  } catch (error) {
-    console.error('Error creating campaign:', error);
-    return null;
-  }
-};
-
-export const updateCampaign = async (id: string, updates: Partial<Campaign>): Promise<Campaign | null> => {
-  try {
-    // Simulate API call
-    const index = mockCampaigns.findIndex(c => c.id === id);
-    if (index === -1) throw new Error('Campaign not found');
-    
-    mockCampaigns[index] = { ...mockCampaigns[index], ...updates };
-    return mockCampaigns[index];
-  } catch (error) {
-    console.error('Error updating campaign:', error);
-    return null;
-  }
-};
-
-export const deleteCampaign = async (id: string): Promise<boolean> => {
-  try {
-    // Simulate API call
-    const initialLength = mockCampaigns.length;
-    const filteredCampaigns = mockCampaigns.filter(c => c.id !== id);
-    
-    // Update the array
-    mockCampaigns.length = 0;
-    mockCampaigns.push(...filteredCampaigns);
-    
-    return initialLength > mockCampaigns.length;
-  } catch (error) {
-    console.error('Error deleting campaign:', error);
-    return false;
-  }
-};
-
-// Posts
-export const fetchPosts = async (): Promise<Post[]> => {
-  try {
-    // In a real app, we would fetch from Supabase
-    // const { data, error } = await supabase
-    //   .from('posts')
-    //   .select('*')
-    //   .order('date', { ascending: true });
-    
-    // if (error) throw error;
-    // return data || [];
-    
-    // For now, return mock data
-    return mockPosts;
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    return [];
-  }
-};
-
-export const createPost = async (postData: PostCreationData): Promise<Post | null> => {
-  try {
-    // Simulate API call
-    const newPost: Post = {
-      ...postData,
-      id: Math.random().toString(36).substring(2, 9),
-    };
-    
-    mockPosts.push(newPost);
-    return newPost;
-  } catch (error) {
-    console.error('Error creating post:', error);
-    return null;
-  }
-};
-
-export const updatePost = async (id: string, updates: Partial<Post>): Promise<Post | null> => {
-  try {
-    // Simulate API call
-    const index = mockPosts.findIndex(p => p.id === id);
-    if (index === -1) throw new Error('Post not found');
-    
-    mockPosts[index] = { ...mockPosts[index], ...updates };
-    return mockPosts[index];
-  } catch (error) {
-    console.error('Error updating post:', error);
-    return null;
-  }
-};
-
-export const deletePost = async (id: string): Promise<boolean> => {
-  try {
-    // Simulate API call
-    const initialLength = mockPosts.length;
-    const filteredPosts = mockPosts.filter(p => p.id !== id);
-    
-    // Update the array
-    mockPosts.length = 0;
-    mockPosts.push(...filteredPosts);
-    
-    return initialLength > mockPosts.length;
-  } catch (error) {
-    console.error('Error deleting post:', error);
-    return false;
-  }
-};
