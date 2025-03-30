@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Calendar as CalendarView } from '@/components/dashboard/CalendarView';
+import { CalendarView } from '@/components/dashboard/CalendarView';
 import { fetchCampaigns, fetchPosts, createPost, updatePost, deletePost } from '@/services/calendarService';
 import { Campaign, Post } from '@/types/calendar';
 import { useToast } from "@/hooks/use-toast";
