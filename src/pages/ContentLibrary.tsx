@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -493,4 +494,216 @@ const ContentLibrary = () => {
       <Tabs defaultValue="all">
         <TabsList className="mb-4">
           <TabsTrigger value="all">All Content</TabsTrigger>
-          <TabsTrigger value="images">
+          <TabsTrigger value="images">Images</TabsTrigger>
+          <TabsTrigger value="videos">Videos</TabsTrigger>
+          <TabsTrigger value="documents">Documents</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="all">
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
+            {contentItems.map((item) => (
+              viewMode === 'grid' ? (
+                <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="relative h-40 bg-gray-100">
+                    <div className="absolute top-2 right-2 flex space-x-1 z-10">
+                      <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
+                      {item.platform && (
+                        <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
+                          {getPlatformIcon(item.platform)}
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-sm p-1 rounded-md z-10">
+                      {getIcon(item.type)}
+                    </div>
+                    {item.thumbnail && (
+                      <img 
+                        src={item.thumbnail} 
+                        alt={item.title}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
+                    <div className="flex justify-between items-center">
+                      <p className="text-xs text-gray-500">{item.date}</p>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem>
+                            <Copy className="mr-2 h-4 w-4" /> Copy
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Share2 className="mr-2 h-4 w-4" /> Share
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <Download className="mr-2 h-4 w-4" /> Download
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="text-red-600">
+                            <Trash2 className="mr-2 h-4 w-4" /> Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
+                </Card>
+              ) : (
+                <Card key={item.id} className="flex overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                  <div className="w-16 h-16 bg-gray-100 flex items-center justify-center shrink-0">
+                    {getIcon(item.type)}
+                  </div>
+                  <div className="p-3 flex-grow">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="font-medium text-sm mb-1">{item.title}</h3>
+                        <p className="text-xs text-gray-500">{item.date}</p>
+                      </div>
+                      <div className="flex space-x-1">
+                        <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
+                        {item.platform && (
+                          <Badge variant="outline" className="bg-white/80">
+                            {getPlatformIcon(item.platform)}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-2 flex items-center">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>
+                          <Copy className="mr-2 h-4 w-4" /> Copy
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Share2 className="mr-2 h-4 w-4" /> Share
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Download className="mr-2 h-4 w-4" /> Download
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600">
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </Card>
+              )
+            ))}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="images">
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
+            {contentItems.filter(item => item.type === 'image').map(item => (
+              // Similar card structure as above, but for images only
+              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="relative h-40 bg-gray-100">
+                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
+                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
+                    {item.platform && (
+                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
+                        {getPlatformIcon(item.platform)}
+                      </Badge>
+                    )}
+                  </div>
+                  {item.thumbnail && (
+                    <img 
+                      src={item.thumbnail} 
+                      alt={item.title}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+                <div className="p-3">
+                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs text-gray-500">{item.date}</p>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="videos">
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
+            {contentItems.filter(item => item.type === 'video').map(item => (
+              // Similar card structure as above, but for videos only
+              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="relative h-40 bg-gray-100">
+                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
+                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
+                    {item.platform && (
+                      <Badge variant="outline" className="bg-white/80 backdrop-blur-sm">
+                        {getPlatformIcon(item.platform)}
+                      </Badge>
+                    )}
+                  </div>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Video className="h-10 w-10 text-gray-400" />
+                  </div>
+                  {item.thumbnail && (
+                    <img 
+                      src={item.thumbnail} 
+                      alt={item.title}
+                      className="w-full h-full object-cover opacity-70"
+                    />
+                  )}
+                </div>
+                <div className="p-3">
+                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs text-gray-500">{item.date}</p>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="documents">
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4' : 'space-y-3'}>
+            {contentItems.filter(item => item.type === 'document').map(item => (
+              // Similar card structure as above, but for documents only
+              <Card key={item.id} className="overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+                <div className="relative h-40 bg-gray-50 flex items-center justify-center">
+                  <div className="absolute top-2 right-2 flex space-x-1 z-10">
+                    <Badge className={getStatusColor(item.status)} variant="outline">{item.status}</Badge>
+                  </div>
+                  <FileText className="h-16 w-16 text-gray-300" />
+                </div>
+                <div className="p-3">
+                  <h3 className="font-medium text-sm mb-1 truncate">{item.title}</h3>
+                  <div className="flex justify-between items-center">
+                    <p className="text-xs text-gray-500">{item.date}</p>
+                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
+    </motion.div>
+  );
+};
+
+export default ContentLibrary;
