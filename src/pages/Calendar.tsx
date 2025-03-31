@@ -1,6 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { fetchCampaigns, fetchPosts, createPost, updatePost, deletePost, getMockCampaigns, getMockPosts } from '@/services/calendarService';
+import { 
+  fetchCampaigns, 
+  fetchPosts, 
+  createPost, 
+  updatePost, 
+  deletePost, 
+  getMockCampaigns, 
+  getMockPosts 
+} from '@/services/calendar';
 import { Campaign, Post } from '@/types/calendar';
 import { useToast } from "@/hooks/use-toast";
 import { CalendarContainer } from '@/components/dashboard/calendar/CalendarContainer';
