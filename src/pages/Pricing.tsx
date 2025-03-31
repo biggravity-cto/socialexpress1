@@ -21,13 +21,13 @@ const Pricing = () => {
             transition={{ duration: 0.5 }}
           >
             <span className="inline-block bg-ocean-50 text-ocean-600 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-              Simple Pricing
+              Investment Plans
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-resort-900 mb-6">
-              Plans for <span className="text-ocean-600">Every Resort's Needs</span>
+              Strategic Solutions for <span className="text-ocean-600">Luxury Properties</span>
             </h1>
             <p className="text-lg text-resort-600">
-              Choose the perfect plan for your resort's social media management needs. No hidden fees, cancel anytime.
+              Select the perfect plan to elevate your property's marketing presence, attract premium guests, and drive revenue growth.
             </p>
           </motion.div>
           
@@ -84,22 +84,22 @@ const Pricing = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <h3 className="text-2xl font-bold text-resort-900 mb-4 text-center">Key Definitions & Notes</h3>
+            <h3 className="text-2xl font-bold text-resort-900 mb-4 text-center">Plan Details & Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold text-lg text-resort-800 mb-2">Content Definitions:</h4>
+                <h4 className="font-semibold text-lg text-resort-800 mb-2">Strategic Solution Components:</h4>
                 <ul className="space-y-2">
-                  <li className="text-resort-700"><span className="font-medium">Post:</span> A single social media update including caption, image/video, and hashtags.</li>
-                  <li className="text-resort-700"><span className="font-medium">Video Concept:</span> Storyboarding and AI-generated text for video content.</li>
-                  <li className="text-resort-700"><span className="font-medium">AI Usage:</span> AI credits reset monthly and don't roll over to the next period.</li>
+                  <li className="text-resort-700"><span className="font-medium">Premium Content:</span> High-quality, branded content pieces tailored for luxury hospitality.</li>
+                  <li className="text-resort-700"><span className="font-medium">Guest Journey Optimization:</span> Comprehensive analysis and enhancement of the complete booking funnel.</li>
+                  <li className="text-resort-700"><span className="font-medium">Revenue Optimization:</span> AI-driven tools to maximize RevPAR and occupancy with optimal pricing.</li>
                 </ul>
               </div>
               <div>
                 <h4 className="font-semibold text-lg text-resort-800 mb-2">Additional Information:</h4>
                 <ul className="space-y-2">
                   <li className="text-resort-700">All plans include a 14-day free trial with no credit card required.</li>
-                  <li className="text-resort-700">The Unified Social Inbox feature availability is subject to platform API approvals.</li>
-                  <li className="text-resort-700">Enterprise plans are customizable based on your specific needs.</li>
+                  <li className="text-resort-700">Dedicated onboarding support included with all plans.</li>
+                  <li className="text-resort-700">Enterprise plans include quarterly strategy sessions and full implementation support.</li>
                 </ul>
               </div>
             </div>
@@ -115,62 +115,63 @@ const Pricing = () => {
 // Updated pricing data
 const pricingPlans = [
   {
-    name: "Basic",
-    description: "Best for teams planning content ahead and handling posting manually.",
-    coreBenefit: "Plan your social calendar & create content efficiently offline.",
+    name: "Essentials",
+    description: "For boutique properties seeking to establish a strategic marketing foundation.",
+    coreBenefit: "Streamline your marketing workflow and create premium content.",
     price: "$399",
     period: "/month",
     buttonText: "Get Started",
     featured: false,
     features: [
-      "Visual Content Calendar",
-      "Content Library for photos & videos",
-      "AI assistance for captions & hashtags (basic limits)",
-      "Generate ideas/drafts for up to 12 Posts & 2 Video Concepts per month",
-      "Includes up to 2 Users",
-      "Download content easily to post yourself",
-      "Manual posting (no direct social media connection)"
+      "Intelligent Marketing Calendar",
+      "Premium Asset Library for photography & videos",
+      "AI-driven content suggestions for luxury positioning",
+      "Generate up to 15 premium content pieces monthly",
+      "Basic guest persona development",
+      "Export-ready content with brand guidelines",
+      "Includes 2 team member accounts"
     ]
   },
   {
-    name: "Pro",
-    description: "Best for teams wanting to automate publishing across key platforms and track results.",
-    coreBenefit: "Automate your social media workflow & measure performance.",
+    name: "Premium",
+    description: "For established properties looking to optimize all marketing channels and increase bookings.",
+    coreBenefit: "Maximize direct bookings and guest engagement across channels.",
     price: "$699",
     period: "/month",
     buttonText: "Start Free Trial",
     featured: true,
     features: [
-      "Everything in Basic, PLUS:",
-      "Link up to 5 Social Accounts (Instagram & Facebook)",
-      "Schedule posts to publish automatically",
-      "Track key metrics (likes, comments, reach, etc.)",
-      "Unified Social Inbox for comments & messages*",
-      "Streamline team review workflows",
-      "Basic AI help for Korean language content",
-      "Higher content generation (60 Posts/Month)",
-      "Up to 5 Users"
+      "Everything in Essentials, plus:",
+      "Integrated multi-channel campaign management",
+      "Advanced guest journey mapping and optimization",
+      "Revenue attribution analytics",
+      "Direct booking conversion optimization",
+      "Personalized luxury guest communications",
+      "Multi-language content support including Korean",
+      "Extended content generation (60 pieces monthly)",
+      "Up to 5 team member accounts"
     ],
-    disclaimer: "* Unified Inbox feature activation depends on platform approvals"
+    disclaimer: "* Advanced integrations may require technical setup assistance"
   },
   {
     name: "Enterprise",
-    description: "Best for larger resorts, groups, or agencies needing strategic tools, advanced AI, and full integration.",
-    coreBenefit: "Unlock strategic planning, advanced insights, and the full power of AI marketing.",
+    description: "For luxury hotel groups, resorts, and hospitality management companies.",
+    coreBenefit: "Complete marketing ecosystem with enhanced revenue optimization.",
     price: "Custom",
     period: " pricing",
     buttonText: "Contact Sales",
     featured: false,
     features: [
-      "Everything in Pro, PLUS:",
-      "AI-powered campaign planning tools",
-      "Competitor tracking & social sentiment analysis",
-      "Advanced Analytics & ROI Insights",
-      "Advanced AI content generation with image/video",
-      "Full Korean Market Features (Naver/Kakao focus)",
-      "Integration with PMS/CRM systems",
-      "Custom usage limits for posts, AI, users, accounts",
-      "Dedicated Account Management"
+      "Everything in Premium, plus:",
+      "Strategic AI-powered revenue forecasting",
+      "Competitive market intelligence dashboard",
+      "Luxury guest segmentation and targeting",
+      "Advanced personalization engine",
+      "Complete brand voice customization",
+      "PMS/CRM/Revenue Management integration",
+      "Custom reporting and white-labeled dashboards",
+      "Unlimited content generation and usage",
+      "Dedicated success manager"
     ]
   }
 ];

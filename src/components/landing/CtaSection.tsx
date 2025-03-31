@@ -20,19 +20,19 @@ const CtaSection: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-                  Ready to Transform Your Resort's Digital Marketing Strategy?
+                  Ready to Transform Your Luxury Resort's Occupancy Rates?
                 </h2>
                 <p className="text-lg text-ocean-100 mb-8">
-                  Join hundreds of hospitality brands already using our platform to boost direct bookings, increase guest loyalty, and maximize your marketing ROI.
+                  Join premium hospitality brands already using our platform to attract high-value guests, deliver exceptional experiences, and maximize your revenue potential.
                 </p>
                 
                 <ul className="space-y-4 mb-8">
                   {[
-                    'Comprehensive AI-powered marketing strategy',
-                    'Streamlined cross-channel campaign management',
-                    'Direct booking optimization analytics',
-                    'Unified guest engagement platform',
-                    'Cross-department collaboration tools'
+                    'AI-driven marketing strategy tailored for luxury hospitality',
+                    'Comprehensive guest journey optimization',
+                    'Direct booking enhancement with advanced analytics',
+                    'Streamlined operational efficiency across departments',
+                    'Personalized guest communication and engagement'
                   ].map((feature, index) => (
                     <li key={index} className="flex items-center text-white">
                       <CheckCircle className="h-5 w-5 mr-3 text-resort-200 flex-shrink-0" />
@@ -61,19 +61,19 @@ const CtaSection: React.FC = () => {
                     <div className="bg-white/10 p-5 rounded-xl backdrop-blur-sm">
                       <BrainCircuit className="h-10 w-10 text-white mb-3" />
                       <h3 className="text-xl font-semibold text-white mb-1">AI Strategy</h3>
-                      <p className="text-ocean-100">Build comprehensive marketing campaigns effortlessly</p>
+                      <p className="text-ocean-100">Targeted campaigns that attract your ideal guests</p>
                     </div>
                     
                     <div className="bg-white/10 p-5 rounded-xl backdrop-blur-sm">
                       <Calendar className="h-10 w-10 text-white mb-3" />
-                      <h3 className="text-xl font-semibold text-white mb-1">Unified Planning</h3>
-                      <p className="text-ocean-100">Coordinate all marketing channels in one place</p>
+                      <h3 className="text-xl font-semibold text-white mb-1">Revenue Growth</h3>
+                      <p className="text-ocean-100">Optimize pricing and maximize booking value</p>
                     </div>
                     
                     <div className="bg-white/10 p-5 rounded-xl backdrop-blur-sm">
                       <MessageSquare className="h-10 w-10 text-white mb-3" />
-                      <h3 className="text-xl font-semibold text-white mb-1">Guest Engagement</h3>
-                      <p className="text-ocean-100">Deliver consistent guest experiences across touchpoints</p>
+                      <h3 className="text-xl font-semibold text-white mb-1">Guest Loyalty</h3>
+                      <p className="text-ocean-100">Create personalized journeys that drive repeat visits</p>
                     </div>
                     
                     <div className="bg-white/10 p-5 rounded-xl backdrop-blur-sm">
@@ -81,7 +81,7 @@ const CtaSection: React.FC = () => {
                         <span className="text-white font-bold text-lg">+8</span>
                       </div>
                       <h3 className="text-xl font-semibold text-white mb-1">More Features</h3>
-                      <p className="text-ocean-100">Discover all our powerful tools</p>
+                      <p className="text-ocean-100">Comprehensive toolkit for luxury hospitality</p>
                     </div>
                   </div>
                 </div>

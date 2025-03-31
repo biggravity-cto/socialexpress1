@@ -24,9 +24,9 @@ const PublicNavbar = () => {
           BG Social Express
         </Link>
         <div className="hidden md:flex items-center space-x-6">
-          <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Platform</button>
+          <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Solutions</button>
           <button onClick={() => scrollToSection('pricing')} className="text-gray-600 hover:text-gray-900">Pricing</button>
-          <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Testimonials</button>
+          <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Success Stories</button>
           <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>
         </div>
         <div className="flex items-center space-x-3">
@@ -46,9 +46,9 @@ const PublicNavbar = () => {
       {isMenuOpen && isMobile && (
         <div className="absolute top-16 left-0 right-0 bg-white shadow-md p-4 md:hidden">
           <div className="flex flex-col space-y-4">
-            <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Platform</button>
+            <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Solutions</button>
             <button onClick={() => scrollToSection('pricing')} className="text-gray-600 hover:text-gray-900">Pricing</button>
-            <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Testimonials</button>
+            <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Success Stories</button>
             <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>
             <div className="pt-2 border-t border-gray-100">
               <Link to="/login" className="w-full">
