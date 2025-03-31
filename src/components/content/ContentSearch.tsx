@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, Grid, List, CheckCircle2, Trash2, Download, Share2 } from 'lucide-react';
+import { Search, Grid, List } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ContentSearchProps {
@@ -18,6 +18,7 @@ interface ContentSearchProps {
   setSelectedItems: (items: number[]) => void;
   handleBulkDelete: () => void;
   filteredItems: any[];
+  children?: React.ReactNode;
 }
 
 const ContentSearch: React.FC<ContentSearchProps> = ({
@@ -30,7 +31,8 @@ const ContentSearch: React.FC<ContentSearchProps> = ({
   selectedItems,
   setSelectedItems,
   handleBulkDelete,
-  filteredItems
+  filteredItems,
+  children
 }) => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -84,28 +86,8 @@ const ContentSearch: React.FC<ContentSearchProps> = ({
           </div>
         </div>
         
-        {/* Bulk Actions Bar - shows when items are selected */}
-        {selectedItems.length > 0 && (
-          <div className="flex items-center justify-between mt-4 p-2 bg-muted rounded-md">
-            <div className="text-sm">
-              <span className="font-medium">{selectedItems.length}</span> items selected
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => setSelectedItems([])}>
-                Cancel
-              </Button>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-1" /> Download
-              </Button>
-              <Button variant="outline" size="sm">
-                <Share2 className="h-4 w-4 mr-1" /> Share
-              </Button>
-              <Button variant="destructive" size="sm" onClick={handleBulkDelete}>
-                <Trash2 className="h-4 w-4 mr-1" /> Delete
-              </Button>
-            </div>
-          </div>
-        )}
+        {/* Bulk Actions Bar - passed as children */}
+        {children}
       </CardContent>
     </Card>
   );
