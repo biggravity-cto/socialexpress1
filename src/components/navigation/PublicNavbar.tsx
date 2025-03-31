@@ -29,12 +29,9 @@ const PublicNavbar = () => {
           <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Success Stories</button>
           <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>
         </div>
-        <div className="flex items-center space-x-3">
-          <Link to="/login">
-            <Button variant="outline">Log in</Button>
-          </Link>
-          <Link to="/login">
-            <Button>Sign up</Button>
+        <div className="flex items-center">
+          <Link to="/auth">
+            <Button>Get Started</Button>
           </Link>
         </div>
         {isMobile && (
@@ -51,8 +48,8 @@ const PublicNavbar = () => {
             <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Success Stories</button>
             <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>
             <div className="pt-2 border-t border-gray-100">
-              <Link to="/login" className="w-full">
-                <Button className="w-full">Log in</Button>
+              <Link to="/auth" className="w-full">
+                <Button className="w-full">Get Started</Button>
               </Link>
             </div>
           </div>

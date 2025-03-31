@@ -14,11 +14,11 @@ import Approvals from '@/pages/Approvals'
 import Team from '@/pages/Team'
 import Settings from '@/pages/Settings'
 import NotFound from '@/pages/NotFound'
-import Login from '@/pages/Login'
 import Auth from '@/pages/Auth'
 import EmailConfirmation from '@/pages/EmailConfirmation'
 import ForgotPassword from '@/pages/ForgotPassword'
 import { Toaster } from '@/components/ui/toaster'
+import { Navigate } from 'react-router-dom'
 
 function App() {
   return (
@@ -46,7 +46,7 @@ function App() {
           <Route path="/team" element={<Team />} />
           
           {/* Authentication Pages */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Navigate to="/auth" replace />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/email-confirmation" element={<EmailConfirmation />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

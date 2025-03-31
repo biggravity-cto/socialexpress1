@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ArrowRight, BrainCircuit, Calendar, MessageSquare, BarChart3, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 interface HeroSectionProps {
   scrollToFeatures: () => void;
@@ -57,13 +58,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="bg-ocean-600 hover:bg-ocean-700 h-12 px-6 rounded-lg"
-                >
-                  Sign up for early access <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+                <Link to="/auth">
+                  <Button 
+                    type="button" 
+                    size="lg" 
+                    className="bg-ocean-600 hover:bg-ocean-700 h-12 px-6 rounded-lg w-full sm:w-auto"
+                  >
+                    Get Started <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
               </form>
             </div>
             
