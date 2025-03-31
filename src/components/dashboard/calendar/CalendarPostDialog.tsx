@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { PostCreatorDialog } from '@/components/dashboard/calendar/PostCreatorDialog';
+import { PostCreatorDialog } from '@/components/dashboard/calendar/post-creator';
 import { Post, Campaign } from '@/types/calendar';
 
 interface CalendarPostDialogProps {
