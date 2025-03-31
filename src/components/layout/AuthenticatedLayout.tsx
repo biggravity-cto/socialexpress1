@@ -1,13 +1,17 @@
 
-import React, { useState, useEffect } from 'react';
-import { useLocation, Outlet } from 'react-router-dom';
+import React, { useState, useEffect, ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
 import DesktopSidebar from './DesktopSidebar';
 import MobileSidebar from './MobileSidebar';
 import DesktopHeader from './DesktopHeader';
 import NotificationButton from './NotificationButton';
 
-const AuthenticatedLayout = () => {
+interface AuthenticatedLayoutProps {
+  children: ReactNode;
+}
+
+const AuthenticatedLayout = ({ children }: AuthenticatedLayoutProps) => {
   const location = useLocation();
   const isMobile = useIsMobile();
   
@@ -60,7 +64,7 @@ const AuthenticatedLayout = () => {
         {/* Content with padding for mobile header */}
         <div className="flex-1 overflow-auto pt-14 md:pt-0">
           <div className="p-4 md:p-6">
-            <Outlet />
+            {children}
           </div>
         </div>
       </div>

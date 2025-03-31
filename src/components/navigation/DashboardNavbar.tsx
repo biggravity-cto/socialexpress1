@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BellDot, LogOut, Settings, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -109,7 +109,7 @@ const DashboardNavbar = () => {
               </div>
             </div>
           </header>
-          <main className="flex-1"><Outlet /></main>
+          <main className="flex-1"></main>
         </div>
       </div>
     </SidebarProvider>

@@ -1,6 +1,6 @@
 
 import React, { useEffect } from 'react';
-import { useLocation, Navigate, useNavigate } from 'react-router-dom';
+import { useLocation, Navigate, useNavigate, Outlet } from 'react-router-dom';
 import AuthenticatedLayout from './AuthenticatedLayout';
 import PublicLayout from './PublicLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -33,7 +33,11 @@ const Layout = () => {
   
   // For public pages like home, login, pricing, etc.
   if (isPublicPage) {
-    return <PublicLayout isLoginPage={isLoginPage} />;
+    return (
+      <PublicLayout isLoginPage={isLoginPage}>
+        <Outlet />
+      </PublicLayout>
+    );
   }
 
   // Redirect to login if not authenticated
@@ -42,7 +46,11 @@ const Layout = () => {
   }
 
   // For authenticated pages (dashboard, calendar, etc.)
-  return <AuthenticatedLayout />;
+  return (
+    <AuthenticatedLayout>
+      <Outlet />
+    </AuthenticatedLayout>
+  );
 };
 
 export default Layout;

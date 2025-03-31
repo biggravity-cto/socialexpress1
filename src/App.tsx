@@ -24,32 +24,32 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Index />} />
-          <Route path="dashboard" element={<Dashboard />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Index />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           
           {/* Marketing Section */}
-          <Route path="campaigns" element={<Campaigns />} />
-          <Route path="calendar" element={<Calendar />} />
-          <Route path="content" element={<Content />} />
-          <Route path="approvals" element={<Approvals />} />
+          <Route path="/campaigns" element={<Campaigns />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/content" element={<Content />} />
+          <Route path="/approvals" element={<Approvals />} />
           
           {/* Insights Section */}
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="market-intelligence" element={<MarketIntelligence />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/market-intelligence" element={<MarketIntelligence />} />
           
           {/* Standalone - Unified Social Inbox */}
-          <Route path="messages" element={<Messages />} />
+          <Route path="/messages" element={<Messages />} />
           
           {/* Settings and Team Pages */}
-          <Route path="settings" element={<Settings />} />
-          <Route path="team" element={<Team />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/team" element={<Team />} />
           
           {/* Authentication Pages */}
-          <Route path="login" element={<Login />} />
-          <Route path="auth" element={<Auth />} />
-          <Route path="email-confirmation" element={<EmailConfirmation />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/email-confirmation" element={<EmailConfirmation />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
           
           <Route path="*" element={<NotFound />} />
         </Route>
