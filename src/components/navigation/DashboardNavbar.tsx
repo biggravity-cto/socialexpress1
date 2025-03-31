@@ -18,8 +18,42 @@ import {
   SidebarTrigger 
 } from '@/components/ui/sidebar';
 import SidebarNavigation from './SidebarNavigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const DashboardNavbar = () => {
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out",
+        description: "You have been successfully signed out",
+      });
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+  };
+
+  // Create initials from user email or name
+  const getInitials = () => {
+    if (user?.user_metadata?.full_name) {
+      return user.user_metadata.full_name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase();
+    }
+    
+    if (user?.email) {
+      return user.email.substring(0, 2).toUpperCase();
+    }
+    
+    return 'BG';
+  };
+  
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
@@ -42,8 +76,8 @@ const DashboardNavbar = () => {
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src="/placeholder.svg" />
-                        <AvatarFallback>JD</AvatarFallback>
+                        <AvatarImage src={user?.user_metadata?.avatar_url || "/placeholder.svg"} />
+                        <AvatarFallback>{getInitials()}</AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
@@ -63,7 +97,10 @@ const DashboardNavbar = () => {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem className="text-red-600">
+                    <DropdownMenuItem 
+                      className="text-red-600 cursor-pointer"
+                      onClick={handleSignOut}
+                    >
                       <LogOut className="mr-2 h-4 w-4" />
                       <span>Log out</span>
                     </DropdownMenuItem>

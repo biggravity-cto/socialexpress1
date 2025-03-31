@@ -29,7 +29,7 @@ const mainNavItems = [
     icon: <BrainCircuit className="h-5 w-5" />
   },
   {
-    name: 'Calendar',
+    name: 'Content Calendar',
     path: '/calendar',
     icon: <Calendar className="h-5 w-5" />
   },
