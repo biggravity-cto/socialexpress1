@@ -15,12 +15,20 @@ const Layout = () => {
   const isPublicPage = publicPages.includes(location.pathname);
   const isLoginPage = location.pathname === '/login' || location.pathname === '/auth' || location.pathname === '/email-confirmation';
   
+  // Check if this is an auth callback URL
+  const hasAuthParams = 
+    (location.hash && (location.hash.includes('access_token') || location.hash.includes('error'))) || 
+    (location.search && (location.search.includes('access_token') || location.search.includes('error')));
+  
+  // If we're on an authentication path with auth parameters, don't redirect yet
+  const isHandlingAuth = isLoginPage && hasAuthParams;
+  
   // Redirect to dashboard when user logs in
   useEffect(() => {
-    if (user && isLoginPage) {
+    if (user && isLoginPage && !isHandlingAuth) {
       navigate('/dashboard');
     }
-  }, [user, isLoginPage, navigate]);
+  }, [user, isLoginPage, isHandlingAuth, navigate]);
 
   // Show loading state
   if (loading) {
@@ -31,8 +39,8 @@ const Layout = () => {
     );
   }
   
-  // For public pages like home, login, pricing, etc.
-  if (isPublicPage) {
+  // For auth callback handling or public pages
+  if (isHandlingAuth || isPublicPage) {
     return (
       <PublicLayout isLoginPage={isLoginPage}>
         <Outlet />
@@ -40,7 +48,7 @@ const Layout = () => {
     );
   }
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated and trying to access protected page
   if (!user) {
     return <Navigate to="/auth" replace />;
   }

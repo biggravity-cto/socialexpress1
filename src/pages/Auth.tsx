@@ -1,21 +1,43 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRedirectIfAuthenticated } from '@/hooks/useAuthCheck';
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import LoginForm from '@/components/auth/LoginForm';
 import SignupForm from '@/components/auth/SignupForm';
 import EmailConfirmationHandler from '@/components/auth/EmailConfirmationHandler';
+import { supabase } from '@/integrations/supabase/client';
 
 const Auth = () => {
-  useRedirectIfAuthenticated();
+  const location = useLocation();
   const [error, setError] = useState<string | null>(null);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const { isAuthenticated, loading: authCheckLoading } = useRedirectIfAuthenticated();
   
   const handleError = (errorMessage: string) => {
     setError(errorMessage);
   };
+
+  // Check if this is an auth callback URL
+  useEffect(() => {
+    const hasAuthParams = 
+      (location.hash && (location.hash.includes('access_token') || location.hash.includes('error'))) || 
+      (location.search && (location.search.includes('access_token') || location.search.includes('error')));
+    
+    setIsAuthenticating(hasAuthParams);
+  }, [location]);
+
+  // If we're handling authentication, don't show the form yet
+  if (isAuthenticating || authCheckLoading) {
+    return <EmailConfirmationHandler />;
+  }
+
+  // If already authenticated, the useRedirectIfAuthenticated hook will handle the redirect
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <motion.div
@@ -24,9 +46,6 @@ const Auth = () => {
       transition={{ duration: 0.3 }}
       className="w-full max-w-md mx-auto pt-20 px-4"
     >
-      {/* Handle email confirmation redirects */}
-      <EmailConfirmationHandler />
-      
       <Card className="p-6">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-resort-800">BG Social Express</h1>
