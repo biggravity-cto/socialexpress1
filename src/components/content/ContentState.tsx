@@ -13,6 +13,11 @@ interface ContentStateProps {
   viewMode?: 'grid' | 'list';
   setContentType: (type: 'post' | 'image' | 'video' | 'document') => void;
   setShowCreateContentDialog: (show: boolean) => void;
+  // Add the missing props required by ContentListItem and ContentGridItem
+  selectedItems: number[];
+  toggleItemSelection: (id: number) => void;
+  setContentItems: React.Dispatch<React.SetStateAction<ContentItem[]>>;
+  toast: any;
 }
 
 const ContentState: React.FC<ContentStateProps> = ({
@@ -21,7 +26,12 @@ const ContentState: React.FC<ContentStateProps> = ({
   searchQuery,
   viewMode = 'grid',
   setContentType,
-  setShowCreateContentDialog
+  setShowCreateContentDialog,
+  // Add these props to the function parameters
+  selectedItems,
+  toggleItemSelection,
+  setContentItems,
+  toast
 }) => {
   if (loading) {
     return (
@@ -45,7 +55,14 @@ const ContentState: React.FC<ContentStateProps> = ({
     return (
       <div className="space-y-3">
         {filteredItems.map((item) => (
-          <ContentListItem key={item.id} item={item} />
+          <ContentListItem 
+            key={item.id} 
+            item={item} 
+            selectedItems={selectedItems}
+            toggleItemSelection={toggleItemSelection}
+            setContentItems={setContentItems}
+            toast={toast}
+          />
         ))}
       </div>
     );
@@ -54,7 +71,14 @@ const ContentState: React.FC<ContentStateProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {filteredItems.map((item) => (
-        <ContentGridItem key={item.id} item={item} />
+        <ContentGridItem 
+          key={item.id} 
+          item={item} 
+          selectedItems={selectedItems}
+          toggleItemSelection={toggleItemSelection}
+          setContentItems={setContentItems}
+          toast={toast}
+        />
       ))}
     </div>
   );

@@ -80,8 +80,13 @@ const Content = () => {
         loading={loading}
         filteredItems={filteredItems}
         searchQuery={searchQuery}
+        viewMode={viewMode}
         setContentType={setContentType}
         setShowCreateContentDialog={setShowCreateContentDialog}
+        selectedItems={selectedItems}
+        toggleItemSelection={toggleItemSelection}
+        setContentItems={setContentItems}
+        toast={toast}
       />
 
       {/* Content Tabs */}
