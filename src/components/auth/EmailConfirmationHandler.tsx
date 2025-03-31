@@ -22,22 +22,25 @@ const EmailConfirmationHandler = () => {
       if (hasAuthParams) {
         try {
           setLoading(true);
-          // This will automatically handle the token in the URL
+          console.log('Detected auth params in URL, attempting to process session');
+          
+          // Get the session - this will automatically process the token in the URL
           const { data, error } = await supabase.auth.getSession();
           
           if (error) {
-            console.error('Error in email confirmation:', error);
+            console.error('Error getting session after email confirmation:', error);
             throw error;
           }
           
           if (data.session) {
             console.log('Successfully authenticated with email confirmation');
-            // Successfully confirmed email and logged in, redirect to dashboard
+            // Successfully confirmed email and logged in, redirect to dashboard with slight delay
             setTimeout(() => {
               navigate('/dashboard');
-            }, 500); // Short delay to avoid navigation race conditions
+            }, 1000);
           } else {
-            throw new Error('No session data found after authentication');
+            console.log('No session found after processing auth params');
+            throw new Error('Authentication failed. Please try logging in manually.');
           }
         } catch (error: any) {
           console.error('Exception in email confirmation handling:', error);

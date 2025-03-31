@@ -21,7 +21,7 @@ const Layout = () => {
     (location.search && (location.search.includes('access_token') || location.search.includes('error')));
   
   // If we're on an authentication path with auth parameters, don't redirect yet
-  const isHandlingAuth = isLoginPage && hasAuthParams;
+  const isHandlingAuth = hasAuthParams;
   
   // Redirect to dashboard when user logs in
   useEffect(() => {

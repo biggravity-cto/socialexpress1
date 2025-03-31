@@ -8,7 +8,6 @@ import { Link, useLocation } from 'react-router-dom';
 import LoginForm from '@/components/auth/LoginForm';
 import SignupForm from '@/components/auth/SignupForm';
 import EmailConfirmationHandler from '@/components/auth/EmailConfirmationHandler';
-import { supabase } from '@/integrations/supabase/client';
 
 const Auth = () => {
   const location = useLocation();
@@ -26,17 +25,36 @@ const Auth = () => {
       (location.hash && (location.hash.includes('access_token') || location.hash.includes('error'))) || 
       (location.search && (location.search.includes('access_token') || location.search.includes('error')));
     
+    console.log('Checking for auth params:', { 
+      hash: location.hash, 
+      search: location.search,
+      hasAuthParams 
+    });
+    
     setIsAuthenticating(hasAuthParams);
   }, [location]);
 
   // If we're handling authentication, don't show the form yet
-  if (isAuthenticating || authCheckLoading) {
+  if (isAuthenticating) {
+    console.log('Showing EmailConfirmationHandler because we detected auth params');
     return <EmailConfirmationHandler />;
   }
 
   // If already authenticated, the useRedirectIfAuthenticated hook will handle the redirect
   if (isAuthenticated) {
     return null;
+  }
+
+  // Show loading state while checking auth
+  if (authCheckLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-ocean-600 border-b-ocean-600 border-r-transparent border-l-transparent border-2"></div>
+          <p className="mt-4 text-resort-600">Checking authentication status...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
