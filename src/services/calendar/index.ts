@@ -1,5 +1,5 @@
 
-// Re-export all calendar services for backward compatibility
-export * from './campaignService';
-export * from './postService';
-export * from './approvalService';
+// Re-export all calendar services from their respective modules
+export * from './campaigns';
+export * from './posts';
+export * from './approvals';
