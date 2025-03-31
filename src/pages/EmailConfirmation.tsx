@@ -1,12 +1,42 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { CheckCircle, Mail } from 'lucide-react';
+import { CheckCircle, Mail, RefreshCw } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Input } from '@/components/ui/input';
+import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const formSchema = z.object({
+  email: z.string().email({ message: 'Please enter a valid email address' }),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const EmailConfirmation = () => {
+  const { resendConfirmationEmail } = useAuth();
+  const [isResending, setIsResending] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
+
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+
+  const onSubmit = async (values: FormValues) => {
+    setIsResending(true);
+    const result = await resendConfirmationEmail(values.email);
+    setResendSuccess(result.success);
+    setIsResending(false);
+  };
+
   return (
     <div className="min-h-screen w-full flex items-center justify-center p-4">
       <motion.div 
@@ -44,13 +74,55 @@ const EmailConfirmation = () => {
           
           <div className="mt-6 pt-6 border-t border-gray-100">
             <p className="text-sm text-resort-500 mb-4 text-center">
-              Didn't receive an email? Check your spam folder or request a new confirmation link.
+              Didn't receive an email? Enter your email below to request a new confirmation link.
             </p>
-            <Link to="/auth" className="w-full">
-              <Button variant="outline" className="w-full">
-                Back to Login
-              </Button>
-            </Link>
+            
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="youremail@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <Button 
+                  type="submit" 
+                  className="w-full"
+                  disabled={isResending}
+                >
+                  {isResending ? (
+                    <>
+                      <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    'Resend Verification Email'
+                  )}
+                </Button>
+                
+                {resendSuccess && (
+                  <div className="p-3 bg-green-50 border border-green-100 rounded-md text-sm text-green-700 mt-4">
+                    Verification email has been sent. Please check your inbox.
+                  </div>
+                )}
+              </form>
+            </Form>
+            
+            <div className="mt-4">
+              <Link to="/auth" className="w-full">
+                <Button variant="outline" className="w-full">
+                  Back to Login
+                </Button>
+              </Link>
+            </div>
           </div>
         </Card>
       </motion.div>

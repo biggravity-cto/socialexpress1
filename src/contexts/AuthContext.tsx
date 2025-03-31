@@ -13,6 +13,7 @@ interface AuthContextType {
   signUp: (email: string, password: string, metadata?: any) => Promise<{ success: boolean; message?: string }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: any) => Promise<void>;
+  resendConfirmationEmail: (email: string) => Promise<{ success: boolean; message?: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -104,12 +105,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signUp = async (email: string, password: string, metadata?: any) => {
     try {
+      // Use window.location.origin to dynamically set the redirect URL
+      const redirectTo = `${window.location.origin}/auth`;
+      
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: metadata,
-          emailRedirectTo: `${window.location.origin}/auth`,
+          emailRedirectTo: redirectTo,
         },
       });
 
@@ -124,6 +128,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } catch (error: any) {
       toast({
         title: "Error creating account",
+        description: error.message,
+        variant: "destructive",
+      });
+      return { success: false, message: error.message };
+    }
+  };
+
+  const resendConfirmationEmail = async (email: string) => {
+    try {
+      const redirectTo = `${window.location.origin}/auth`;
+      
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: redirectTo,
+        }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Verification email sent",
+        description: "Please check your email for the confirmation link.",
+      });
+      
+      return { success: true };
+    } catch (error: any) {
+      toast({
+        title: "Error sending verification email",
         description: error.message,
         variant: "destructive",
       });
@@ -180,6 +214,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signUp,
         signOut,
         updateProfile,
+        resendConfirmationEmail,
       }}
     >
       {children}
