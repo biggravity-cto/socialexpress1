@@ -13,7 +13,6 @@ interface ContentStateProps {
   viewMode?: 'grid' | 'list';
   setContentType: (type: 'post' | 'image' | 'video' | 'document') => void;
   setShowCreateContentDialog: (show: boolean) => void;
-  // Add the missing props required by ContentListItem and ContentGridItem
   selectedItems: number[];
   toggleItemSelection: (id: number) => void;
   setContentItems: React.Dispatch<React.SetStateAction<ContentItem[]>>;
@@ -27,7 +26,6 @@ const ContentState: React.FC<ContentStateProps> = ({
   viewMode = 'grid',
   setContentType,
   setShowCreateContentDialog,
-  // Add these props to the function parameters
   selectedItems,
   toggleItemSelection,
   setContentItems,
