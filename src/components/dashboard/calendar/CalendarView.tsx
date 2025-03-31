@@ -182,7 +182,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                       className={`min-h-[120px] p-1 relative ${isCurrentMonth ? 'bg-white' : 'bg-gray-50'} 
                         ${isSelected ? 'ring-2 ring-blue-500 ring-inset' : ''} 
                         ${dayIsToday ? 'bg-blue-50' : ''} 
-                        cursor-pointer transition-colors hover:bg-gray-50`}
+                        cursor-pointer transition-colors hover:bg-gray-50 group`}
                       onClick={() => handleDayClick(day)}
                     >
                       {/* Campaign stripes at the top of the day */}
@@ -249,9 +249,9 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                           return (
                             <div 
                               key={post.id} 
-                              className="text-xs p-1 rounded bg-gray-50 hover:bg-gray-100 flex items-center gap-1 group"
+                              className="text-xs p-1 rounded bg-gray-50 hover:bg-gray-100 flex items-center gap-1 group border-l-2"
                               style={{
-                                borderLeft: postCampaign ? `3px solid ${postCampaign.color || '#e5e7eb'}` : 'none'
+                                borderLeftColor: postCampaign ? postCampaign.color || '#e5e7eb' : '#e5e7eb'
                               }}
                             >
                               {getPlatformIcon(post.platform)}
@@ -287,7 +287,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
                       </div>
                       
                       {/* "Add" button appears on hover */}
-                      <div className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 hover:opacity-100">
+                      <div className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100">
                         <Button 
                           variant="ghost" 
                           size="sm" 

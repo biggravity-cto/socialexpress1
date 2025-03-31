@@ -6,7 +6,7 @@ import {
   Calendar,
   Library, 
   MessageSquare, 
-  ClipboardCheck,
+  ClipboardCheck, 
   Settings, 
   BrainCircuit,
   LineChart,
@@ -64,6 +64,14 @@ const settingsNavItem = {
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen }) => {
   const location = useLocation();
+  
+  // Function to check if a path is active (exact or starts with the path)
+  const isPathActive = (path: string) => {
+    if (path === '/dashboard') {
+      return location.pathname === path;
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <nav className="flex flex-col h-full justify-between">
@@ -74,7 +82,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen }) => {
             key={item.path}
             to={item.path}
             className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
-              location.pathname === item.path 
+              isPathActive(item.path) 
                 ? "bg-ocean-50 text-ocean-600" 
                 : "text-gray-600 hover:bg-gray-100"
             }`}
@@ -90,7 +98,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen }) => {
         <Link
           to={settingsNavItem.path}
           className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
-            location.pathname === settingsNavItem.path 
+            isPathActive(settingsNavItem.path) 
               ? "bg-ocean-50 text-ocean-600" 
               : "text-gray-600 hover:bg-gray-100"
           }`}

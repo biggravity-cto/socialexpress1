@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { fetchCampaigns, fetchPosts, createPost, updatePost, deletePost } from '@/services/calendarService';
+import { fetchCampaigns, fetchPosts, createPost, updatePost, deletePost, getMockCampaigns, getMockPosts } from '@/services/calendarService';
 import { Campaign, Post } from '@/types/calendar';
 import { useToast } from "@/hooks/use-toast";
 import { CalendarContainer } from '@/components/dashboard/calendar/CalendarContainer';
@@ -19,17 +19,32 @@ const Calendar = () => {
     const loadData = async () => {
       setLoading(true);
       try {
-        const campaignsData = await fetchCampaigns();
-        const postsData = await fetchPosts();
+        // Try to fetch from API first
+        let campaignsData = await fetchCampaigns();
+        let postsData = await fetchPosts();
+        
+        // If no data returned, use mock data
+        if (campaignsData.length === 0) {
+          campaignsData = getMockCampaigns();
+        }
+        
+        if (postsData.length === 0) {
+          postsData = getMockPosts();
+        }
         
         setCampaigns(campaignsData);
         setPosts(postsData);
       } catch (error) {
         console.error('Error loading calendar data:', error);
+        
+        // Fallback to mock data if API fails
+        setCampaigns(getMockCampaigns());
+        setPosts(getMockPosts());
+        
         toast({
-          title: "Error",
-          description: "Failed to load calendar data. Please try again.",
-          variant: "destructive"
+          title: "Using sample data",
+          description: "Connected to sample calendar data for demonstration",
+          variant: "default"
         });
       } finally {
         setLoading(false);
@@ -38,6 +53,41 @@ const Calendar = () => {
 
     loadData();
   }, [toast]);
+
+  const refreshData = async () => {
+    setLoading(true);
+    try {
+      // Try to fetch from API first
+      let campaignsData = await fetchCampaigns();
+      let postsData = await fetchPosts();
+      
+      // If no data returned, use mock data
+      if (campaignsData.length === 0) {
+        campaignsData = getMockCampaigns();
+      }
+      
+      if (postsData.length === 0) {
+        postsData = getMockPosts();
+      }
+      
+      setCampaigns(campaignsData);
+      setPosts(postsData);
+      
+      toast({
+        title: "Refreshed",
+        description: "Calendar data has been updated",
+      });
+    } catch (error) {
+      console.error('Error refreshing calendar data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to refresh data. Using cached data.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <motion.div
@@ -57,9 +107,14 @@ const Calendar = () => {
             <Clock className="h-4 w-4" />
             <span>AI Scheduling Suggestions</span>
           </Button>
-          <Button variant="outline" size="sm" className="flex items-center gap-1">
-            <RotateCw className="h-4 w-4" />
-            <span>Refresh Data</span>
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex items-center gap-1"
+            onClick={refreshData}
+          >
+            <RotateCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <span>{loading ? 'Refreshing...' : 'Refresh Data'}</span>
           </Button>
           <Button variant="outline" size="sm" className="flex items-center gap-1">
             <BrainCircuit className="h-4 w-4" />
