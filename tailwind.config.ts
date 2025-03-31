@@ -21,8 +21,8 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ["Manrope", ...fontFamily.sans],
-        display: ["Playfair Display", "serif"],
+        sans: ["Inter", ...fontFamily.sans],
+        display: ["Plus Jakarta Sans", ...fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border))",
