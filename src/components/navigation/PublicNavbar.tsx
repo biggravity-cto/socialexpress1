@@ -24,7 +24,7 @@ const PublicNavbar = () => {
           BG Social Express
         </Link>
         <div className="hidden md:flex items-center space-x-6">
-          <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Features</button>
+          <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Platform</button>
           <button onClick={() => scrollToSection('pricing')} className="text-gray-600 hover:text-gray-900">Pricing</button>
           <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Testimonials</button>
           <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>
@@ -46,7 +46,7 @@ const PublicNavbar = () => {
       {isMenuOpen && isMobile && (
         <div className="absolute top-16 left-0 right-0 bg-white shadow-md p-4 md:hidden">
           <div className="flex flex-col space-y-4">
-            <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Features</button>
+            <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Platform</button>
             <button onClick={() => scrollToSection('pricing')} className="text-gray-600 hover:text-gray-900">Pricing</button>
             <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Testimonials</button>
             <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>

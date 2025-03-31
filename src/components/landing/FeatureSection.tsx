@@ -7,43 +7,43 @@ import { motion } from 'framer-motion';
 const features = [
   {
     icon: <Calendar className="h-8 w-8 text-ocean-600" />,
-    title: "Content Calendar",
-    description: "Plan and schedule your content across all platforms with our intuitive drag-and-drop calendar interface.",
+    title: "Integrated Marketing Calendar",
+    description: "Plan and orchestrate your entire marketing strategy across all channels with our intuitive drag-and-drop calendar interface.",
     delay: 0.1,
     gradient: "from-ocean-50 to-ocean-100/50"
   },
   {
     icon: <BrainCircuit className="h-8 w-8 text-purple-600" />,
-    title: "AI Content Generation",
-    description: "Create engaging posts with our AI assistant that understands hospitality-specific content needs.",
+    title: "AI Content Strategy",
+    description: "Develop comprehensive marketing campaigns with our AI assistant that understands hospitality-specific needs and audience preferences.",
     delay: 0.2,
     gradient: "from-purple-50 to-purple-100/50"
   },
   {
     icon: <BarChart3 className="h-8 w-8 text-green-600" />,
-    title: "Performance Analytics",
-    description: "Track the success of your campaigns with detailed analytics and actionable insights for optimizing your strategy.",
+    title: "Revenue & Performance Analytics",
+    description: "Track the direct impact of your marketing efforts on bookings and revenue with detailed analytics and actionable insights.",
     delay: 0.3,
     gradient: "from-green-50 to-green-100/50"
   },
   {
     icon: <MessageSquare className="h-8 w-8 text-amber-600" />,
-    title: "Unified Social Inbox",
-    description: "Manage comments and messages across all platforms from a single inbox to improve response times.",
+    title: "Unified Guest Engagement",
+    description: "Manage all guest interactions across digital touchpoints from a single platform to deliver consistent and personalized experiences.",
     delay: 0.4,
     gradient: "from-amber-50 to-amber-100/50"
   },
   {
     icon: <Users className="h-8 w-8 text-rose-600" />,
-    title: "Team Collaboration",
-    description: "Work seamlessly with your team with role-based permissions, content assignments, and approval workflows.",
+    title: "Cross-Department Collaboration",
+    description: "Break down silos between marketing, sales, and operations with role-based workflows, content assignments, and approval processes.",
     delay: 0.5,
     gradient: "from-rose-50 to-rose-100/50"
   },
   {
     icon: <Shield className="h-8 w-8 text-blue-600" />,
-    title: "Brand Safety",
-    description: "Maintain consistent branding across all your content with templated designs and AI-powered style guides.",
+    title: "Brand Consistency",
+    description: "Ensure your property's unique story is told consistently across all channels with templated designs and AI-powered style guides.",
     delay: 0.6,
     gradient: "from-blue-50 to-blue-100/50"
   }
@@ -66,13 +66,13 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({ featureRef }) => {
             viewport={{ once: true, margin: "-100px" }}
           >
             <span className="inline-block bg-sand-50 text-sand-600 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
-              Powerful Features
+              Comprehensive Platform
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-resort-900 mb-6">
-              Everything You Need to Excel on Social Media
+              Everything You Need to Excel in Digital Marketing
             </h2>
             <p className="text-lg text-resort-600 max-w-3xl mx-auto">
-              Our comprehensive suite of tools is designed specifically for hospitality businesses to streamline your digital marketing efforts.
+              Our comprehensive suite of tools is designed specifically for hospitality businesses to streamline your entire digital presence and drive direct bookings.
             </p>
           </motion.div>
         </div>
@@ -106,7 +106,7 @@ const FeatureSection: React.FC<FeatureSectionProps> = ({ featureRef }) => {
             viewport={{ once: true, margin: "-100px" }}
           >
             <p className="text-lg text-resort-700 mb-6 max-w-2xl mx-auto">
-              And many more features designed to help hospitality businesses succeed in the digital space
+              And many more capabilities designed to help hospitality businesses maximize their digital presence and drive direct bookings
             </p>
           </motion.div>
         </div>

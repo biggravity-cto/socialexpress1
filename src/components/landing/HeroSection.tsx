@@ -20,13 +20,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
             transition={{ duration: 0.8 }}
           >
             <span className="inline-block bg-ocean-100 text-ocean-600 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-              AI-Powered Social Media for Hospitality
+              Complete Digital Marketing Suite for Hospitality
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-6 leading-tight">
-              Elevate Your Resort's Social Presence
+              Elevate Your Resort's Digital Presence
             </h1>
             <p className="text-xl text-slate-600 mb-8 max-w-lg">
-              The all-in-one platform for hospitality businesses to create, schedule, and analyze content across all social channels with powerful AI tools.
+              The comprehensive platform for hospitality businesses to create, manage, and optimize your entire digital marketing strategy with powerful AI tools.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/login">
@@ -44,25 +44,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
                 <div className="bg-ocean-50 p-2 rounded-md">
                   <BrainCircuit className="h-5 w-5 text-ocean-600" />
                 </div>
-                <span className="text-slate-700 font-medium">AI Content Creation</span>
+                <span className="text-slate-700 font-medium">AI Content Strategy</span>
               </div>
               <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
                 <div className="bg-purple-50 p-2 rounded-md">
                   <Calendar className="h-5 w-5 text-purple-600" />
                 </div>
-                <span className="text-slate-700 font-medium">Smart Scheduling</span>
+                <span className="text-slate-700 font-medium">Integrated Marketing</span>
               </div>
               <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
                 <div className="bg-amber-50 p-2 rounded-md">
                   <MessageSquare className="h-5 w-5 text-amber-600" />
                 </div>
-                <span className="text-slate-700 font-medium">Unified Social Inbox</span>
+                <span className="text-slate-700 font-medium">Unified Guest Engagement</span>
               </div>
               <div className="flex items-center gap-3 bg-white/80 backdrop-blur-sm p-3 rounded-lg shadow-sm">
                 <div className="bg-green-50 p-2 rounded-md">
                   <BarChart3 className="h-5 w-5 text-green-600" />
                 </div>
-                <span className="text-slate-700 font-medium">Performance Analytics</span>
+                <span className="text-slate-700 font-medium">ROI Analytics</span>
               </div>
             </div>
           </motion.div>
