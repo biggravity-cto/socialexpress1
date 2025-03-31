@@ -4,13 +4,14 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { CheckCircle, Mail, RefreshCw } from 'lucide-react';
+import { CheckCircle, Mail, RefreshCw, AlertCircle } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/ui/input';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -22,6 +23,7 @@ const EmailConfirmation = () => {
   const { resendConfirmationEmail } = useAuth();
   const [isResending, setIsResending] = useState(false);
   const [resendSuccess, setResendSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -32,9 +34,25 @@ const EmailConfirmation = () => {
 
   const onSubmit = async (values: FormValues) => {
     setIsResending(true);
-    const result = await resendConfirmationEmail(values.email);
-    setResendSuccess(result.success);
-    setIsResending(false);
+    setError(null);
+    
+    try {
+      console.log(`Attempting to resend confirmation email to: ${values.email}`);
+      const result = await resendConfirmationEmail(values.email);
+      
+      console.log('Resend result:', result);
+      setResendSuccess(result.success);
+      
+      if (!result.success && result.message) {
+        setError(result.message);
+      }
+    } catch (err: any) {
+      console.error('Error in email resend form submission:', err);
+      setError(err.message || 'Failed to send verification email');
+      setResendSuccess(false);
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -77,6 +95,13 @@ const EmailConfirmation = () => {
               Didn't receive an email? Enter your email below to request a new confirmation link.
             </p>
             
+            {error && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
@@ -110,7 +135,7 @@ const EmailConfirmation = () => {
                 
                 {resendSuccess && (
                   <div className="p-3 bg-green-50 border border-green-100 rounded-md text-sm text-green-700 mt-4">
-                    Verification email has been sent. Please check your inbox.
+                    Verification email has been sent. Please check your inbox and spam folders.
                   </div>
                 )}
               </form>

@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -135,36 +134,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const resendConfirmationEmail = async (email: string) => {
-    try {
-      const redirectTo = `${window.location.origin}/auth`;
-      
-      const { error } = await supabase.auth.resend({
-        type: 'signup',
-        email,
-        options: {
-          emailRedirectTo: redirectTo,
-        }
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Verification email sent",
-        description: "Please check your email for the confirmation link.",
-      });
-      
-      return { success: true };
-    } catch (error: any) {
-      toast({
-        title: "Error sending verification email",
-        description: error.message,
-        variant: "destructive",
-      });
-      return { success: false, message: error.message };
-    }
-  };
-
   const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
@@ -200,6 +169,46 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         description: error.message,
         variant: "destructive",
       });
+    }
+  };
+
+  const resendConfirmationEmail = async (email: string) => {
+    try {
+      // Get the current origin for redirect URL
+      const redirectTo = `${window.location.origin}/auth`;
+      console.log(`Sending verification email to ${email} with redirect URL: ${redirectTo}`);
+      
+      const { error, data } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: redirectTo,
+        }
+      });
+
+      console.log('Resend response:', { error, data });
+
+      if (error) {
+        console.error('Error sending verification email:', error);
+        throw error;
+      }
+
+      toast({
+        title: "Verification email sent",
+        description: "Please check your email for the confirmation link.",
+      });
+      
+      return { success: true };
+    } catch (error: any) {
+      console.error('Exception in resendConfirmationEmail:', error);
+      
+      toast({
+        title: "Error sending verification email",
+        description: error.message,
+        variant: "destructive",
+      });
+      
+      return { success: false, message: error.message };
     }
   };
 
