@@ -1,16 +1,20 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Filter, Clock, CheckCircle, XCircle, AlertCircle, Calendar, Image, ArrowRight, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Clock, CheckCircle, XCircle, AlertCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ApprovalsSearch from '@/components/approvals/ApprovalsSearch';
+import ApprovalsList from '@/components/approvals/ApprovalsList';
+import { ApprovalItemProps } from '@/components/approvals/ApprovalItem';
 
 const Approvals = () => {
-  const pendingItems = [
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Mock data for approval items
+  const approvalItems: ApprovalItemProps[] = [
     {
       id: 1,
       title: "Summer Resort Promotion",
@@ -18,7 +22,8 @@ const Approvals = () => {
       platform: "Instagram",
       dueDate: "Jun 24, 2023",
       creator: { name: "Alex Johnson", avatar: "/placeholder.svg", initials: "AJ" },
-      priority: "high"
+      priority: "high",
+      status: "pending"
     },
     {
       id: 2,
@@ -27,7 +32,8 @@ const Approvals = () => {
       platform: "Facebook",
       dueDate: "Jun 26, 2023",
       creator: { name: "Taylor Smith", avatar: "/placeholder.svg", initials: "TS" },
-      priority: "medium"
+      priority: "medium",
+      status: "pending"
     },
     {
       id: 3,
@@ -36,7 +42,8 @@ const Approvals = () => {
       platform: "Website",
       dueDate: "Jul 1, 2023",
       creator: { name: "Jamie Lee", avatar: "/placeholder.svg", initials: "JL" },
-      priority: "low"
+      priority: "low",
+      status: "pending"
     },
     {
       id: 4,
@@ -45,37 +52,21 @@ const Approvals = () => {
       platform: "YouTube",
       dueDate: "Jul 3, 2023",
       creator: { name: "Morgan Pierce", avatar: "/placeholder.svg", initials: "MP" },
-      priority: "medium"
+      priority: "medium",
+      status: "pending"
     }
   ];
 
-  const getPriorityBadge = (priority: string) => {
-    switch (priority) {
-      case 'high':
-        return <Badge variant="outline" className="text-red-500 border-red-200 bg-red-50">High</Badge>;
-      case 'medium':
-        return <Badge variant="outline" className="text-amber-500 border-amber-200 bg-amber-50">Medium</Badge>;
-      case 'low':
-        return <Badge variant="outline" className="text-green-500 border-green-200 bg-green-50">Low</Badge>;
-      default:
-        return <Badge variant="outline">Normal</Badge>;
-    }
-  };
+  // Filter items based on search query
+  const filteredItems = searchQuery 
+    ? approvalItems.filter(item => 
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.contentType.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.platform.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : approvalItems;
 
-  const getContentTypeIcon = (contentType: string) => {
-    switch (contentType.toLowerCase()) {
-      case 'post':
-        return <Image className="h-4 w-4" />;
-      case 'story':
-        return <Clock className="h-4 w-4" />;
-      case 'document':
-        return <FileText className="h-4 w-4" />;
-      case 'video':
-        return <Calendar className="h-4 w-4" />;
-      default:
-        return <Image className="h-4 w-4" />;
-    }
-  };
+  const pendingItems = filteredItems.filter(item => item.status === 'pending');
 
   return (
     <motion.div
@@ -89,20 +80,7 @@ const Approvals = () => {
         <p className="text-resort-500">Review and approve content before publishing</p>
       </div>
 
-      <Card className="p-4 mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative flex-grow">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            <input
-              placeholder="Search approvals..."
-              className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-ocean-500"
-            />
-          </div>
-          <Button variant="outline" className="justify-center sm:w-auto">
-            <Filter className="mr-2 h-4 w-4" /> Filter
-          </Button>
-        </div>
-      </Card>
+      <ApprovalsSearch onSearch={setSearchQuery} />
 
       <Tabs defaultValue="pending">
         <TabsList className="mb-4">
@@ -121,49 +99,8 @@ const Approvals = () => {
         </TabsList>
 
         <TabsContent value="pending">
-          <div className="space-y-4">
-            {pendingItems.map((item) => (
-              <Card key={item.id} className="p-4 hover:shadow-md transition-shadow">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 p-2 bg-ocean-50 rounded-md">
-                      {getContentTypeIcon(item.contentType)}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-medium text-resort-800">{item.title}</h3>
-                        {getPriorityBadge(item.priority)}
-                      </div>
-                      <div className="flex flex-wrap items-center mt-1 gap-x-3 gap-y-1 text-sm text-resort-500">
-                        <span className="flex items-center">
-                          <span className="font-medium">{item.contentType}</span>
-                          <span className="mx-1.5">•</span>
-                          <span>{item.platform}</span>
-                        </span>
-                        <span className="flex items-center">
-                          <Clock className="h-3.5 w-3.5 mr-1" />
-                          <span>Due: {item.dueDate}</span>
-                        </span>
-                        <span className="flex items-center">
-                          <span>By:</span>
-                          <Avatar className="h-5 w-5 ml-1.5">
-                            <AvatarImage src={item.creator.avatar} alt={item.creator.name} />
-                            <AvatarFallback className="text-[10px]">{item.creator.initials}</AvatarFallback>
-                          </Avatar>
-                          <span className="ml-1">{item.creator.name}</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-end gap-2 mt-4 lg:mt-0">
-                    <Button variant="outline" size="sm">Decline</Button>
-                    <Button className="bg-ocean-600 hover:bg-ocean-700" size="sm">Review & Approve</Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-
+          <ApprovalsList items={filteredItems} status="pending" />
+          
           <div className="mt-8 text-center">
             <Link to="/calendar">
               <Button variant="outline" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50">
@@ -174,69 +111,15 @@ const Approvals = () => {
         </TabsContent>
         
         <TabsContent value="approved">
-          <div className="text-center py-10">
-            <CheckCircle className="h-12 w-12 mx-auto text-green-500 mb-4" />
-            <h3 className="text-lg font-medium text-resort-800 mb-2">No Approved Content</h3>
-            <p className="text-resort-500 max-w-md mx-auto">
-              All approved content will appear here. Start by reviewing and approving pending content.
-            </p>
-          </div>
+          <ApprovalsList items={filteredItems} status="approved" />
         </TabsContent>
         
         <TabsContent value="declined">
-          <div className="text-center py-10">
-            <XCircle className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-resort-800 mb-2">No Declined Content</h3>
-            <p className="text-resort-500 max-w-md mx-auto">
-              Content that doesn't meet your standards will appear here after being declined.
-            </p>
-          </div>
+          <ApprovalsList items={filteredItems} status="declined" />
         </TabsContent>
         
         <TabsContent value="all">
-          <div className="space-y-4">
-            {pendingItems.map((item) => (
-              <Card key={item.id} className="p-4 hover:shadow-md transition-shadow">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 p-2 bg-ocean-50 rounded-md">
-                      {getContentTypeIcon(item.contentType)}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-lg font-medium text-resort-800">{item.title}</h3>
-                        <Badge variant="outline" className="bg-amber-50 text-amber-800 border-amber-200">Pending</Badge>
-                        {getPriorityBadge(item.priority)}
-                      </div>
-                      <div className="flex flex-wrap items-center mt-1 gap-x-3 gap-y-1 text-sm text-resort-500">
-                        <span className="flex items-center">
-                          <span className="font-medium">{item.contentType}</span>
-                          <span className="mx-1.5">•</span>
-                          <span>{item.platform}</span>
-                        </span>
-                        <span className="flex items-center">
-                          <Clock className="h-3.5 w-3.5 mr-1" />
-                          <span>Due: {item.dueDate}</span>
-                        </span>
-                        <span className="flex items-center">
-                          <span>By:</span>
-                          <Avatar className="h-5 w-5 ml-1.5">
-                            <AvatarImage src={item.creator.avatar} alt={item.creator.name} />
-                            <AvatarFallback className="text-[10px]">{item.creator.initials}</AvatarFallback>
-                          </Avatar>
-                          <span className="ml-1">{item.creator.name}</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-end gap-2 mt-4 lg:mt-0">
-                    <Button variant="outline" size="sm">Decline</Button>
-                    <Button className="bg-ocean-600 hover:bg-ocean-700" size="sm">Review & Approve</Button>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+          <ApprovalsList items={filteredItems} status="all" />
         </TabsContent>
       </Tabs>
     </motion.div>
