@@ -11,27 +11,27 @@ import {
 const faqs = [
   {
     question: "How does the AI content generation work?",
-    answer: "Our AI is trained on hospitality-specific content to generate posts that resonate with your audience. It learns your brand voice and creates content that matches your style while saving you hours of work."
+    answer: "Our AI is trained on hospitality-specific content to generate posts that resonate with your audience. It creates captions, hashtag suggestions, and content ideas based on your brand voice. The Basic plan includes 12 posts and 2 video concepts per month, while Pro increases this to 60 posts per month."
   },
   {
-    question: "Can I connect all my social media accounts?",
-    answer: "Yes! BG Social Express integrates with all major social platforms including Instagram, Facebook, Twitter, LinkedIn, Pinterest, and TikTok, allowing you to manage everything from one dashboard."
+    question: "What's the difference between Basic and Pro plans?",
+    answer: "The Basic plan ($399/mo) is designed for teams who plan content ahead but post manually. It includes a content calendar, library, and limited AI assistance. The Pro plan ($699/mo) adds direct connections to social platforms, automated publishing, performance analytics, and a unified social inbox, plus higher usage limits."
+  },
+  {
+    question: "Do you support Korean language content?",
+    answer: "Yes! All plans include basic support for multiple languages. The Pro plan includes specialized AI assistance for Korean language content, while the Enterprise plan offers full Korean market features including Naver/Kakao platform support and deep cultural AI understanding."
   },
   {
     question: "How does the approval workflow function?",
-    answer: "Content can be assigned to team members for creation, then routed to managers for approval before publishing. You can customize the workflow to match your organization's structure and needs."
+    answer: "Content can be assigned to team members for creation, then routed to managers for approval before publishing. The Basic plan includes simple approval workflows for 2 users, while Pro and Enterprise plans offer more sophisticated team collaboration with up to 5 users (Pro) or unlimited users (Enterprise)."
   },
   {
-    question: "Do you offer custom reporting?",
-    answer: "Yes, our analytics platform allows you to create custom reports focusing on the metrics that matter most to your business. Reports can be scheduled and automatically sent to stakeholders."
-  },
-  {
-    question: "Is there a limit to how many posts I can schedule?",
-    answer: "This depends on your plan. Basic plans include up to 50 scheduled posts per month, while our Pro and Enterprise plans offer unlimited scheduling capabilities."
+    question: "What does 'unified social inbox' mean?",
+    answer: "This feature (available in Pro and Enterprise plans) consolidates all comments and direct messages from your social platforms into one inbox, allowing you to respond without switching between apps. Note that full functionality depends on platform API approvals from social networks."
   },
   {
     question: "Do you offer training and onboarding?",
-    answer: "Absolutely! All plans include access to our knowledge base and video tutorials. Pro and Enterprise plans also include personalized onboarding sessions and dedicated support."
+    answer: "All plans include access to our knowledge base and video tutorials. Pro plans include setup assistance, while Enterprise plans feature personalized onboarding and a dedicated account manager to ensure your team's success."
   }
 ];
 

@@ -3,56 +3,65 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const plans = [
   {
     name: 'Basic',
-    price: '$29',
+    price: '$399',
     period: '/month',
-    description: 'Perfect for small businesses just getting started with social media.',
+    description: 'Best for teams planning content ahead and handling posting manually.',
+    coreBenefit: 'Plan your social calendar & create content efficiently offline.',
     features: [
-      'AI content generation (30/mo)',
-      'Scheduled posts (50/mo)',
-      'Basic analytics',
-      'Single user',
-      'Connect 3 social accounts'
+      'Visual Content Calendar',
+      'Content Library for photos & videos',
+      'AI assistance for captions & hashtags (basic limits)',
+      'Generate ideas/drafts for up to 12 Posts & 2 Video Concepts per month',
+      'Includes up to 2 Users',
+      'Download content easily to post yourself',
+      'Manual posting (no direct social media connection)'
     ],
     cta: 'Start Free Trial',
     variant: 'outline'
   },
   {
     name: 'Pro',
-    price: '$79',
+    price: '$699',
     period: '/month',
-    description: 'Ideal for growing businesses with active social presence.',
+    description: 'Best for teams wanting to automate publishing across key platforms and track results.',
+    coreBenefit: 'Automate your social media workflow & measure performance.',
     features: [
-      'AI content generation (100/mo)',
-      'Unlimited scheduled posts',
-      'Advanced analytics',
-      'Up to 5 team members',
-      'Connect 10 social accounts',
-      'Approval workflows',
-      'Content calendar'
+      'Everything in Basic, PLUS:',
+      'Link up to 5 Social Accounts (Instagram & Facebook)',
+      'Schedule posts to publish automatically',
+      'Track key metrics (likes, comments, reach, etc.)',
+      'Unified Social Inbox for comments & messages*',
+      'Streamline team review workflows',
+      'Basic AI help for Korean language content',
+      'Higher content generation (60 Posts/Month)',
+      'Up to 5 Users'
     ],
+    disclaimer: '* Unified Inbox feature activation depends on platform approvals',
     cta: 'Start Free Trial',
     variant: 'default',
     featured: true
   },
   {
     name: 'Enterprise',
-    price: '$199',
-    period: '/month',
-    description: 'Full-featured solution for large organizations with complex needs.',
+    price: 'Custom',
+    period: 'pricing',
+    description: 'Best for larger resorts, groups, or agencies needing strategic tools, advanced AI, and full integration.',
+    coreBenefit: 'Unlock strategic planning, advanced insights, and the full power of AI marketing.',
     features: [
-      'Unlimited AI content generation',
-      'Unlimited scheduled posts',
-      'Advanced analytics with custom reports',
-      'Unlimited team members',
-      'Unlimited social accounts',
-      'Advanced approval workflows',
-      'Content calendar with team collaboration',
-      'Custom integrations',
-      'Dedicated support manager'
+      'Everything in Pro, PLUS:',
+      'AI-powered campaign planning tools',
+      'Competitor tracking & social sentiment analysis',
+      'Advanced Analytics & ROI Insights',
+      'Advanced AI content generation with image/video',
+      'Full Korean Market Features (Naver/Kakao focus)',
+      'Integration with PMS/CRM systems',
+      'Custom usage limits for posts, AI, users, accounts',
+      'Dedicated Account Management'
     ],
     cta: 'Contact Sales',
     variant: 'outline'
@@ -99,11 +108,12 @@ const PricingSection = () => {
               )}
               <div className={`p-8 ${plan.featured ? 'bg-gradient-to-br from-ocean-50 to-white' : 'bg-white'}`}>
                 <h3 className="text-2xl font-bold text-resort-800 mb-2">{plan.name}</h3>
-                <div className="flex items-end mb-4">
+                <div className="flex items-end mb-2">
                   <span className="text-4xl font-bold text-resort-900">{plan.price}</span>
                   <span className="text-resort-600 ml-1">{plan.period}</span>
                 </div>
-                <p className="text-resort-600 mb-6">{plan.description}</p>
+                <p className="text-resort-600 mb-2">{plan.description}</p>
+                <p className="text-sm font-medium text-ocean-600 mb-6">{plan.coreBenefit}</p>
                 
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((feature, i) => (
@@ -114,6 +124,10 @@ const PricingSection = () => {
                   ))}
                 </ul>
                 
+                {plan.disclaimer && (
+                  <p className="text-xs text-resort-500 italic mb-5">{plan.disclaimer}</p>
+                )}
+                
                 <Button 
                   variant={plan.variant as any} 
                   className={`w-full py-6 ${plan.featured ? 'bg-ocean-600 hover:bg-ocean-700' : ''}`}
@@ -123,6 +137,13 @@ const PricingSection = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+        
+        <div className="mt-10 text-center">
+          <p className="text-sm text-resort-500 max-w-3xl mx-auto">
+            All plans include a 14-day free trial. No credit card required. A "Post" is defined as a single social media update 
+            including caption, image/video, and hashtags. "Video Concept" includes storyboarding and AI-generated text for video content.
+          </p>
         </div>
       </div>
     </section>
