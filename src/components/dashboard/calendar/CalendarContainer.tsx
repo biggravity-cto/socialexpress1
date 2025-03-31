@@ -4,10 +4,8 @@ import { Card } from '@/components/ui/card';
 import { Campaign, Post } from '@/types/calendar';
 import { CalendarView } from '@/components/dashboard/calendar/CalendarView';
 import { CalendarHeader } from '@/components/dashboard/calendar/CalendarHeader';
-import { FilterPopover } from '@/components/dashboard/calendar/FilterPopover';
 import { CalendarPostDialog } from '@/components/dashboard/calendar/CalendarPostDialog';
-import { Button } from '@/components/ui/button';
-import { ListFilter } from 'lucide-react';
+import { FilterSection } from '@/components/dashboard/calendar/FilterSection';
 import { useCalendarState } from '@/hooks/useCalendarState';
 
 interface CalendarContainerProps {
@@ -82,9 +80,7 @@ export const CalendarContainer: React.FC<CalendarContainerProps> = ({
         openPostCreator={openPostCreator}
       />
       
-      <FilterPopover
-        open={filterOpen}
-        setOpen={setFilterOpen}
+      <FilterSection
         campaigns={campaigns}
         filteredPlatforms={filteredPlatforms}
         togglePlatformFilter={togglePlatformFilter}
@@ -93,12 +89,10 @@ export const CalendarContainer: React.FC<CalendarContainerProps> = ({
         filteredStatus={filteredStatus}
         toggleStatusFilter={toggleStatusFilter}
         clearAllFilters={clearAllFilters}
-      >
-        <Button variant="outline" size="sm">
-          <ListFilter className="h-4 w-4 mr-1" />
-          Filters {totalFilterCount > 0 && `(${totalFilterCount})`}
-        </Button>
-      </FilterPopover>
+        filterOpen={filterOpen}
+        setFilterOpen={setFilterOpen}
+        totalFilterCount={totalFilterCount}
+      />
       
       <CalendarView
         posts={filteredPosts}
