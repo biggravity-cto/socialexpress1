@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 const plans = [
   {
     name: 'Essentials',
-    price: '$399',
+    price: '$149',
     period: '/month',
     description: 'For boutique properties seeking to establish a strategic marketing foundation.',
     coreBenefit: 'Streamline your marketing workflow and create premium content.',
@@ -26,7 +26,7 @@ const plans = [
   },
   {
     name: 'Premium',
-    price: '$699',
+    price: '$399',
     period: '/month',
     description: 'For established properties looking to optimize all marketing channels and increase bookings.',
     coreBenefit: 'Maximize direct bookings and guest engagement across channels.',

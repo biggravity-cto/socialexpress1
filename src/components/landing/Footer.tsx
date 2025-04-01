@@ -58,7 +58,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center mb-6">
-              <span className="font-bold text-2xl tracking-tight text-resort-800">BG Social<span className="text-ocean-600">Express</span></span>
+              <span className="font-bold text-2xl tracking-tight text-resort-800">Guest<span className="text-ocean-600">Flow</span></span>
             </Link>
             <p className="text-resort-600 mb-6 max-w-md">
               The complete social media management platform built specifically for hospitality and resort businesses.
@@ -80,7 +80,7 @@ const Footer: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-start">
                 <Mail className="h-5 w-5 text-ocean-500 mt-0.5 mr-3" />
-                <span className="text-resort-600">contact@bgsocialexpress.com</span>
+                <span className="text-resort-600">contact@guestflow.com</span>
               </div>
               <div className="flex items-start">
                 <Phone className="h-5 w-5 text-ocean-500 mt-0.5 mr-3" />
@@ -115,7 +115,7 @@ const Footer: React.FC = () => {
         
         <div className="border-t border-gray-100 py-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-resort-500 text-sm mb-4 md:mb-0">
-            © {currentYear} BG Social Express. All rights reserved.
+            © {currentYear} GuestFlow. All rights reserved.
           </p>
           <div className="flex space-x-6">
             <a href="#" className="text-resort-500 hover:text-resort-900 transition-colors text-sm">

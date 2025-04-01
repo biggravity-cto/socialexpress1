@@ -39,7 +39,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
               AI Marketing Automation for Luxury Hospitality
             </span>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 leading-tight">
-              The Smarter Way to Fill Your Luxury Resort
+              The AI Marketing & Sales Platform for Hospitality Resorts
             </h1>
             <p className="text-xl text-slate-600 mb-6">
               Delight Guests • Increase Revenue • Enhance Efficiency
