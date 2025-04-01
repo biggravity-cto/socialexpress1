@@ -21,7 +21,7 @@ const EmailConfirmation = () => {
         className="w-full max-w-md"
       >
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-resort-800">BG Social<span className="text-ocean-600">Express</span></h1>
+          <h1 className="text-3xl font-bold text-resort-800">Guest<span className="text-ocean-600">Flow</span></h1>
           <p className="text-resort-500 mt-2">Thank you for signing up!</p>
         </div>
         

@@ -66,7 +66,7 @@ const Auth = () => {
     >
       <Card className="p-6">
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-resort-800">BG Social Express</h1>
+          <h1 className="text-2xl font-bold text-resort-800">Guest<span className="text-ocean-600">Flow</span></h1>
           <p className="text-resort-500 mt-1">Access your account</p>
         </div>
         
