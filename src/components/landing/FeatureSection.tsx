@@ -1,114 +1,144 @@
 
-import React from 'react';
-import { Calendar, Image, BarChart3, MessageSquare, CheckCircle, ArrowRight, Users, Shield, BrainCircuit } from 'lucide-react';
-import BlurredSection from '@/components/ui/BlurredSection';
+import React, { RefObject } from 'react';
 import { motion } from 'framer-motion';
+import { Card } from '@/components/ui/card';
+import { 
+  CalendarDays, 
+  PencilRuler, 
+  BarChart3, 
+  MessageSquare, 
+  ShieldCheck, 
+  Users, 
+  Sparkles,
+  BrainCircuit,
+  LineChart
+} from 'lucide-react';
+
+interface FeatureSectionProps {
+  featureRef: RefObject<HTMLDivElement>;
+}
 
 const features = [
   {
-    icon: <Calendar className="h-8 w-8 text-ocean-600" />,
-    title: "Integrated Marketing Calendar",
-    description: "Plan and orchestrate your entire marketing strategy across all channels with our intuitive drag-and-drop calendar interface.",
-    delay: 0.1,
-    gradient: "from-ocean-50 to-ocean-100/50"
+    icon: <BrainCircuit className="h-6 w-6 text-purple-500" />,
+    title: 'AI-Powered Content Creation',
+    description: 'Generate engaging captions, suggest image ideas, and create entire content plans with our advanced AI assistant.',
+    color: 'bg-purple-50 border-purple-100',
+    iconBg: 'bg-purple-100',
+    iconColor: 'text-purple-600'
   },
   {
-    icon: <BrainCircuit className="h-8 w-8 text-purple-600" />,
-    title: "AI Content Strategy",
-    description: "Develop comprehensive marketing campaigns with our AI assistant that understands hospitality-specific needs and audience preferences.",
-    delay: 0.2,
-    gradient: "from-purple-50 to-purple-100/50"
+    icon: <CalendarDays className="h-6 w-6 text-blue-500" />,
+    title: 'Unified Marketing Calendar',
+    description: 'Plan, schedule, and automate your posts across all social media platforms from a single, intuitive calendar view.',
+    color: 'bg-blue-50 border-blue-100',
+    iconBg: 'bg-blue-100',
+    iconColor: 'text-blue-600'
   },
   {
-    icon: <BarChart3 className="h-8 w-8 text-green-600" />,
-    title: "Revenue & Performance Analytics",
-    description: "Track the direct impact of your marketing efforts on bookings and revenue with detailed analytics and actionable insights.",
-    delay: 0.3,
-    gradient: "from-green-50 to-green-100/50"
+    icon: <LineChart className="h-6 w-6 text-green-500" />,
+    title: 'Brand Intelligence',
+    description: 'Monitor your brand health, track competitor activities, and identify emerging trends with AI-powered insights.',
+    color: 'bg-green-50 border-green-100',
+    iconBg: 'bg-green-100',
+    iconColor: 'text-green-600'
   },
   {
-    icon: <MessageSquare className="h-8 w-8 text-amber-600" />,
-    title: "Unified Guest Engagement",
-    description: "Manage all guest interactions across digital touchpoints from a single platform to deliver consistent and personalized experiences.",
-    delay: 0.4,
-    gradient: "from-amber-50 to-amber-100/50"
+    icon: <PencilRuler className="h-6 w-6 text-amber-500" />,
+    title: 'Content Library & Templates',
+    description: 'Access hospitality-specific templates and a rich library of curated content ideas for your resort or hotel.',
+    color: 'bg-amber-50 border-amber-100',
+    iconBg: 'bg-amber-100',
+    iconColor: 'text-amber-600'
   },
   {
-    icon: <Users className="h-8 w-8 text-rose-600" />,
-    title: "Cross-Department Collaboration",
-    description: "Break down silos between marketing, sales, and operations with role-based workflows, content assignments, and approval processes.",
-    delay: 0.5,
-    gradient: "from-rose-50 to-rose-100/50"
+    icon: <MessageSquare className="h-6 w-6 text-pink-500" />,
+    title: 'Unified Social Inbox',
+    description: 'Respond to guest messages, comments, and reviews across all platforms from a single, streamlined inbox.',
+    color: 'bg-pink-50 border-pink-100',
+    iconBg: 'bg-pink-100',
+    iconColor: 'text-pink-600'
   },
   {
-    icon: <Shield className="h-8 w-8 text-blue-600" />,
-    title: "Brand Consistency",
-    description: "Ensure your property's unique story is told consistently across all channels with templated designs and AI-powered style guides.",
-    delay: 0.6,
-    gradient: "from-blue-50 to-blue-100/50"
+    icon: <BarChart3 className="h-6 w-6 text-indigo-500" />,
+    title: 'Advanced Analytics',
+    description: 'Track performance metrics, guest engagement, and ROI with comprehensive analytics dashboards.',
+    color: 'bg-indigo-50 border-indigo-100',
+    iconBg: 'bg-indigo-100',
+    iconColor: 'text-indigo-600'
+  },
+  {
+    icon: <ShieldCheck className="h-6 w-6 text-teal-500" />,
+    title: 'Content Approval Workflows',
+    description: 'Streamline review processes with customizable approval workflows to maintain brand consistency.',
+    color: 'bg-teal-50 border-teal-100',
+    iconBg: 'bg-teal-100',
+    iconColor: 'text-teal-600'
+  },
+  {
+    icon: <Users className="h-6 w-6 text-red-500" />,
+    title: 'Team Collaboration',
+    description: 'Empower your marketing team with role-based permissions, task assignment, and real-time collaboration.',
+    color: 'bg-red-50 border-red-100',
+    iconBg: 'bg-red-100',
+    iconColor: 'text-red-600'
   }
 ];
 
-interface FeatureSectionProps {
-  featureRef: React.RefObject<HTMLDivElement>;
-}
-
-const FeatureSection: React.FC<FeatureSectionProps> = ({ featureRef }) => {
+const FeatureSection = ({ featureRef }: FeatureSectionProps) => {
   return (
-    <section id="features" ref={featureRef} className="py-24 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50 z-0"></div>
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <span className="inline-block bg-sand-50 text-sand-600 px-4 py-1.5 rounded-full text-sm font-medium mb-4">
-              Comprehensive Platform
-            </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-resort-900 mb-6">
-              Everything You Need to Excel in Digital Marketing
-            </h2>
-            <p className="text-lg text-resort-600 max-w-3xl mx-auto">
-              Our comprehensive suite of tools is designed specifically for hospitality businesses to streamline your entire digital presence and drive direct bookings.
-            </p>
-          </motion.div>
+    <section ref={featureRef} className="py-20 px-4 bg-gray-50">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-16 text-center">
+          <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100 mb-4">
+            <Sparkles className="h-4 w-4 mr-1.5" />
+            <span>Powerful Features</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Everything Your Hospitality Brand Needs
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            GuestFlow combines powerful marketing tools with hospitality-specific features to help you attract guests, increase bookings, and build brand loyalty.
+          </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: feature.delay }}
-              viewport={{ once: true, margin: "-100px" }}
-              className="h-full"
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-5%" }}
             >
-              <div className={`h-full p-8 rounded-xl bg-gradient-to-br ${feature.gradient} border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 hover:translate-y-[-4px]`}>
-                <div className="p-3 bg-white rounded-xl inline-block mb-4 shadow-sm">
+              <Card className={`h-full p-6 border ${feature.color} hover:shadow-md transition-shadow`}>
+                <div className={`rounded-full w-12 h-12 flex items-center justify-center mb-4 ${feature.iconBg}`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-bold text-resort-800 mb-3">{feature.title}</h3>
-                <p className="text-resort-600">{feature.description}</p>
-              </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </Card>
             </motion.div>
           ))}
         </div>
         
-        <div className="mt-16 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            <p className="text-lg text-resort-700 mb-6 max-w-2xl mx-auto">
-              And many more capabilities designed to help hospitality businesses maximize their digital presence and drive direct bookings
-            </p>
-          </motion.div>
+        <div className="mt-20 p-8 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Custom-Tailored for the Hospitality Industry</h2>
+          <p className="text-lg text-blue-100 max-w-3xl mx-auto mb-6">
+            Unlike generic marketing tools, GuestFlow is built specifically for hotels, resorts, and spas with industry-specific templates, analytics, and AI capabilities.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8">
+            {[
+              { stat: '92%', label: 'Time saved on content creation' },
+              { stat: '3.5x', label: 'Increase in social engagement' },
+              { stat: '64%', label: 'Boost in direct bookings' }
+            ].map((item, index) => (
+              <div key={index} className="p-4 bg-white/10 rounded-lg backdrop-blur-sm">
+                <p className="text-3xl font-bold text-white">{item.stat}</p>
+                <p className="text-blue-100">{item.label}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

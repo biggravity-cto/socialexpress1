@@ -1,192 +1,101 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BrainCircuit, Calendar, MessageSquare, BarChart3 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import EarlyAccessModal from './EarlyAccessModal';
+import { ChevronRight, Sparkles, BarChart3, CalendarDays, BrainCircuit } from 'lucide-react';
 
 interface HeroSectionProps {
   scrollToFeatures: () => void;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-  
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
-  };
-  
-  const featureItemVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
-      scale: 1,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
-  };
-
+const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
   return (
-    <div className="relative pt-28 pb-20 md:pt-32 md:pb-24 overflow-hidden bg-gradient-to-b from-ocean-50/50 via-ocean-50/30 to-white">
-      <div className="container px-4 mx-auto relative z-10">
-        <motion.div
-          className="max-w-4xl mx-auto text-center"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <motion.span 
-            className="inline-block bg-ocean-100 text-ocean-600 px-4 py-1.5 rounded-full text-sm font-medium mb-6"
-            variants={itemVariants}
+    <section className="relative py-20 md:py-28 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-6"
           >
-            AI Powered Guest Journeys
-          </motion.span>
-          
-          <motion.h1 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4 leading-tight"
-            variants={itemVariants}
-          >
-            The AI Marketing & Sales Platform for Hospitality Resorts
-          </motion.h1>
-          
-          <motion.p 
-            className="text-xl text-slate-600 mb-6"
-            variants={itemVariants}
-          >
-            Delight Guests • Increase Revenue • Enhance Efficiency
-          </motion.p>
-          
-          <motion.p 
-            className="text-lg text-slate-600 mb-8 mx-auto max-w-2xl"
-            variants={itemVariants}
-          >
-            Our comprehensive AI-powered marketing platform helps premium resorts attract high-value guests while streamlining operations across all channels.
-          </motion.p>
-          
-          <motion.div 
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10"
-          >
-            <Button 
-              onClick={openModal}
-              size="lg" 
-              className="bg-ocean-600 hover:bg-ocean-700 h-12 px-8 rounded-lg w-full sm:w-auto
-              transition-all duration-300 transform hover:scale-105"
-            >
-              Request Early Access <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
+              <Sparkles className="h-4 w-4 mr-1.5" />
+              <span>Introducing AI-Powered Marketing</span>
+            </div>
             
-            <Button 
-              variant="outline" 
-              size="lg" 
-              onClick={scrollToFeatures} 
-              className="h-12 px-8 rounded-lg border-ocean-300 text-ocean-700 w-full sm:w-auto
-              hover:bg-ocean-50 hover:border-ocean-400 transition-all duration-300"
-            >
-              Explore Features
-            </Button>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+              Elevate Your <span className="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">Hospitality Brand</span> with GuestFlow
+            </h1>
+            
+            <p className="text-xl text-gray-600 max-w-xl">
+              The all-in-one digital marketing platform designed exclusively for resorts, hotels, and spas. Simplify your workflow with AI-powered content creation, campaign management, and brand intelligence.
+            </p>
+            
+            <div className="flex flex-wrap gap-4 pt-2">
+              <Button size="lg" className="h-12 px-6 bg-blue-600 hover:bg-blue-700">
+                Start Free Trial
+                <ChevronRight className="h-4 w-4 ml-2" />
+              </Button>
+              <Button size="lg" variant="outline" className="h-12 px-6" onClick={scrollToFeatures}>
+                Explore Features
+              </Button>
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-4 pt-6 text-sm text-gray-500">
+              <div className="flex items-center">
+                <BrainCircuit className="h-5 w-5 text-blue-500 mr-2" />
+                <span>AI-Powered Tools</span>
+              </div>
+              <div className="flex items-center">
+                <CalendarDays className="h-5 w-5 text-green-500 mr-2" />
+                <span>Unified Calendar</span>
+              </div>
+              <div className="flex items-center">
+                <BarChart3 className="h-5 w-5 text-purple-500 mr-2" />
+                <span>Brand Intelligence</span>
+              </div>
+            </div>
           </motion.div>
           
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
-            variants={itemVariants}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="relative"
           >
-            <motion.div 
-              className="flex flex-col items-center gap-3 bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:translate-y-[-5px]"
-              variants={featureItemVariants}
-              whileHover={{ y: -5 }}
-            >
-              <div className="bg-ocean-50 p-2 rounded-md">
-                <BrainCircuit className="h-5 w-5 text-ocean-600" />
+            <div className="relative z-10 rounded-xl overflow-hidden shadow-2xl border border-gray-100">
+              <img 
+                src="https://images.unsplash.com/photo-1562664377-709f2c337eb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80" 
+                alt="GuestFlow Dashboard" 
+                className="w-full h-auto"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
+              <div className="absolute bottom-4 left-4 right-4 text-white">
+                <div className="glass p-4 rounded-lg">
+                  <p className="text-sm font-medium">GuestFlow Analytics Dashboard</p>
+                </div>
               </div>
-              <span className="text-slate-700 font-medium text-center">AI Strategy & Content</span>
-            </motion.div>
+            </div>
             
-            <motion.div 
-              className="flex flex-col items-center gap-3 bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:translate-y-[-5px]"
-              variants={featureItemVariants}
-              whileHover={{ y: -5 }}
-            >
-              <div className="bg-purple-50 p-2 rounded-md">
-                <Calendar className="h-5 w-5 text-purple-600" />
-              </div>
-              <span className="text-slate-700 font-medium text-center">Omnichannel Marketing</span>
-            </motion.div>
-            
-            <motion.div 
-              className="flex flex-col items-center gap-3 bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:translate-y-[-5px]"
-              variants={featureItemVariants}
-              whileHover={{ y: -5 }}
-            >
-              <div className="bg-amber-50 p-2 rounded-md">
-                <MessageSquare className="h-5 w-5 text-amber-600" />
-              </div>
-              <span className="text-slate-700 font-medium text-center">Premium Guest Acquisition</span>
-            </motion.div>
-            
-            <motion.div 
-              className="flex flex-col items-center gap-3 bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:translate-y-[-5px]"
-              variants={featureItemVariants}
-              whileHover={{ y: -5 }}
-            >
-              <div className="bg-green-50 p-2 rounded-md">
-                <BarChart3 className="h-5 w-5 text-green-600" />
-              </div>
-              <span className="text-slate-700 font-medium text-center">Revenue Optimization</span>
-            </motion.div>
+            <div className="absolute -top-5 -right-5 -z-10 w-full h-full rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 opacity-20 blur-xl"></div>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
       
-      {/* Background decorations with animations */}
-      <motion.div 
-        className="absolute top-0 right-0 -z-10 w-1/3 h-1/3 bg-gradient-to-bl from-ocean-100 to-transparent opacity-30 blur-3xl"
-        animate={{ 
-          opacity: [0.2, 0.3, 0.2],
-          scale: [1, 1.05, 1],
-        }}
-        transition={{ 
-          duration: 8, 
-          repeat: Infinity,
-          repeatType: "reverse" 
-        }}
-      />
-      <motion.div 
-        className="absolute bottom-0 left-0 -z-10 w-1/3 h-1/3 bg-gradient-to-tr from-resort-100 to-transparent opacity-30 blur-3xl"
-        animate={{ 
-          opacity: [0.2, 0.4, 0.2],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{ 
-          duration: 10, 
-          repeat: Infinity,
-          repeatType: "reverse",
-          delay: 1
-        }}
-      />
-      
-      {/* Early Access Modal */}
-      <EarlyAccessModal open={isModalOpen} onOpenChange={setIsModalOpen} />
-    </div>
+      <div className="mt-16 pt-8 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-center text-sm text-gray-500 mb-6">Trusted by leading hospitality brands worldwide</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            {['Luxury Resort Group', 'Wellness Retreat Collection', 'City Hotels International', 'Premium Spa Network', 'Island Getaways'].map((brand, index) => (
+              <div key={index} className="text-gray-400 font-medium text-base">
+                {brand}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

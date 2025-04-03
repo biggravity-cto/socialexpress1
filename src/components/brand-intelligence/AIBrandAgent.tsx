@@ -7,12 +7,13 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   BrainCircuit, 
-  Calendar as CalendarIcon, 
   MessageSquare, 
   Send, 
   X,
   MinusCircle,
-  Maximize2
+  Maximize2,
+  ChartBar,
+  LineChart
 } from 'lucide-react';
 
 interface Message {
@@ -21,18 +22,18 @@ interface Message {
 }
 
 const suggestedPrompts = [
-  "Schedule a team meeting next Tuesday at 2pm",
-  "What's my busiest day this week?",
-  "Move my Instagram post to tomorrow morning",
-  "When is the best time to post on LinkedIn?",
-  "Show me all campaign deadlines this month"
+  "Analyze our brand sentiment on social media",
+  "Compare our resort to similar competitors",
+  "What demographic is engaging with our content?",
+  "Identify potential influencer partnerships",
+  "How is our wellness focus performing vs luxury?"
 ];
 
-const AICalendarAgent = () => {
+const AIBrandAgent = () => {
   const [messages, setMessages] = useState<Message[]>([
     { 
       role: 'assistant', 
-      content: 'Hello! I\'m your AI Calendar Agent. How can I assist with your marketing calendar today?' 
+      content: 'Hello! I\'m your AI Brand Intelligence Assistant. How can I help you analyze your brand today?' 
     }
   ]);
   const [inputText, setInputText] = useState('');
@@ -50,18 +51,18 @@ const AICalendarAgent = () => {
     setTimeout(() => {
       let responseContent = '';
       
-      if (inputText.includes('schedule') || inputText.includes('meeting')) {
-        responseContent = `I've added that to your calendar. Would you like me to send invitations to your team members?`;
-      } else if (inputText.includes('busiest')) {
-        responseContent = `Based on your current schedule, Thursday seems to be your busiest day with 5 posts scheduled and 2 meetings.`;
-      } else if (inputText.includes('move') || inputText.includes('reschedule')) {
-        responseContent = `I've rescheduled your post to tomorrow morning at 9:00 AM. This time has historically shown good engagement for your audience.`;
-      } else if (inputText.includes('best time') || inputText.includes('when')) {
-        responseContent = `For your audience on LinkedIn, data shows that Tuesday and Wednesday between 8-10 AM and 4-6 PM show the highest engagement rates.`;
-      } else if (inputText.includes('campaign') || inputText.includes('deadline')) {
-        responseContent = `You have 3 campaign deadlines this month: "Summer Sale" on the 15th, "Product Launch" on the 22nd, and "Back to School" on the 30th.`;
+      if (inputText.includes('sentiment') || inputText.includes('social media')) {
+        responseContent = `Your brand sentiment analysis shows 72% positive, 18% neutral, and 10% negative mentions across platforms. This is a 5% improvement in positive sentiment from last month.`;
+      } else if (inputText.includes('competitor') || inputText.includes('compare')) {
+        responseContent = `Compared to your top 3 competitors, your resort has 15% higher social engagement but 7% lower sentiment scores. Your "Korean beauty treatments" content is outperforming competitors by 23%.`;
+      } else if (inputText.includes('demographic') || inputText.includes('audience')) {
+        responseContent = `Your content is primarily engaging females (68%) ages 28-45 with high disposable income. Recent wellness posts are attracting a younger audience (25-32) interested in luxury experiences.`;
+      } else if (inputText.includes('influencer') || inputText.includes('partnership')) {
+        responseContent = `Based on your brand values and audience, I recommend exploring partnerships with Min-ji Kim (850K followers) and Sarah Johnson (620K followers) who specialize in wellness and spa content.`;
+      } else if (inputText.includes('wellness') || inputText.includes('luxury')) {
+        responseContent = `Your wellness content is generating 42% higher engagement than luxury-focused content. Consider integrating more wellness elements into your luxury messaging for optimal performance.`;
       } else {
-        responseContent = `I understand you want to know about "${inputText}". Let me analyze your calendar data and get back to you with insights.`;
+        responseContent = `I'll analyze "${inputText}" for you. Based on your recent brand data, I can provide insights on this topic once I've processed more information.`;
       }
       
       const responseMessage: Message = { role: 'assistant', content: responseContent };
@@ -87,23 +88,23 @@ const AICalendarAgent = () => {
   };
 
   return (
-    <Card className="mb-6 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 shadow-sm overflow-hidden transition-all duration-300">
+    <Card className="mb-6 border-purple-100 bg-gradient-to-r from-purple-50 to-indigo-50 shadow-sm overflow-hidden transition-all duration-300">
       <div className="p-4 flex items-start gap-3">
-        <div className="bg-blue-100 p-2 rounded-full">
-          <BrainCircuit className="h-5 w-5 text-blue-600" />
+        <div className="bg-purple-100 p-2 rounded-full">
+          <BrainCircuit className="h-5 w-5 text-purple-600" />
         </div>
         
         <div className="flex-1">
           <div className="flex items-center justify-between mb-1">
-            <h3 className="font-medium text-blue-800">AI Calendar Agent</h3>
+            <h3 className="font-medium text-purple-800">AI Brand Intelligence</h3>
             <div className="flex gap-2">
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="bg-white border-blue-200 text-blue-700 hover:bg-blue-50"
+                className="bg-white border-purple-200 text-purple-700 hover:bg-purple-50"
               >
-                <CalendarIcon className="h-4 w-4 mr-1" />
-                <span className="hidden sm:inline">Connect Google Calendar</span>
+                <LineChart className="h-4 w-4 mr-1" />
+                <span className="hidden sm:inline">Connect Analytics</span>
                 <span className="sm:hidden">Connect</span>
               </Button>
               {isChatOpen && !isMinimized && (
@@ -111,7 +112,7 @@ const AICalendarAgent = () => {
                   variant="ghost"
                   size="sm"
                   onClick={toggleMinimize}
-                  className="text-blue-700 hover:bg-blue-100"
+                  className="text-purple-700 hover:bg-purple-100"
                 >
                   <MinusCircle className="h-4 w-4 mr-1" />
                   <span className="hidden sm:inline">Minimize</span>
@@ -122,7 +123,7 @@ const AICalendarAgent = () => {
                   variant="ghost"
                   size="sm"
                   onClick={toggleMinimize}
-                  className="text-blue-700 hover:bg-blue-100"
+                  className="text-purple-700 hover:bg-purple-100"
                 >
                   <Maximize2 className="h-4 w-4 mr-1" />
                   <span className="hidden sm:inline">Expand</span>
@@ -132,7 +133,7 @@ const AICalendarAgent = () => {
                 variant="ghost"
                 size="sm"
                 onClick={toggleChat}
-                className="text-blue-700 hover:bg-blue-100"
+                className="text-purple-700 hover:bg-purple-100"
               >
                 {isChatOpen ? (
                   <>
@@ -152,18 +153,18 @@ const AICalendarAgent = () => {
           </div>
           
           {!isChatOpen ? (
-            <p className="text-sm text-blue-700 mt-1">
-              Ask me to schedule posts, analyze your calendar, or suggest optimal posting times.
+            <p className="text-sm text-purple-700 mt-1">
+              Ask me to analyze brand sentiment, identify trends, or compare against competitors.
             </p>
           ) : !isMinimized ? (
-            <div className="mt-3 bg-white rounded-lg border border-blue-100 shadow-sm">
+            <div className="mt-3 bg-white rounded-lg border border-purple-100 shadow-sm">
               <ScrollArea className="h-[250px] p-3">
                 {messages.map((message, index) => (
                   <div 
                     key={index} 
                     className={`mb-3 p-3 rounded-lg ${
                       message.role === 'user' 
-                        ? 'bg-blue-50 ml-12 rounded-tr-none' 
+                        ? 'bg-purple-50 ml-12 rounded-tr-none' 
                         : 'bg-gray-50 mr-12 rounded-tl-none'
                     }`}
                   >
@@ -180,7 +181,7 @@ const AICalendarAgent = () => {
                         key={index} 
                         variant="outline" 
                         size="sm"
-                        className="whitespace-nowrap flex-shrink-0 bg-white border-blue-200 hover:bg-blue-50"
+                        className="whitespace-nowrap flex-shrink-0 bg-white border-purple-200 hover:bg-purple-50"
                         onClick={() => handlePromptClick(prompt)}
                       >
                         {prompt}
@@ -192,7 +193,7 @@ const AICalendarAgent = () => {
               
               <div className="p-3 flex gap-2">
                 <Input 
-                  placeholder="Ask about your calendar or schedule..."
+                  placeholder="Ask about your brand performance..."
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={(e) => {
@@ -201,10 +202,10 @@ const AICalendarAgent = () => {
                       handleSendMessage();
                     }
                   }}
-                  className="border-blue-200"
+                  className="border-purple-200"
                 />
                 <Button 
-                  className="rounded-full h-10 w-10 p-0 flex-shrink-0 bg-blue-600 hover:bg-blue-700"
+                  className="rounded-full h-10 w-10 p-0 flex-shrink-0 bg-purple-600 hover:bg-purple-700"
                   onClick={handleSendMessage}
                 >
                   <Send className="h-4 w-4" />
@@ -212,7 +213,7 @@ const AICalendarAgent = () => {
               </div>
             </div>
           ) : (
-            <p className="text-sm text-blue-700 italic mt-1">
+            <p className="text-sm text-purple-700 italic mt-1">
               Chat minimized. Click "Expand" to see your conversation.
             </p>
           )}
@@ -222,4 +223,4 @@ const AICalendarAgent = () => {
   );
 };
 
-export default AICalendarAgent;
+export default AIBrandAgent;

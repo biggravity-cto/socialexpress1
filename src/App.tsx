@@ -9,6 +9,7 @@ import Campaigns from '@/pages/Campaigns'
 import Analytics from '@/pages/Analytics'
 import Content from '@/pages/Content'
 import BrandIntelligence from '@/pages/BrandIntelligence'
+import MarketIntelligence from '@/pages/MarketIntelligence'
 import Messages from '@/pages/Messages'
 import Approvals from '@/pages/Approvals'
 import Team from '@/pages/Team'
@@ -37,7 +38,7 @@ function App() {
           {/* Insights Section */}
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/brand-intelligence" element={<BrandIntelligence />} />
-          <Route path="/market-intelligence" element={<Navigate to="/brand-intelligence" replace />} />
+          <Route path="/market-intelligence" element={<MarketIntelligence />} />
           
           {/* Standalone - Unified Social Inbox */}
           <Route path="/messages" element={<Messages />} />
