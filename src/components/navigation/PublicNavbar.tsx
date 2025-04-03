@@ -52,18 +52,23 @@ const PublicNavbar = () => {
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
-        <LogoComponent />
-        <NavigationLinks scrollToSection={scrollToSection} />
-        <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
+        <div className="flex items-center">
+          <LogoComponent />
+          <NavigationLinks scrollToSection={scrollToSection} />
+        </div>
         
-        {isMobile && (
-          <MobileMenu
-            isMenuOpen={isMenuOpen}
-            setIsMenuOpen={setIsMenuOpen}
-            scrollToSection={scrollToSection}
-            setIsModalOpen={setIsModalOpen}
-          />
-        )}
+        <div className="flex items-center">
+          <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
+          
+          {isMobile && (
+            <MobileMenu
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+              scrollToSection={scrollToSection}
+              setIsModalOpen={setIsModalOpen}
+            />
+          )}
+        </div>
       </div>
       
       {/* Early Access Modal */}

@@ -11,7 +11,7 @@ interface NavbarActionsProps {
 
 const NavbarActions: React.FC<NavbarActionsProps> = ({ onEarlyAccessClick }) => {
   return (
-    <div className="flex items-center gap-3 ml-auto mr-1">
+    <div className="flex items-center gap-3">
       <Link to="/auth" className="text-sm text-ocean-700 hover:text-ocean-900 font-medium hidden md:flex items-center">
         <User className="h-4 w-4 mr-1" />
         Demo Login
