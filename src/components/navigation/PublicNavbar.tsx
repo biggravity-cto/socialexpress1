@@ -52,23 +52,27 @@ const PublicNavbar = () => {
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
-        <div className="flex items-center">
-          <LogoComponent />
-          {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
-        </div>
+        {/* Always show the logo unless mobile menu is open */}
+        {(!isMobile || !isMenuOpen) && (
+          <div className="flex items-center">
+            <LogoComponent />
+            {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
+          </div>
+        )}
         
         <div className="flex items-center">
-          {!isMobile && <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />}
+          {/* Only show CTA button on desktop or when mobile menu is closed */}
+          {(!isMobile || !isMenuOpen) && (
+            <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
+          )}
           
           {isMobile && (
-            <div className="ml-auto">
-              <MobileMenu
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
-                scrollToSection={scrollToSection}
-                setIsModalOpen={setIsModalOpen}
-              />
-            </div>
+            <MobileMenu
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+              scrollToSection={scrollToSection}
+              setIsModalOpen={setIsModalOpen}
+            />
           )}
         </div>
       </div>

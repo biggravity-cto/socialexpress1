@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { X, AlignJustify, User, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import LogoComponent from './LogoComponent';
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -38,12 +39,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div 
-            className="fixed inset-0 bg-white z-40 flex flex-col pt-20 px-6 overflow-auto"
+            className="fixed inset-0 bg-white z-40 flex flex-col pt-4 px-6 overflow-auto"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
+            <div className="container mx-auto mb-6">
+              <LogoComponent />
+            </div>
+            
             <div className="flex flex-col space-y-6 flex-grow">
               {[
                 {label: "Features", id: "features"},
@@ -86,7 +91,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
                 whileTap={{ scale: 0.97 }}
               >
                 <Button 
-                  className="w-full py-6 text-base"
+                  className="w-full py-6 text-base bg-ocean-600 hover:bg-ocean-700"
                   size="lg"
                   onClick={() => {
                     setIsMenuOpen(false);
