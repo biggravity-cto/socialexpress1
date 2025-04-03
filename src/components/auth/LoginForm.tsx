@@ -52,7 +52,7 @@ const LoginForm = ({ onError }: LoginFormProps) => {
   };
 
   const useDemo = () => {
-    form.setValue('email', 'demo@demo.com');
+    form.setValue('email', 'demo@biggravity.com');
     form.setValue('password', 'demo1234');
     form.handleSubmit(onSubmit)();
   };
@@ -115,7 +115,7 @@ const LoginForm = ({ onError }: LoginFormProps) => {
               <div className="space-y-1">
                 <h4 className="font-medium text-sm text-ocean-800">Demo Account Access</h4>
                 <p className="text-xs text-ocean-700">
-                  Email: <span className="font-mono bg-white/70 px-1 py-0.5 rounded">demo@demo.com</span><br />
+                  Email: <span className="font-mono bg-white/70 px-1 py-0.5 rounded">demo@biggravity.com</span><br />
                   Password: <span className="font-mono bg-white/70 px-1 py-0.5 rounded">demo1234</span>
                 </p>
                 <Button 
