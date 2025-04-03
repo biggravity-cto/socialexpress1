@@ -20,22 +20,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 }) => {
   if (!isMenuOpen) return null;
   
-  // Using a different approach with portal-like rendering
   return (
-    <div 
-      className="fixed inset-0 z-50" 
-      style={{
-        backgroundColor: '#FFFFFF',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        zIndex: 9999,
-        overflow: 'hidden'
-      }}
-    >
-      <div className="flex flex-col h-full px-6 py-4" style={{ backgroundColor: '#FFFFFF' }}>
+    <div className="fixed inset-0 bg-white z-50">
+      <div className="flex flex-col h-full px-6 py-4">
         <div className="flex justify-between items-center mb-8">
           <LogoComponent />
           <Button 

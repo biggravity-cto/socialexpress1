@@ -38,7 +38,6 @@ const PublicNavbar = () => {
   }, [isMenuOpen]);
 
   const scrollToSection = (sectionId: string) => {
-    setIsMenuOpen(false);
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -86,9 +85,7 @@ const PublicNavbar = () => {
         </div>
       </div>
       
-      {/* Force immediate render with a key to ensure fresh state */}
       <MobileMenu
-        key={isMenuOpen ? "menu-open" : "menu-closed"}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         scrollToSection={scrollToSection}
