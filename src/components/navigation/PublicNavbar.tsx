@@ -51,12 +51,6 @@ const PublicNavbar = () => {
       : 'bg-white/70 backdrop-blur-sm py-4'
   }`;
 
-  // Function to handle menu button click
-  const handleMenuToggle = () => {
-    console.log("Toggle menu clicked, current state:", isMenuOpen);
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
@@ -83,7 +77,7 @@ const PublicNavbar = () => {
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={handleMenuToggle}
+              onClick={() => setIsMenuOpen(true)}
               aria-label="Toggle menu"
             >
               <AlignJustify className="h-5 w-5" />
@@ -92,7 +86,6 @@ const PublicNavbar = () => {
         </div>
       </div>
       
-      {/* Mobile Menu - rendered conditionally in its own component */}
       <MobileMenu
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
@@ -100,7 +93,6 @@ const PublicNavbar = () => {
         setIsModalOpen={setIsModalOpen}
       />
       
-      {/* Early Access Modal */}
       <EarlyAccessModal open={isModalOpen} onOpenChange={setIsModalOpen} />
     </header>
   );
