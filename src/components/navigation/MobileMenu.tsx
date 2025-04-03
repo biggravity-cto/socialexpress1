@@ -20,7 +20,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   setIsModalOpen
 }) => {
   return (
-    <div>
+    <div className="z-50">
       {/* Mobile Menu Toggle Button */}
       <Button 
         variant="ghost" 
@@ -45,8 +45,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="container mx-auto mb-6">
+            <div className="flex justify-between items-center mb-6">
               <LogoComponent />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setIsMenuOpen(false)}
+                aria-label="Close menu"
+              >
+                <X className="h-5 w-5" />
+              </Button>
             </div>
             
             <div className="flex flex-col space-y-6 flex-grow">
