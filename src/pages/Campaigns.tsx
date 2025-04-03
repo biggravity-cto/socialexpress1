@@ -20,7 +20,12 @@ import {
   ChevronRight,
   Sparkles,
   CheckCircle2,
-  CalendarDays
+  CalendarDays,
+  Calendar,
+  Users,
+  BarChart,
+  LayoutDashboard,
+  Archive
 } from 'lucide-react';
 
 // Define campaign step types
