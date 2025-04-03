@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { AlignJustify, X, User, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import EarlyAccessModal from '@/components/landing/EarlyAccessModal';
+import LogoComponent from './LogoComponent';
+import NavigationLinks from './NavigationLinks';
+import NavbarActions from './NavbarActions';
+import MobileMenu from './MobileMenu';
 
 const PublicNavbar = () => {
   const isMobile = useIsMobile();
@@ -51,149 +52,19 @@ const PublicNavbar = () => {
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
-        <Link to="/" className="flex-shrink-0 pl-1 mr-auto">
-          <motion.span 
-            className="text-resort-800 text-lg sm:text-xl md:text-2xl font-bold"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            Guest<span className="bg-gradient-to-r from-ocean-600 to-ocean-500 bg-clip-text text-transparent">Flow AI</span>
-          </motion.span>
-        </Link>
-        
-        <div className="hidden md:flex items-center space-x-6">
-          <motion.button 
-            onClick={() => scrollToSection('features')} 
-            className="text-gray-600 hover:text-gray-900 relative group"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            Features
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-ocean-500 group-hover:w-full transition-all duration-300"></span>
-          </motion.button>
-          
-          <motion.button 
-            onClick={() => scrollToSection('pricing')} 
-            className="text-gray-600 hover:text-gray-900 relative group"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            Pricing
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-ocean-500 group-hover:w-full transition-all duration-300"></span>
-          </motion.button>
-          
-          <motion.button 
-            onClick={() => scrollToSection('testimonials')} 
-            className="text-gray-600 hover:text-gray-900 relative group"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            Success Stories
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-ocean-500 group-hover:w-full transition-all duration-300"></span>
-          </motion.button>
-          
-          <motion.button 
-            onClick={() => scrollToSection('faq')} 
-            className="text-gray-600 hover:text-gray-900 relative group"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            FAQ
-            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-ocean-500 group-hover:w-full transition-all duration-300"></span>
-          </motion.button>
-        </div>
-        
-        <div className="flex items-center gap-3 ml-auto mr-1">
-          <Link to="/auth" className="text-sm text-ocean-700 hover:text-ocean-900 font-medium hidden md:flex items-center">
-            <User className="h-4 w-4 mr-1" />
-            Demo Login
-          </Link>
-          
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          >
-            <Button 
-              className="bg-ocean-600 hover:bg-ocean-700 font-medium text-xs sm:text-sm py-1 px-2 sm:px-4 h-8 sm:h-10"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <Sparkles className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Early Access
-            </Button>
-          </motion.div>
-        </div>
+        <LogoComponent />
+        <NavigationLinks scrollToSection={scrollToSection} />
+        <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
         
         {isMobile && (
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={() => setIsMenuOpen(!isMenuOpen)} 
-            className="md:hidden z-50 ml-2"
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <AlignJustify className="h-5 w-5" />}
-          </Button>
+          <MobileMenu
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+            scrollToSection={scrollToSection}
+            setIsModalOpen={setIsModalOpen}
+          />
         )}
       </div>
-      
-      <AnimatePresence>
-        {isMenuOpen && isMobile && (
-          <motion.div 
-            className="fixed inset-0 z-40 bg-white flex flex-col pt-20 pb-8 px-6 overflow-y-auto"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="flex flex-col space-y-6 flex-grow">
-              <button 
-                onClick={() => scrollToSection('features')} 
-                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2"
-              >
-                Features
-              </button>
-              <button 
-                onClick={() => scrollToSection('pricing')} 
-                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2"
-              >
-                Pricing
-              </button>
-              <button 
-                onClick={() => scrollToSection('testimonials')} 
-                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2"
-              >
-                Success Stories
-              </button>
-              <button 
-                onClick={() => scrollToSection('faq')} 
-                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2"
-              >
-                FAQ
-              </button>
-            </div>
-            
-            <div className="mt-auto pt-6 border-t border-gray-100 space-y-4">
-              <Button 
-                className="w-full py-6 text-base"
-                size="lg"
-                onClick={() => {
-                  setIsMenuOpen(false);
-                  setIsModalOpen(true);
-                }}
-              >
-                <Sparkles className="mr-2 h-5 w-5" /> Request Early Access
-              </Button>
-              
-              <Link to="/auth" className="w-full flex" onClick={() => setIsMenuOpen(false)}>
-                <Button variant="outline" className="w-full py-6 text-base" size="lg">
-                  <User className="h-5 w-5 mr-2" />
-                  Demo Login
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
       
       {/* Early Access Modal */}
       <EarlyAccessModal open={isModalOpen} onOpenChange={setIsModalOpen} />
