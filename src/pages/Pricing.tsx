@@ -106,7 +106,7 @@ const Pricing = () => {
               <div>
                 <h4 className="font-semibold text-lg text-resort-800 mb-2">Additional Information:</h4>
                 <ul className="space-y-2">
-                  <li className="text-resort-700">All plans include a 14-day free trial with no credit card required.</li>
+                  <li className="text-resort-700">No credit card required to get started.</li>
                   <li className="text-resort-700">Dedicated onboarding support included with all plans.</li>
                   <li className="text-resort-700">Enterprise plans include quarterly strategy sessions and full implementation support.</li>
                 </ul>
@@ -152,7 +152,7 @@ const pricingPlans = [
     name: "Premium",
     description: "For established properties looking to optimize all marketing channels and increase bookings.",
     coreBenefit: "Maximize direct bookings and guest engagement across channels.",
-    price: "$399",
+    price: "$449",
     period: "/month",
     buttonText: "Request Early Access",
     featured: true,
@@ -184,6 +184,7 @@ const pricingPlans = [
       "Guest segmentation and targeting",
       "Advanced personalization engine",
       "Complete brand voice customization",
+      "Managed services & dedicated support",
       "PMS/CRM/Revenue Management integration",
       "Custom reporting and white-labeled dashboards",
       "Unlimited content generation and usage",

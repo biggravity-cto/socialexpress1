@@ -27,7 +27,7 @@ const plans = [
   },
   {
     name: 'Premium',
-    price: '$399',
+    price: '$449',
     period: '/month',
     description: 'For established properties looking to optimize all marketing channels and increase bookings.',
     coreBenefit: 'Maximize direct bookings and guest engagement across channels.',

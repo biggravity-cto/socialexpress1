@@ -37,7 +37,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
               transition={{ duration: 0.5, delay: 0.3 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-resort-900 leading-tight"
             >
-              Elevate Your <span className="text-ocean-600">Hotel's</span> Digital Experience
+              Transform Your <span className="text-ocean-600">Hotel's</span> Digital Impact
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: -10 }}
@@ -78,7 +78,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
               <span>No credit card required</span>
               <span className="mx-2">•</span>
               <CheckCircle2 className="h-4 w-4 text-green-500" />
-              <span>14-day free trial</span>
+              <span>Dedicated onboarding</span>
               <span className="mx-2">•</span>
               <CheckCircle2 className="h-4 w-4 text-green-500" />
               <span>Cancel anytime</span>
