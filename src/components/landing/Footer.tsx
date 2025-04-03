@@ -61,7 +61,7 @@ const Footer: React.FC = () => {
               <span className="font-bold text-2xl tracking-tight text-resort-800">Guest<span className="text-ocean-600">Flow</span></span>
             </Link>
             <p className="text-resort-600 mb-6 max-w-md">
-              The complete social media management platform built specifically for hospitality and resort businesses.
+              The AI-powered hospitality marketing platform that helps hotels and resorts delight guests, drive revenue, and streamline operations.
             </p>
             <div className="flex space-x-4 mb-6">
               <a href="#" className="bg-gray-100 p-2 rounded-full text-resort-700 hover:bg-ocean-100 hover:text-ocean-600 transition-colors">
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
               </div>
               <div className="flex items-start">
                 <MapPin className="h-5 w-5 text-ocean-500 mt-0.5 mr-3" />
-                <span className="text-resort-600">123 Social Avenue, San Francisco, CA 94107</span>
+                <span className="text-resort-600">Phoenix, AZ</span>
               </div>
             </div>
           </div>
