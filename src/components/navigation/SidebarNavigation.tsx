@@ -3,17 +3,18 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  BrainCircuit,
-  Library, 
+  LineChart,
   Calendar,
-  ClipboardCheck,
-  MessageSquare, 
+  Library, 
+  ClipboardCheck, 
   BarChart,
-  LineChart, 
+  BrainCircuit,
+  MessageSquare, 
   Settings, 
   LogOut,
   Users,
-  BellDot 
+  BellDot,
+  Sparkles
 } from 'lucide-react';
 import { 
   SidebarContent, 
@@ -64,13 +65,13 @@ const SidebarNavigation = () => {
         {/* Main navigation group */}
         <SidebarGroup>
           <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
-          <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Campaigns</SidebarLink>
-          <SidebarLink to="/content" icon={<Library />}>Content Studio</SidebarLink>
-          <SidebarLink to="/calendar" icon={<Calendar />}>AI Marketing Calendar</SidebarLink>
-          <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
-          <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
-          <SidebarLink to="/analytics" icon={<BarChart />}>Analytics & Insights</SidebarLink>
           <SidebarLink to="/brand-intelligence" icon={<LineChart />}>Brand Intelligence</SidebarLink>
+          <SidebarLink to="/analytics" icon={<BarChart />}>Analytics & Insights</SidebarLink>
+          <SidebarLink to="/calendar" icon={<Calendar />}>Marketing Calendar</SidebarLink>
+          <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Campaigns</SidebarLink>
+          <SidebarLink to="/content" icon={<Sparkles />}>AI Content Studio</SidebarLink>
+          <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
+          <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Inbox</SidebarLink>
         </SidebarGroup>
         
         {/* Settings navigation group (positioned at bottom, above footer) */}

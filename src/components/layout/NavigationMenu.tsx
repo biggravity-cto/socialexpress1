@@ -3,12 +3,12 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  BrainCircuit,
+  LineChart,
   Calendar,
   Library, 
   ClipboardCheck, 
   BarChart,
-  LineChart,
+  BrainCircuit,
   MessageSquare, 
   Settings,
   Sparkles
@@ -27,29 +27,9 @@ const mainNavItems = [
     icon: <LayoutDashboard className="h-5 w-5" />
   },
   {
-    name: 'AI Content Studio',
-    path: '/content',
-    icon: <Sparkles className="h-5 w-5" />
-  },
-  {
-    name: 'Campaigns',
-    path: '/campaigns',
-    icon: <BrainCircuit className="h-5 w-5" />
-  },
-  {
-    name: 'Marketing Calendar',
-    path: '/calendar',
-    icon: <Calendar className="h-5 w-5" />
-  },
-  {
-    name: 'Approvals',
-    path: '/approvals',
-    icon: <ClipboardCheck className="h-5 w-5" />
-  },
-  {
-    name: 'Unified Social Inbox',
-    path: '/messages',
-    icon: <MessageSquare className="h-5 w-5" />
+    name: 'Brand Intelligence',
+    path: '/brand-intelligence',
+    icon: <LineChart className="h-5 w-5" />
   },
   {
     name: 'Analytics & Insights',
@@ -57,9 +37,29 @@ const mainNavItems = [
     icon: <BarChart className="h-5 w-5" />
   },
   {
-    name: 'Brand Intelligence',
-    path: '/brand-intelligence',
-    icon: <LineChart className="h-5 w-5" />
+    name: 'Marketing Calendar',
+    path: '/calendar',
+    icon: <Calendar className="h-5 w-5" />
+  },
+  {
+    name: 'Campaigns',
+    path: '/campaigns',
+    icon: <BrainCircuit className="h-5 w-5" />
+  },
+  {
+    name: 'AI Content Studio',
+    path: '/content',
+    icon: <Sparkles className="h-5 w-5" />
+  },
+  {
+    name: 'Approvals',
+    path: '/approvals',
+    icon: <ClipboardCheck className="h-5 w-5" />
+  },
+  {
+    name: 'Unified Inbox',
+    path: '/messages',
+    icon: <MessageSquare className="h-5 w-5" />
   }
 ];
 
