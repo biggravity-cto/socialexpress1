@@ -21,22 +21,22 @@ const CtaSection: React.FC = () => {
               className="bg-white text-ocean-700 hover:bg-ocean-50"
             >
               <Link to="/auth" className="w-full">
-                Start Your 14-Day Free Trial
+                Get Early Access
               </Link>
             </Button>
             <Button 
               variant="outline" 
               size="lg"
-              className="border-white text-white hover:bg-ocean-700 group"
+              className="border-white text-white hover:bg-ocean-700 hover:text-white group"
             >
-              <Link to="/calendar" className="flex items-center">
+              <Link to="/calendar" className="flex items-center w-full">
                 See Live Demo
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
           </div>
           <p className="mt-6 text-ocean-100">
-            No credit card required. Cancel anytime.
+            Limited early access spots available. No credit card required.
           </p>
         </div>
       </div>

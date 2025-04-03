@@ -38,7 +38,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <Button size="lg" className="w-full sm:w-auto">
                 <Link to="/auth" className="w-full">
-                  Start Your Free Trial
+                  Get Early Access
                 </Link>
               </Button>
               
@@ -54,7 +54,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
             </div>
             
             <div className="text-sm text-resort-500 pt-2">
-              No credit card required • 14-day free trial • Cancel anytime
+              No credit card required • Limited early access spots • Cancel anytime
             </div>
           </div>
           
@@ -68,9 +68,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
             >
               <div className="relative overflow-hidden rounded-xl shadow-2xl border border-gray-100">
                 <img 
-                  src="/placeholder.svg" 
+                  src="/hero-dashboard.jpg" 
                   alt="GuestFlow Dashboard Preview" 
                   className="w-full h-auto"
+                  onError={(e) => {
+                    // Fallback to placeholder if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.src = "/placeholder.svg";
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-ocean-700/10 via-transparent to-transparent"></div>
               </div>
