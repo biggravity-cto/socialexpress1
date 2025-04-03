@@ -22,6 +22,19 @@ const PublicNavbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    // Prevent scrolling when mobile menu is open
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isMenuOpen]);
+
   const scrollToSection = (sectionId: string) => {
     setIsMenuOpen(false);
     const element = document.getElementById(sectionId);
@@ -39,9 +52,9 @@ const PublicNavbar = () => {
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
-        <Link to="/" className="text-2xl font-bold">
+        <Link to="/" className="flex-shrink-0">
           <motion.span 
-            className="text-resort-800"
+            className="text-resort-800 text-xl sm:text-2xl font-bold"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -112,7 +125,7 @@ const PublicNavbar = () => {
         </div>
         
         {isMobile && (
-          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden">
+          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-50">
             {isMenuOpen ? <X /> : <Menu />}
           </Button>
         )}
@@ -173,13 +186,6 @@ const PublicNavbar = () => {
                 </Button>
               </Link>
             </div>
-            
-            <button
-              className="absolute top-5 right-6 text-gray-600"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <X className="h-6 w-6" />
-            </button>
           </motion.div>
         )}
       </AnimatePresence>
