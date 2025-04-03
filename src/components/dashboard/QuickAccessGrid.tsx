@@ -6,7 +6,7 @@ import QuickAccessCard from './QuickAccessCard';
 const QuickAccessGrid: React.FC = () => {
   const quickAccessItems = [
     {
-      title: "Content Calendar",
+      title: "AI Marketing Calendar",
       description: "View and manage your upcoming content schedule",
       icon: <Calendar className="h-6 w-6 text-purple-600" />,
       path: "/calendar",
