@@ -3,14 +3,14 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
+  BrainCircuit,
   Calendar,
   Library, 
-  MessageSquare, 
   ClipboardCheck, 
-  Settings, 
-  BrainCircuit,
+  BarChart,
   LineChart,
-  BarChart
+  MessageSquare, 
+  Settings
 } from 'lucide-react';
 
 interface NavigationMenuProps {
@@ -30,19 +30,24 @@ const mainNavItems = [
     icon: <BrainCircuit className="h-5 w-5" />
   },
   {
-    name: 'AI Marketing Calendar',
-    path: '/calendar',
-    icon: <Calendar className="h-5 w-5" />
-  },
-  {
     name: 'Content Studio',
     path: '/content',
     icon: <Library className="h-5 w-5" />
   },
   {
+    name: 'AI Marketing Calendar',
+    path: '/calendar',
+    icon: <Calendar className="h-5 w-5" />
+  },
+  {
     name: 'Approvals',
     path: '/approvals',
     icon: <ClipboardCheck className="h-5 w-5" />
+  },
+  {
+    name: 'Unified Social Inbox',
+    path: '/messages',
+    icon: <MessageSquare className="h-5 w-5" />
   },
   {
     name: 'Analytics & Insights',
@@ -53,11 +58,6 @@ const mainNavItems = [
     name: 'Brand Intelligence',
     path: '/brand-intelligence',
     icon: <LineChart className="h-5 w-5" />
-  },
-  {
-    name: 'Unified Social Inbox',
-    path: '/messages',
-    icon: <MessageSquare className="h-5 w-5" />
   }
 ];
 

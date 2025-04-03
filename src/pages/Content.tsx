@@ -9,6 +9,7 @@ import ContentCreationDialog from '@/components/content/ContentCreationDialog';
 import AIGeneratorDialog from '@/components/content/AIGeneratorDialog';
 import ContentState from '@/components/content/ContentState';
 import ContentActions from '@/components/content/ContentActions';
+import AIContentChat from '@/components/content/AIContentChat';
 import { useContentManagement } from '@/hooks/useContentManagement';
 
 const Content = () => {
@@ -54,6 +55,9 @@ const Content = () => {
         setShowAIGenerator={setShowAIGenerator}
         showAIGenerator={showAIGenerator}
       />
+
+      {/* AI Content Assistant */}
+      <AIContentChat />
 
       {/* Search and Filter Bar */}
       <ContentSearch 
