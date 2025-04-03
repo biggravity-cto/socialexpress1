@@ -7,7 +7,7 @@ import NavigationLinks from './NavigationLinks';
 import NavbarActions from './NavbarActions';
 import MobileMenu from './MobileMenu';
 import { Button } from '@/components/ui/button';
-import { AlignJustify } from 'lucide-react';
+import { AlignJustify, Sparkles } from 'lucide-react';
 
 const PublicNavbar = () => {
   const isMobile = useIsMobile();
@@ -59,7 +59,16 @@ const PublicNavbar = () => {
           {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
         </div>
         
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
+          {isMobile && (
+            <Button 
+              className="bg-ocean-600 hover:bg-ocean-700 font-medium text-xs px-3 h-8"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <Sparkles className="mr-1 h-3 w-3" /> Early Access
+            </Button>
+          )}
+          
           {!isMobile && (
             <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
           )}
