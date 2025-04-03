@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Menu, X, User, Sparkles } from 'lucide-react';
+import { AlignJustify, X, User, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EarlyAccessModal from '@/components/landing/EarlyAccessModal';
 
@@ -51,7 +51,7 @@ const PublicNavbar = () => {
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
-        <Link to="/" className="flex-shrink-0 pl-0 sm:pl-0">
+        <Link to="/" className="flex-shrink-0 pl-1 mr-auto">
           <motion.span 
             className="text-resort-800 text-lg sm:text-xl md:text-2xl font-bold"
             initial={{ opacity: 0 }}
@@ -104,7 +104,7 @@ const PublicNavbar = () => {
           </motion.button>
         </div>
         
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-3 ml-auto mr-1">
           <Link to="/auth" className="text-sm text-ocean-700 hover:text-ocean-900 font-medium hidden md:flex items-center">
             <User className="h-4 w-4 mr-1" />
             Demo Login
@@ -129,8 +129,9 @@ const PublicNavbar = () => {
             size="icon" 
             onClick={() => setIsMenuOpen(!isMenuOpen)} 
             className="md:hidden z-50 ml-2"
+            aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X /> : <Menu />}
+            {isMenuOpen ? <X className="h-5 w-5" /> : <AlignJustify className="h-5 w-5" />}
           </Button>
         )}
       </div>
@@ -138,7 +139,7 @@ const PublicNavbar = () => {
       <AnimatePresence>
         {isMenuOpen && isMobile && (
           <motion.div 
-            className="fixed inset-0 z-40 bg-white flex flex-col pt-20 pb-8 px-6"
+            className="fixed inset-0 z-40 bg-white flex flex-col pt-20 pb-8 px-6 overflow-y-auto"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
