@@ -24,10 +24,10 @@ const Pricing = () => {
               Investment Plans
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-resort-900 mb-6">
-              Strategic Solutions for <span className="text-ocean-600">Luxury Properties</span>
+              Strategic Solutions for <span className="text-ocean-600">Hotels & Resorts</span>
             </h1>
             <p className="text-lg text-resort-600">
-              Select the perfect plan to elevate your property's marketing presence, attract premium guests, and drive revenue growth.
+              Select the perfect plan to elevate your property's marketing presence, attract guests, and drive revenue growth.
             </p>
           </motion.div>
           
@@ -89,7 +89,7 @@ const Pricing = () => {
               <div>
                 <h4 className="font-semibold text-lg text-resort-800 mb-2">Strategic Solution Components:</h4>
                 <ul className="space-y-2">
-                  <li className="text-resort-700"><span className="font-medium">Premium Content:</span> High-quality, branded content pieces tailored for luxury hospitality.</li>
+                  <li className="text-resort-700"><span className="font-medium">Premium Content:</span> High-quality, branded content pieces tailored for hospitality.</li>
                   <li className="text-resort-700"><span className="font-medium">Guest Journey Optimization:</span> Comprehensive analysis and enhancement of the complete booking funnel.</li>
                   <li className="text-resort-700"><span className="font-medium">Revenue Optimization:</span> AI-driven tools to maximize RevPAR and occupancy with optimal pricing.</li>
                 </ul>
@@ -125,7 +125,7 @@ const pricingPlans = [
     features: [
       "Intelligent Marketing Calendar",
       "Premium Asset Library for photography & videos",
-      "AI-driven content suggestions for luxury positioning",
+      "AI-driven content suggestions for engaging positioning",
       "Generate up to 15 premium content pieces monthly",
       "Basic guest persona development",
       "Export-ready content with brand guidelines",
@@ -146,7 +146,7 @@ const pricingPlans = [
       "Advanced guest journey mapping and optimization",
       "Revenue attribution analytics",
       "Direct booking conversion optimization",
-      "Personalized luxury guest communications",
+      "Personalized guest communications",
       "Multi-language content support including Korean",
       "Extended content generation (60 pieces monthly)",
       "Up to 5 team member accounts"
@@ -155,7 +155,7 @@ const pricingPlans = [
   },
   {
     name: "Enterprise",
-    description: "For luxury hotel groups, resorts, and hospitality management companies.",
+    description: "For hotel groups, resorts, and hospitality management companies.",
     coreBenefit: "Complete marketing ecosystem with enhanced revenue optimization.",
     price: "Custom",
     period: " pricing",
@@ -165,7 +165,7 @@ const pricingPlans = [
       "Everything in Premium, plus:",
       "Strategic AI-powered revenue forecasting",
       "Competitive market intelligence dashboard",
-      "Luxury guest segmentation and targeting",
+      "Guest segmentation and targeting",
       "Advanced personalization engine",
       "Complete brand voice customization",
       "PMS/CRM/Revenue Management integration",

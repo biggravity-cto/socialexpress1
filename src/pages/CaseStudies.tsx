@@ -86,7 +86,7 @@ const caseStudies = [
   {
     title: "How Paradise Bay Resort Increased Bookings by 43% Using Social Media Strategy",
     excerpt: "By implementing our AI-powered content creation and strategic posting schedule, Paradise Bay Resort saw a dramatic increase in engagement and direct bookings.",
-    category: "Luxury Resort",
+    category: "Resort",
     location: "Maldives",
     image: "/placeholder.svg",
     results: [

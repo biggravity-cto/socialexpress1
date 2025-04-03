@@ -22,7 +22,7 @@ const Features = () => {
               Platform Features
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-resort-900 mb-6">
-              Everything You Need to <span className="text-ocean-600">Elevate Your Resort's Presence</span>
+              Everything You Need to <span className="text-ocean-600">Elevate Your Hotel's Presence</span>
             </h1>
             <p className="text-lg text-resort-600">
               Our AI-powered platform streamlines social media management for hospitality businesses with intelligent content generation and scheduling tools.
@@ -284,7 +284,7 @@ const hospitalityFeatures = [
   },
   {
     title: "Brand Consistency",
-    description: "Maintain your resort's visual identity and tone of voice across all social platforms and content types.",
+    description: "Maintain your property's visual identity and tone of voice across all social platforms and content types.",
     bgColor: "bg-ocean-100", 
     iconColor: "text-ocean-600"
   }

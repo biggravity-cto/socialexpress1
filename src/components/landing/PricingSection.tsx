@@ -15,7 +15,7 @@ const plans = [
     features: [
       'Intelligent Marketing Calendar',
       'Premium Asset Library for photography & videos',
-      'AI-driven content suggestions for luxury positioning',
+      'AI-driven content suggestions for engaging positioning',
       'Generate up to 15 premium content pieces monthly',
       'Basic guest persona development',
       'Export-ready content with brand guidelines',
@@ -36,7 +36,7 @@ const plans = [
       'Advanced guest journey mapping and optimization',
       'Revenue attribution analytics',
       'Direct booking conversion optimization',
-      'Personalized luxury guest communications',
+      'Personalized guest communications',
       'Multi-language content support including Korean',
       'Extended content generation (60 pieces monthly)',
       'Up to 5 team member accounts'
@@ -50,13 +50,13 @@ const plans = [
     name: 'Enterprise',
     price: 'Custom',
     period: 'pricing',
-    description: 'For luxury hotel groups, resorts, and hospitality management companies.',
+    description: 'For hotel groups, resorts, and hospitality management companies.',
     coreBenefit: 'Complete marketing ecosystem with enhanced revenue optimization.',
     features: [
       'Everything in Premium, plus:',
       'Strategic AI-powered revenue forecasting',
       'Competitive market intelligence dashboard',
-      'Luxury guest segmentation and targeting',
+      'Guest segmentation and targeting',
       'Advanced personalization engine',
       'Complete brand voice customization',
       'PMS/CRM/Revenue Management integration',
@@ -84,7 +84,7 @@ const PricingSection = () => {
               Investment Plans
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-resort-900 mb-6">
-              Strategic Solutions for Every Luxury Property
+              Strategic Solutions for Every Property
             </h2>
             <p className="text-lg text-resort-600 max-w-3xl mx-auto">
               Select the perfect plan to elevate your property's marketing presence and drive revenue growth.
@@ -142,7 +142,7 @@ const PricingSection = () => {
         
         <div className="mt-10 text-center">
           <p className="text-sm text-resort-500 max-w-3xl mx-auto">
-            All plans include a 14-day free trial. No credit card required. Our platform is designed specifically for luxury hospitality 
+            All plans include a 14-day free trial. No credit card required. Our platform is designed specifically for hospitality 
             properties to attract high-value guests, optimize operations, and maximize revenue.
           </p>
         </div>

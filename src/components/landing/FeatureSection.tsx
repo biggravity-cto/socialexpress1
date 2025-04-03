@@ -46,7 +46,7 @@ const features = [
   {
     icon: <PencilRuler className="h-6 w-6 text-amber-500" />,
     title: 'Content Library & Templates',
-    description: 'Access hospitality-specific templates and a rich library of curated content ideas for your resort or hotel.',
+    description: 'Access hospitality-specific templates and a rich library of curated content ideas for your hotel or resort.',
     color: 'bg-amber-50 border-amber-100',
     iconBg: 'bg-amber-100',
     iconColor: 'text-amber-600'

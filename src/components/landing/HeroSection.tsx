@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -42,7 +43,7 @@ const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
             transition={{ delay: 0.6, duration: 0.7 }}
             className="text-xl text-gray-600 mx-auto"
           >
-            A sophisticated digital marketing platform designed exclusively for luxury hospitality brands. Delight guests, drive revenues, and increase team efficiency with our AI-powered solutions.
+            A sophisticated digital marketing platform designed exclusively for hotels, resorts, and hospitality brands. Delight guests, drive revenues, and increase team efficiency with our AI-powered solutions.
           </motion.p>
           
           <motion.div 
@@ -105,7 +106,7 @@ const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
         <div className="max-w-7xl mx-auto">
           <p className="text-center text-sm text-gray-500 mb-6">Trusted by leading hospitality brands worldwide</p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {['Luxury Resort Group', 'Wellness Retreat Collection', 'City Hotels International', 'Premium Spa Network', 'Island Getaways'].map((brand, index) => (
+            {['Resort Group', 'Wellness Retreat Collection', 'City Hotels International', 'Premium Spa Network', 'Island Getaways'].map((brand, index) => (
               <motion.div 
                 key={index} 
                 initial={{ opacity: 0 }}
