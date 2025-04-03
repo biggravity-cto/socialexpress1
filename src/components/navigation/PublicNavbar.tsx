@@ -121,35 +121,65 @@ const PublicNavbar = () => {
       <AnimatePresence>
         {isMenuOpen && isMobile && (
           <motion.div 
-            className="absolute top-16 left-0 right-0 bg-white shadow-md p-4 md:hidden"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
+            className="fixed inset-0 z-40 bg-white flex flex-col pt-20 pb-8 px-6"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex flex-col space-y-4">
-              <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Features</button>
-              <button onClick={() => scrollToSection('pricing')} className="text-gray-600 hover:text-gray-900">Pricing</button>
-              <button onClick={() => scrollToSection('testimonials')} className="text-gray-600 hover:text-gray-900">Success Stories</button>
-              <button onClick={() => scrollToSection('faq')} className="text-gray-600 hover:text-gray-900">FAQ</button>
-              <div className="pt-2 border-t border-gray-100">
-                <Button 
-                  className="w-full mb-2"
-                  onClick={() => {
-                    setIsMenuOpen(false);
-                    setIsModalOpen(true);
-                  }}
-                >
-                  <Sparkles className="mr-1.5 h-4 w-4" /> Early Access
-                </Button>
-                <Link to="/auth" className="w-full flex">
-                  <Button variant="outline" className="w-full">
-                    <User className="h-4 w-4 mr-1" />
-                    Demo Login
-                  </Button>
-                </Link>
-              </div>
+            <div className="flex flex-col space-y-6 flex-grow">
+              <button 
+                onClick={() => scrollToSection('features')} 
+                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2"
+              >
+                Features
+              </button>
+              <button 
+                onClick={() => scrollToSection('pricing')} 
+                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2"
+              >
+                Pricing
+              </button>
+              <button 
+                onClick={() => scrollToSection('testimonials')} 
+                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2"
+              >
+                Success Stories
+              </button>
+              <button 
+                onClick={() => scrollToSection('faq')} 
+                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2"
+              >
+                FAQ
+              </button>
             </div>
+            
+            <div className="mt-auto pt-6 border-t border-gray-100 space-y-4">
+              <Button 
+                className="w-full py-6 text-base"
+                size="lg"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsModalOpen(true);
+                }}
+              >
+                <Sparkles className="mr-2 h-5 w-5" /> Request Early Access
+              </Button>
+              
+              <Link to="/auth" className="w-full flex" onClick={() => setIsMenuOpen(false)}>
+                <Button variant="outline" className="w-full py-6 text-base" size="lg">
+                  <User className="h-5 w-5 mr-2" />
+                  Demo Login
+                </Button>
+              </Link>
+            </div>
+            
+            <button
+              className="absolute top-5 right-6 text-gray-600"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <X className="h-6 w-6" />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

@@ -16,6 +16,7 @@ import {
 
 interface NavigationMenuProps {
   sidebarOpen: boolean;
+  onItemClick?: () => void; // Add callback for menu item click
 }
 
 // Main navigation items (excluding Settings which will be positioned at bottom)
@@ -69,7 +70,7 @@ const settingsNavItem = {
   icon: <Settings className="h-5 w-5" />
 };
 
-const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen }) => {
+const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen, onItemClick }) => {
   const location = useLocation();
   
   // Function to check if a path is active (exact or starts with the path)
@@ -80,6 +81,13 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen }) => {
     return location.pathname.startsWith(path);
   };
 
+  // Handle menu item click
+  const handleItemClick = () => {
+    if (onItemClick) {
+      onItemClick();
+    }
+  };
+
   return (
     <nav className="flex flex-col h-full justify-between">
       {/* Main navigation items */}
@@ -88,6 +96,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen }) => {
           <Link
             key={item.path}
             to={item.path}
+            onClick={handleItemClick}
             className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
               isPathActive(item.path) 
                 ? "bg-ocean-50 text-ocean-600" 
@@ -104,6 +113,7 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ sidebarOpen }) => {
       <div className="mt-auto px-2 mb-4">
         <Link
           to={settingsNavItem.path}
+          onClick={handleItemClick}
           className={`flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
             isPathActive(settingsNavItem.path) 
               ? "bg-ocean-50 text-ocean-600" 

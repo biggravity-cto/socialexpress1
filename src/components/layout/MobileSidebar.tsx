@@ -11,8 +11,14 @@ interface MobileSidebarProps {
 }
 
 const MobileSidebar: React.FC<MobileSidebarProps> = ({ title, notificationButton }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  
+  const handleCloseMenu = () => {
+    setIsOpen(false);
+  };
+  
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <div className="md:hidden fixed top-0 left-0 right-0 z-10 h-14 bg-white border-b border-gray-100 flex items-center px-4">
         <SheetTrigger asChild>
           <Button variant="outline" size="icon" className="mr-2 border-gray-200 text-gray-700">
@@ -41,7 +47,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ title, notificationButton
           </div>
           
           <div className="flex-1 overflow-auto py-2">
-            <NavigationMenu sidebarOpen={true} />
+            <NavigationMenu sidebarOpen={true} onItemClick={handleCloseMenu} />
           </div>
         </div>
       </SheetContent>

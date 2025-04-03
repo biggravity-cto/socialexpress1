@@ -44,10 +44,10 @@ const Content = () => {
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      {/* Header Section - Simplified */}
+      {/* Header Section */}
       <ContentHeader />
 
-      {/* AI Content Generator Panel - New Prominent Section */}
+      {/* AI Content Generator Panel - Primary Focus */}
       <AIContentGeneratorPanel 
         setContentType={setContentType}
         setShowCreateContentDialog={setShowCreateContentDialog}
