@@ -68,13 +68,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
             >
               <div className="relative overflow-hidden rounded-xl shadow-2xl border border-gray-100">
                 <img 
-                  src="/hero-dashboard.jpg" 
+                  src="/img/resort-dashboard.jpg" 
                   alt="GuestFlow Dashboard Preview" 
                   className="w-full h-auto"
                   onError={(e) => {
                     // Fallback to placeholder if image fails to load
                     const target = e.target as HTMLImageElement;
-                    target.src = "/placeholder.svg";
+                    target.src = "https://images.unsplash.com/photo-1483058712412-4245e9b90334?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3648&q=80";
                   }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-tr from-ocean-700/10 via-transparent to-transparent"></div>
