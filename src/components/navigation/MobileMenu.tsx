@@ -31,8 +31,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   };
   
   return (
-    <div className="fixed inset-0 bg-white z-50">
-      <div className="h-full w-full overflow-y-auto">
+    <div className="fixed inset-0 bg-white z-50 flex flex-col">
+      <div className="flex flex-col h-full w-full overflow-y-auto">
         <div className="flex flex-col h-full px-6 py-4">
           <div className="flex justify-between items-center mb-8">
             <LogoComponent />

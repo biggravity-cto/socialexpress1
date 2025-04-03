@@ -51,39 +51,41 @@ const PublicNavbar = () => {
   }`;
 
   return (
-    <header className={navbarClasses}>
-      <div className="container flex items-center justify-between">
-        <div className="flex items-center">
-          <LogoComponent />
-          {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
-        </div>
-        
-        <div className="flex items-center gap-2">
-          {isMobile && (
-            <Button 
-              className="bg-ocean-600 hover:bg-ocean-700 font-medium text-xs px-3 h-8"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <Sparkles className="mr-1 h-3 w-3" /> Early Access
-            </Button>
-          )}
+    <>
+      <header className={navbarClasses}>
+        <div className="container flex items-center justify-between">
+          <div className="flex items-center">
+            <LogoComponent />
+            {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
+          </div>
           
-          {!isMobile && (
-            <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
-          )}
-          
-          {isMobile && (
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => setIsMenuOpen(true)}
-              aria-label="Toggle menu"
-            >
-              <AlignJustify className="h-5 w-5" />
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {isMobile && (
+              <Button 
+                className="bg-ocean-600 hover:bg-ocean-700 font-medium text-xs px-3 h-8"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <Sparkles className="mr-1 h-3 w-3" /> Early Access
+              </Button>
+            )}
+            
+            {!isMobile && (
+              <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
+            )}
+            
+            {isMobile && (
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={() => setIsMenuOpen(true)}
+                aria-label="Toggle menu"
+              >
+                <AlignJustify className="h-5 w-5" />
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      </header>
       
       <MobileMenu
         isMenuOpen={isMenuOpen}
@@ -93,7 +95,7 @@ const PublicNavbar = () => {
       />
       
       <EarlyAccessModal open={isModalOpen} onOpenChange={setIsModalOpen} />
-    </header>
+    </>
   );
 };
 
