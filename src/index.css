@@ -150,24 +150,3 @@
   overflow: hidden;
   white-space: nowrap;
 }
-
-/* Mobile menu specific styles */
-.mobile-menu-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #FFFFFF;
-  z-index: 999;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-}
-
-.mobile-menu-content {
-  background-color: #FFFFFF;
-  height: 100%;
-  width: 100%;
-  overflow-y: auto;
-}

@@ -18,12 +18,21 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   scrollToSection,
   setIsModalOpen
 }) => {
-  // Don't render anything if the menu is closed
   if (!isMenuOpen) return null;
   
+  const handleMenuItemClick = (sectionId: string) => {
+    scrollToSection(sectionId);
+    setIsMenuOpen(false);
+  };
+  
+  const handleEarlyAccessClick = () => {
+    setIsModalOpen(true);
+    setIsMenuOpen(false);
+  };
+  
   return (
-    <div className="mobile-menu-overlay">
-      <div className="mobile-menu-content">
+    <div className="fixed inset-0 bg-white z-50">
+      <div className="h-full w-full overflow-y-auto">
         <div className="flex flex-col h-full px-6 py-4">
           <div className="flex justify-between items-center mb-8">
             <LogoComponent />
@@ -45,10 +54,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             ].map((item) => (
               <button 
                 key={item.id}
-                onClick={() => {
-                  scrollToSection(item.id);
-                  setIsMenuOpen(false);
-                }}
+                onClick={() => handleMenuItemClick(item.id)}
                 className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2 text-left"
               >
                 {item.label}
@@ -60,10 +66,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             <Button 
               className="w-full py-6 text-base bg-ocean-600 hover:bg-ocean-700"
               size="lg"
-              onClick={() => {
-                setIsModalOpen(true);
-                setIsMenuOpen(false);
-              }}
+              onClick={handleEarlyAccessClick}
             >
               <Sparkles className="mr-2 h-5 w-5" /> Request Early Access
             </Button>
