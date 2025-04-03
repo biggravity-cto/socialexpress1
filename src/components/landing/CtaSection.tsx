@@ -1,65 +1,45 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
-import EarlyAccessModal from './EarlyAccessModal';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
-const CtaSection = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  
+const CtaSection: React.FC = () => {
   return (
-    <section className="bg-gradient-to-r from-ocean-50 to-ocean-100 py-20 px-4 relative overflow-hidden">
-      <div className="container mx-auto text-center max-w-4xl relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <span className="inline-flex items-center gap-2 bg-white/80 text-ocean-600 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-            <Sparkles className="h-4 w-4" /> Limited Spots Available
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-resort-900 mb-4">
-            Ready to Transform Your Resort's Marketing?
+    <section className="py-20 bg-gradient-to-br from-ocean-600 to-ocean-800 text-white">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Ready to Transform Your Hotel's Marketing?
           </h2>
-          <p className="text-lg text-resort-700 mb-8 max-w-2xl mx-auto">
-            Join the growing community of hospitality properties leveraging our AI-powered platform to attract high-value guests and maximize revenue.
+          <p className="text-xl text-ocean-50 mb-8 max-w-2xl mx-auto">
+            Join hundreds of hotels and resorts already using GuestFlow to increase direct bookings, improve guest engagement, and maximize revenue.
           </p>
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-          >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               size="lg" 
-              onClick={() => setIsModalOpen(true)} 
-              className="px-8 py-6 rounded-lg text-lg bg-ocean-600 hover:bg-ocean-700 shadow-md hover:shadow-lg transition-all duration-300"
+              className="bg-white text-ocean-700 hover:bg-ocean-50"
             >
-              Request Early Access <ArrowRight className="ml-2 h-5 w-5" />
+              <Link to="/auth" className="w-full">
+                Start Your 14-Day Free Trial
+              </Link>
             </Button>
-          </motion.div>
-        </motion.div>
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="border-white text-white hover:bg-ocean-700 group"
+            >
+              <Link to="/calendar" className="flex items-center">
+                See Live Demo
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
+          <p className="mt-6 text-ocean-100">
+            No credit card required. Cancel anytime.
+          </p>
+        </div>
       </div>
-      
-      {/* Animated background elements */}
-      <motion.div 
-        className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.3) 0%, transparent 30%), 
-                           radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.3) 0%, transparent 30%)`
-        }}
-        animate={{
-          backgroundPosition: ['0% 0%', '100% 100%'],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          repeatType: "reverse"
-        }}
-      />
-      
-      {/* Early Access Modal */}
-      <EarlyAccessModal open={isModalOpen} onOpenChange={setIsModalOpen} />
     </section>
   );
 };
