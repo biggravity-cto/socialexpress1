@@ -18,7 +18,9 @@ const PublicLayout = ({ isLoginPage, children }: PublicLayoutProps) => {
   
   return (
     <div className="min-h-screen w-full flex flex-col bg-white">
-      {!hideNavbar && <PublicNavbar />}
+      {!hideNavbar && <div className="sticky top-0 z-50">
+        <PublicNavbar />
+      </div>}
       <motion.main 
         className="w-full flex-1"
         initial={{ opacity: 0, y: 5 }}

@@ -46,7 +46,7 @@ const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
             transition={{ delay: 0.6, duration: 0.7 }}
             className="text-xl text-gray-600 mx-auto"
           >
-            A sophisticated digital marketing platform designed exclusively for hotels, resorts, and hospitality brands. Delight guests, drive revenues, and increase team efficiency with our AI-powered solutions.
+            Delight guests, drive revenues, and increase team efficiency with our AI-powered digital marketing platform designed exclusively for hotels, resorts, and hospitality brands.
           </motion.p>
           
           <motion.div 
