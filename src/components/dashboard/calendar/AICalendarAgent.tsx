@@ -4,13 +4,15 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   BrainCircuit, 
   Calendar as CalendarIcon, 
   MessageSquare, 
   Send, 
-  ExternalLink,
-  AlignLeft
+  X,
+  AlignLeft,
+  ExternalLink
 } from 'lucide-react';
 
 interface Message {
@@ -35,6 +37,7 @@ const AICalendarAgent = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleSendMessage = () => {
     if (!inputText.trim()) return;
@@ -76,7 +79,7 @@ const AICalendarAgent = () => {
   };
 
   return (
-    <Card className="mb-6 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 shadow-sm overflow-hidden">
+    <Card className="mb-6 border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 shadow-sm overflow-hidden transition-all duration-300">
       <div className="p-4 flex items-start gap-3">
         <div className="bg-blue-100 p-2 rounded-full">
           <BrainCircuit className="h-5 w-5 text-blue-600" />
@@ -101,9 +104,19 @@ const AICalendarAgent = () => {
                 onClick={toggleChat}
                 className="text-blue-700 hover:bg-blue-100"
               >
-                <MessageSquare className="h-4 w-4 mr-1" />
-                <span className="hidden sm:inline">{isChatOpen ? 'Minimize' : 'Open Chat'}</span>
-                <span className="sm:hidden">{isChatOpen ? 'Close' : 'Chat'}</span>
+                {isChatOpen ? (
+                  <>
+                    <X className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">Close Chat</span>
+                    <span className="sm:hidden">Close</span>
+                  </>
+                ) : (
+                  <>
+                    <MessageSquare className="h-4 w-4 mr-1" />
+                    <span className="hidden sm:inline">Open Chat</span>
+                    <span className="sm:hidden">Chat</span>
+                  </>
+                )}
               </Button>
             </div>
           </div>
