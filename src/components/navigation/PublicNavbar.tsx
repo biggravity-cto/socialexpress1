@@ -46,8 +46,8 @@ const PublicNavbar = () => {
 
   const navbarClasses = `fixed top-0 w-full z-40 transition-all duration-300 ${
     isScrolled 
-      ? 'bg-white/90 backdrop-blur-md py-3 shadow-sm' 
-      : 'bg-white/70 backdrop-blur-sm py-4'
+      ? 'bg-white shadow-md py-3' 
+      : 'bg-white/95 border-b border-gray-100 py-4'
   }`;
 
   return (

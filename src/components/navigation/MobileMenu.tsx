@@ -40,6 +40,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               variant="ghost" 
               size="icon" 
               onClick={() => setIsMenuOpen(false)}
+              className="hover:bg-gray-100"
             >
               <X className="h-5 w-5" />
             </Button>
