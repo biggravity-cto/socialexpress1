@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { X, Menu, User, Sparkles } from 'lucide-react';
+import { X, AlignJustify, User, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface MobileMenuProps {
@@ -27,7 +27,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         className="md:hidden z-50 ml-2"
         aria-label="Toggle menu"
       >
-        {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        {isMenuOpen ? <X className="h-5 w-5" /> : <AlignJustify className="h-5 w-5" />}
       </Button>
 
       <AnimatePresence>
