@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -22,9 +21,9 @@ const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-amber-50 text-amber-700 border border-amber-100"
+            className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100"
           >
-            <Sparkles className="h-4 w-4 mr-1.5 text-amber-500" />
+            <Sparkles className="h-4 w-4 mr-1.5 text-blue-500" />
             <span>Limited Spots Available</span>
           </motion.div>
           

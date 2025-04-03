@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -46,7 +45,7 @@ const PublicNavbar = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            Guest<span className="text-ocean-600">Flow AI</span>
+            Guest<span className="bg-gradient-to-r from-ocean-600 to-ocean-500 bg-clip-text text-transparent">Flow AI</span>
           </motion.span>
         </Link>
         

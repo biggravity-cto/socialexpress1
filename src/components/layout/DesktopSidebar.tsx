@@ -18,8 +18,12 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ sidebarOpen, setSidebar
     >
       <div className="flex flex-col h-full">
         <div className="flex h-14 items-center px-4 border-b border-gray-100 justify-between">
-          <span className="font-bold text-lg tracking-tight text-resort-800">
-            {sidebarOpen ? 'GuestFlow AI' : 'GF'}
+          <span className="font-bold text-lg tracking-tight">
+            {sidebarOpen ? (
+              <span>Guest<span className="bg-gradient-to-r from-ocean-600 to-ocean-500 bg-clip-text text-transparent">Flow AI</span></span>
+            ) : (
+              <span>G<span className="bg-gradient-to-r from-ocean-600 to-ocean-500 bg-clip-text text-transparent">F</span></span>
+            )}
           </span>
           <Button 
             variant="ghost" 

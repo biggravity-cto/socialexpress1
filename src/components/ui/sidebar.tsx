@@ -64,7 +64,11 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
       <div className="flex flex-1 flex-col border-r">
         <div className="flex h-14 items-center py-4 px-4 lg:h-[60px]">
           <span className="text-xl font-bold">
-            {expanded ? "GuestFlow AI" : "GF"}
+            {expanded ? (
+              <span>Guest<span className="bg-gradient-to-r from-ocean-600 to-ocean-500 bg-clip-text text-transparent">Flow AI</span></span>
+            ) : (
+              <span>G<span className="bg-gradient-to-r from-ocean-600 to-ocean-500 bg-clip-text text-transparent">F</span></span>
+            )}
           </span>
           <Button
             variant="ghost"
