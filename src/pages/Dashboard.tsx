@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
@@ -187,9 +186,9 @@ const Dashboard = () => {
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      <QuickAccessGrid />
-      
       <DashboardHeader onAIButtonClick={() => setIsAIModalOpen(true)} />
+      
+      <QuickAccessGrid />
       
       <DashboardMetrics />
       
