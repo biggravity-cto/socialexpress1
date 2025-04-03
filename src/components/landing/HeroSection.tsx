@@ -24,7 +24,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
                 <Star className="h-3.5 w-3.5 fill-ocean-500 text-ocean-500" />
                 <Star className="h-3.5 w-3.5 fill-ocean-500 text-ocean-500" />
               </span>
-              <span className="ml-2 font-medium">Trusted by 500+ hospitality brands</span>
+              <span className="ml-2 font-medium">Trusted by 5-star hospitality resorts</span>
             </div>
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-resort-900">
@@ -80,8 +80,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
                   </div>
                 </div>
                 <img 
-                  src="/lovable-uploads/cc051c94-1076-431a-a6fb-a52602466763.png" 
-                  alt="Family enjoying resort experience" 
+                  src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                  alt="Luxury resort with swimming pool and palm trees" 
                   className="w-full h-auto object-cover"
                   onError={(e) => {
                     // Fallback to placeholder if image fails to load
