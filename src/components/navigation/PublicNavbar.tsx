@@ -92,7 +92,7 @@ const PublicNavbar = () => {
         </div>
       </div>
       
-      {/* Mobile Menu - Always render but control visibility with props */}
+      {/* Mobile Menu - rendered conditionally in its own component */}
       <MobileMenu
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
