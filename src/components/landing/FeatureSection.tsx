@@ -89,18 +89,42 @@ const FeatureSection = ({ featureRef }: FeatureSectionProps) => {
   return (
     <section ref={featureRef} className="py-20 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16 text-center">
-          <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100 mb-4">
-            <Sparkles className="h-4 w-4 mr-1.5" />
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.7 }}
+          className="mb-16 text-center"
+        >
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100 mb-4"
+          >
+            <Sparkles className="h-4 w-4 mr-1.5 text-blue-500" />
             <span>Powerful Features</span>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          </motion.div>
+          <motion.h2 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+          >
             Everything Your Hospitality Brand Needs
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            GuestFlow combines powerful marketing tools with hospitality-specific features to help you attract guests, increase bookings, and build brand loyalty.
-          </p>
-        </div>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="text-xl text-gray-600 max-w-3xl mx-auto"
+          >
+            GuestFlow combines powerful marketing tools with hospitality-specific features to help you delight guests, increase bookings, and drive revenue growth.
+          </motion.p>
+        </motion.div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
@@ -108,10 +132,11 @@ const FeatureSection = ({ featureRef }: FeatureSectionProps) => {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true, margin: "-5%" }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -8, transition: { duration: 0.2 } }}
             >
-              <Card className={`h-full p-6 border ${feature.color} hover:shadow-md transition-shadow`}>
+              <Card className={`h-full p-6 border ${feature.color} hover:shadow-lg transition-all duration-300`}>
                 <div className={`rounded-full w-12 h-12 flex items-center justify-center mb-4 ${feature.iconBg}`}>
                   {feature.icon}
                 </div>
@@ -122,24 +147,52 @@ const FeatureSection = ({ featureRef }: FeatureSectionProps) => {
           ))}
         </div>
         
-        <div className="mt-20 p-8 rounded-2xl bg-gradient-to-r from-ocean-600 to-ocean-700 text-white text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Custom-Tailored for the Hospitality Industry</h2>
-          <p className="text-lg text-blue-100 max-w-3xl mx-auto mb-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.8 }}
+          className="mt-20 p-8 rounded-2xl bg-gradient-to-r from-ocean-600 to-ocean-700 text-white text-center shadow-xl"
+        >
+          <motion.h2 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-2xl md:text-3xl font-bold mb-4"
+          >
+            Custom-Tailored for the Hospitality Industry
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-lg text-blue-100 max-w-3xl mx-auto mb-6"
+          >
             Unlike generic marketing tools, GuestFlow is built specifically for hotels, resorts, and spas with industry-specific templates, analytics, and AI capabilities.
-          </p>
+          </motion.p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8">
             {[
               { stat: '92%', label: 'Time saved on content creation' },
               { stat: '3.5x', label: 'Increase in social engagement' },
               { stat: '64%', label: 'Boost in direct bookings' }
             ].map((item, index) => (
-              <div key={index} className="p-4 bg-white/10 rounded-lg backdrop-blur-sm">
+              <motion.div 
+                key={index} 
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+                className="p-4 bg-white/10 rounded-lg backdrop-blur-sm"
+              >
                 <p className="text-3xl font-bold text-white">{item.stat}</p>
                 <p className="text-blue-100">{item.label}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
