@@ -7,39 +7,35 @@ const QuickAccessGrid: React.FC = () => {
   const quickAccessItems = [
     {
       title: "Marketing Calendar",
-      description: "Plan seasonal offers, automate promotions, and optimize guest engagement.",
+      description: "View and manage your upcoming content schedule",
       icon: <Calendar className="h-6 w-6 text-blue-600" />,
       path: "/calendar",
       color: "from-blue-50 to-white",
-      delay: 0,
-      cta: "Plan Campaigns That Fill Rooms"
+      delay: 0
     },
     {
       title: "AI Content Studio",
-      description: "Effortlessly craft engaging hotel promotions, social content, and email campaigns.",
+      description: "Create and manage your content assets",
       icon: <Sparkles className="h-6 w-6 text-purple-600" />,
       path: "/content",
       color: "from-purple-50 to-white",
-      delay: 1,
-      cta: "Create Offers That Drive Bookings"
+      delay: 1
     },
     {
       title: "Analytics & Insights",
-      description: "Track campaign ROI, guest engagement, and booking trends—all in real time.",
+      description: "View performance metrics and insights",
       icon: <BarChart className="h-6 w-6 text-amber-600" />,
       path: "/analytics",
       color: "from-amber-50 to-white",
-      delay: 2,
-      cta: "Turn Guest Data into Smarter Marketing"
+      delay: 2
     },
     {
       title: "Brand Intelligence",
-      description: "Stay ahead with guest sentiment analysis, competitor benchmarking, and trend tracking.",
+      description: "Monitor brand performance and trends",
       icon: <LineChart className="h-6 w-6 text-green-600" />,
       path: "/brand-intelligence",
       color: "from-green-50 to-white",
-      delay: 3,
-      cta: "Stay on Top of Guest Sentiment"
+      delay: 3
     }
   ];
 
@@ -54,7 +50,6 @@ const QuickAccessGrid: React.FC = () => {
           path={item.path}
           color={item.color}
           delay={item.delay}
-          cta={item.cta}
         />
       ))}
     </div>
