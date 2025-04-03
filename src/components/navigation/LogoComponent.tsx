@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const LogoComponent: React.FC = () => {
   return (
-    <Link to="/" className="flex-shrink-0 mr-6">
+    <Link to="/" className="flex-shrink-0 mr-4">
       <motion.span 
         className="text-resort-800 text-lg sm:text-xl md:text-2xl font-bold"
         initial={{ opacity: 0 }}

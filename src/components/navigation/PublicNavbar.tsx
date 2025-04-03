@@ -54,19 +54,21 @@ const PublicNavbar = () => {
       <div className="container flex items-center justify-between">
         <div className="flex items-center">
           <LogoComponent />
-          <NavigationLinks scrollToSection={scrollToSection} />
+          {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
         </div>
         
         <div className="flex items-center">
-          <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
+          {!isMobile && <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />}
           
           {isMobile && (
-            <MobileMenu
-              isMenuOpen={isMenuOpen}
-              setIsMenuOpen={setIsMenuOpen}
-              scrollToSection={scrollToSection}
-              setIsModalOpen={setIsModalOpen}
-            />
+            <div className="ml-auto">
+              <MobileMenu
+                isMenuOpen={isMenuOpen}
+                setIsMenuOpen={setIsMenuOpen}
+                scrollToSection={scrollToSection}
+                setIsModalOpen={setIsModalOpen}
+              />
+            </div>
           )}
         </div>
       </div>
