@@ -10,7 +10,8 @@ import {
   BarChart,
   LineChart,
   MessageSquare, 
-  Settings
+  Settings,
+  Sparkles
 } from 'lucide-react';
 
 interface NavigationMenuProps {
@@ -25,17 +26,17 @@ const mainNavItems = [
     icon: <LayoutDashboard className="h-5 w-5" />
   },
   {
+    name: 'AI Content Studio',
+    path: '/content',
+    icon: <Sparkles className="h-5 w-5" />
+  },
+  {
     name: 'Campaigns',
     path: '/campaigns',
     icon: <BrainCircuit className="h-5 w-5" />
   },
   {
-    name: 'Content Studio',
-    path: '/content',
-    icon: <Library className="h-5 w-5" />
-  },
-  {
-    name: 'AI Marketing Calendar',
+    name: 'Marketing Calendar',
     path: '/calendar',
     icon: <Calendar className="h-5 w-5" />
   },

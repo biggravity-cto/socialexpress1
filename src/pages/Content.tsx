@@ -1,15 +1,13 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Dialog } from '@/components/ui/dialog';
 import ContentHeader from '@/components/content/ContentHeader';
 import ContentSearch from '@/components/content/ContentSearch';
 import ContentTabs from '@/components/content/ContentTabs';
 import ContentCreationDialog from '@/components/content/ContentCreationDialog';
-import AIGeneratorDialog from '@/components/content/AIGeneratorDialog';
 import ContentState from '@/components/content/ContentState';
 import ContentActions from '@/components/content/ContentActions';
-import AIContentChat from '@/components/content/AIContentChat';
+import AIContentGeneratorPanel from '@/components/content/AIContentGeneratorPanel';
 import { useContentManagement } from '@/hooks/useContentManagement';
 
 const Content = () => {
@@ -28,8 +26,6 @@ const Content = () => {
     setSortBy,
     viewMode,
     setViewMode,
-    showAIGenerator,
-    setShowAIGenerator,
     showCreateContentDialog,
     setShowCreateContentDialog,
     contentType,
@@ -48,16 +44,14 @@ const Content = () => {
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      {/* Header Section */}
-      <ContentHeader 
+      {/* Header Section - Simplified */}
+      <ContentHeader />
+
+      {/* AI Content Generator Panel - New Prominent Section */}
+      <AIContentGeneratorPanel 
         setContentType={setContentType}
         setShowCreateContentDialog={setShowCreateContentDialog}
-        setShowAIGenerator={setShowAIGenerator}
-        showAIGenerator={showAIGenerator}
       />
-
-      {/* AI Content Assistant */}
-      <AIContentChat />
 
       {/* Search and Filter Bar */}
       <ContentSearch 
@@ -121,11 +115,6 @@ const Content = () => {
         setShowCreateContentDialog={setShowCreateContentDialog}
         handleCreateContent={handleCreateContent}
       />
-
-      {/* AI Generator Dialog */}
-      <Dialog open={showAIGenerator} onOpenChange={setShowAIGenerator}>
-        <AIGeneratorDialog />
-      </Dialog>
     </motion.div>
   );
 };

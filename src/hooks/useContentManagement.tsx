@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { fetchPosts } from '@/services/calendarService';
@@ -14,7 +13,6 @@ export const useContentManagement = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [showAIGenerator, setShowAIGenerator] = useState(false);
   const [showCreateContentDialog, setShowCreateContentDialog] = useState(false);
   const [contentType, setContentType] = useState<'post' | 'image' | 'video' | 'document'>('post');
 
@@ -221,8 +219,6 @@ export const useContentManagement = () => {
     setSortBy,
     viewMode,
     setViewMode,
-    showAIGenerator,
-    setShowAIGenerator,
     showCreateContentDialog,
     setShowCreateContentDialog,
     contentType,
