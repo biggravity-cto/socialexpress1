@@ -15,10 +15,8 @@ const Index = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   
-  // For parallax scrolling effect
+  // For subtle background motion effect
   const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, -50]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0.5]);
 
   useEffect(() => {
@@ -45,11 +43,9 @@ const Index = () => {
         >
           <motion.div 
             className="absolute top-0 right-[10%] w-72 h-72 bg-ocean-200/20 rounded-full blur-3xl"
-            style={{ y: y1 }}
           />
           <motion.div 
-            className="absolute top-[20%] left-[5%] w-60 h-60 bg-purple-200/20 rounded-full blur-3xl"
-            style={{ y: y2 }}
+            className="absolute top-[20%] left-[5%] w-60 h-60 bg-ocean-200/20 rounded-full blur-3xl"
           />
         </motion.div>
         

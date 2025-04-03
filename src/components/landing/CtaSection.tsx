@@ -9,7 +9,7 @@ const CtaSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   return (
-    <section className="bg-gradient-to-r from-ocean-50 to-resort-50 py-20 px-4 relative overflow-hidden">
+    <section className="bg-gradient-to-r from-ocean-50 to-ocean-100 py-20 px-4 relative overflow-hidden">
       <div className="container mx-auto text-center max-w-4xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -46,7 +46,7 @@ const CtaSection = () => {
         className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none"
         style={{
           backgroundImage: `radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.3) 0%, transparent 30%), 
-                           radial-gradient(circle at 80% 70%, rgba(122, 98, 173, 0.3) 0%, transparent 30%)`
+                           radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.3) 0%, transparent 30%)`
         }}
         animate={{
           backgroundPosition: ['0% 0%', '100% 100%'],

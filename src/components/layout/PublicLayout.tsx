@@ -17,8 +17,8 @@ const PublicLayout = ({ isLoginPage, children }: PublicLayoutProps) => {
   const hideNavbar = isLoginPage || isConfirmationPage;
   
   return (
-    <div className="min-h-screen w-full flex flex-col">
-      {!hideNavbar && <div className="sticky top-0 z-50">
+    <div className="min-h-screen w-full flex flex-col bg-white">
+      {!hideNavbar && <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-100">
         <PublicNavbar />
       </div>}
       <motion.main 
