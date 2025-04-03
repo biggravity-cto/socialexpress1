@@ -11,7 +11,7 @@ interface SuggestedPromptsProps {
 const SuggestedPrompts: React.FC<SuggestedPromptsProps> = ({ prompts, onPromptClick }) => {
   return (
     <div className="p-2 border-t border-b bg-gray-50">
-      <ScrollArea className="w-full pb-1 horizontal-scroll custom-scrollbar">
+      <ScrollArea className="w-full pb-1">
         <div className="flex gap-2 min-w-full">
           {prompts.map((prompt, index) => (
             <Button 
