@@ -21,7 +21,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   if (!isMenuOpen) return null;
   
   return (
-    <div className="fixed inset-0 z-50 bg-white" style={{ backgroundColor: '#FFFFFF' }}>
+    <div className="fixed inset-0 z-50 bg-white" 
+      style={{ 
+        background: 'linear-gradient(to bottom, #ffffff, #f5f9ff)'
+      }}
+    >
       <div className="flex flex-col h-full px-6 py-4">
         <div className="flex justify-between items-center mb-8">
           <LogoComponent />
