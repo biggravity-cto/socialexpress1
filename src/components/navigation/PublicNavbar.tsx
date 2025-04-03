@@ -86,7 +86,9 @@ const PublicNavbar = () => {
         </div>
       </div>
       
+      {/* Force immediate render with a key to ensure fresh state */}
       <MobileMenu
+        key={isMenuOpen ? "menu-open" : "menu-closed"}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         scrollToSection={scrollToSection}
