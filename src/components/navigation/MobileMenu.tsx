@@ -18,12 +18,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   scrollToSection,
   setIsModalOpen
 }) => {
-  if (!isMenuOpen) return null;
+  // Don't use conditional rendering (if !isMenuOpen return null) as it unmounts the component
+  // Instead, control visibility with CSS
   
   return (
     <div 
-      className="fixed inset-0 bg-white z-50 flex flex-col px-6 py-4 overflow-auto"
-      style={{ display: isMenuOpen ? 'flex' : 'none' }}
+      className={`fixed inset-0 bg-white z-50 flex flex-col px-6 py-4 transition-all duration-300 ${
+        isMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+      }`}
     >
       <div className="flex justify-between items-center mb-8">
         <LogoComponent />

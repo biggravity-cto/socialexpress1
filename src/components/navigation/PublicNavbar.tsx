@@ -51,6 +51,12 @@ const PublicNavbar = () => {
       : 'bg-white/70 backdrop-blur-sm py-4'
   }`;
 
+  // Function to handle menu button click
+  const handleMenuToggle = () => {
+    console.log("Toggle menu clicked, current state:", isMenuOpen);
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
@@ -77,7 +83,7 @@ const PublicNavbar = () => {
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={() => setIsMenuOpen(true)}
+              onClick={handleMenuToggle}
               aria-label="Toggle menu"
             >
               <AlignJustify className="h-5 w-5" />
@@ -86,7 +92,7 @@ const PublicNavbar = () => {
         </div>
       </div>
       
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Always render but control visibility with props */}
       <MobileMenu
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
