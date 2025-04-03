@@ -102,6 +102,14 @@ const Calendar = () => {
     }
   };
 
+  const handleCreatePost = () => {
+    toast({
+      title: "Create New Post",
+      description: "Opening post creator...",
+    });
+    // Implement post creation logic here
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -141,6 +149,7 @@ const Calendar = () => {
               variant="default" 
               size="sm" 
               className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700"
+              onClick={handleCreatePost}
             >
               <PlusCircle className="h-4 w-4" />
               <span>{isMobile ? '' : 'Create Post'}</span>
@@ -177,10 +186,7 @@ const Calendar = () => {
         <div className="fixed bottom-6 right-6 z-10">
           <Button 
             className="h-14 w-14 rounded-full shadow-lg bg-blue-600 hover:bg-blue-700 flex items-center justify-center"
-            onClick={() => toast({
-              title: "Create New Post",
-              description: "Opening post creator...",
-            })}
+            onClick={handleCreatePost}
           >
             <PlusCircle className="h-6 w-6" />
           </Button>

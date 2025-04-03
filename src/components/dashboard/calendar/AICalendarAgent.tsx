@@ -11,8 +11,8 @@ import {
   MessageSquare, 
   Send, 
   X,
-  AlignLeft,
-  ExternalLink
+  MinusCircle,
+  Maximize2
 } from 'lucide-react';
 
 interface Message {
@@ -37,6 +37,7 @@ const AICalendarAgent = () => {
   ]);
   const [inputText, setInputText] = useState('');
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const isMobile = useIsMobile();
 
   const handleSendMessage = () => {
@@ -76,6 +77,11 @@ const AICalendarAgent = () => {
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
+    setIsMinimized(false);
+  };
+  
+  const toggleMinimize = () => {
+    setIsMinimized(!isMinimized);
   };
 
   return (
@@ -86,7 +92,7 @@ const AICalendarAgent = () => {
         </div>
         
         <div className="flex-1">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-1">
             <h3 className="font-medium text-blue-800">AI Calendar Agent</h3>
             <div className="flex gap-2">
               <Button 
@@ -98,6 +104,28 @@ const AICalendarAgent = () => {
                 <span className="hidden sm:inline">Connect Google Calendar</span>
                 <span className="sm:hidden">Connect</span>
               </Button>
+              {isChatOpen && !isMinimized && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={toggleMinimize}
+                  className="text-blue-700 hover:bg-blue-100"
+                >
+                  <MinusCircle className="h-4 w-4 mr-1" />
+                  <span className="hidden sm:inline">Minimize</span>
+                </Button>
+              )}
+              {isChatOpen && isMinimized && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={toggleMinimize}
+                  className="text-blue-700 hover:bg-blue-100"
+                >
+                  <Maximize2 className="h-4 w-4 mr-1" />
+                  <span className="hidden sm:inline">Expand</span>
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
@@ -125,7 +153,7 @@ const AICalendarAgent = () => {
             <p className="text-sm text-blue-700 mt-1">
               Ask me to schedule posts, analyze your calendar, or suggest optimal posting times.
             </p>
-          ) : (
+          ) : !isMinimized ? (
             <div className="mt-3 bg-white rounded-lg border border-blue-100 shadow-sm">
               <ScrollArea className="h-[250px] p-3">
                 {messages.map((message, index) => (
@@ -143,17 +171,19 @@ const AICalendarAgent = () => {
               </ScrollArea>
               
               <div className="p-2 flex overflow-x-auto gap-2 border-t border-b bg-gray-50">
-                {suggestedPrompts.map((prompt, index) => (
-                  <Button 
-                    key={index} 
-                    variant="outline" 
-                    size="sm"
-                    className="whitespace-nowrap flex-shrink-0 bg-white border-blue-200 hover:bg-blue-50"
-                    onClick={() => handlePromptClick(prompt)}
-                  >
-                    {prompt}
-                  </Button>
-                ))}
+                <div className="flex gap-2 pb-1 overflow-x-auto w-full custom-scrollbar">
+                  {suggestedPrompts.map((prompt, index) => (
+                    <Button 
+                      key={index} 
+                      variant="outline" 
+                      size="sm"
+                      className="whitespace-nowrap flex-shrink-0 bg-white border-blue-200 hover:bg-blue-50"
+                      onClick={() => handlePromptClick(prompt)}
+                    >
+                      {prompt}
+                    </Button>
+                  ))}
+                </div>
               </div>
               
               <div className="p-3 flex gap-2">
@@ -177,6 +207,10 @@ const AICalendarAgent = () => {
                 </Button>
               </div>
             </div>
+          ) : (
+            <p className="text-sm text-blue-700 italic mt-1">
+              Chat minimized. Click "Expand" to see your conversation.
+            </p>
           )}
         </div>
       </div>
