@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRedirectIfAuthenticated } from '@/hooks/useAuthCheck';
@@ -72,7 +71,7 @@ const Auth = () => {
       
       <Card className="p-6 shadow-lg border-resort-100">
         <div className="mb-6 text-center">
-          <h1 className="text-2xl font-bold text-resort-800">Guest<span className="text-ocean-600">Flow</span></h1>
+          <h1 className="text-2xl font-bold text-resort-800">Guest<span className="text-ocean-600">Flow AI</span></h1>
           <p className="text-resort-500 mt-1">Access your account</p>
         </div>
         
@@ -93,7 +92,7 @@ const Auth = () => {
       </Card>
       
       <p className="text-center text-xs text-resort-500 mt-4">
-        By continuing, you agree to GuestFlow's{' '}
+        By continuing, you agree to GuestFlow AI's{' '}
         <Link to="/terms" className="text-ocean-600 hover:underline">Terms of Service</Link>{' '}
         and{' '}
         <Link to="/privacy" className="text-ocean-600 hover:underline">Privacy Policy</Link>

@@ -19,7 +19,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ sidebarOpen, setSidebar
       <div className="flex flex-col h-full">
         <div className="flex h-14 items-center px-4 border-b border-gray-100 justify-between">
           <span className="font-bold text-lg tracking-tight text-resort-800">
-            {sidebarOpen ? 'BG Social Express' : 'BG'}
+            {sidebarOpen ? 'GuestFlow AI' : 'GF'}
           </span>
           <Button 
             variant="ghost" 

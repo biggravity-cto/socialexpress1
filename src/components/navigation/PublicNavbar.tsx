@@ -21,7 +21,7 @@ const PublicNavbar = () => {
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-sm py-3">
       <div className="container flex items-center justify-between">
         <Link to="/" className="text-2xl font-bold">
-          <span className="text-resort-800">Guest<span className="text-ocean-600">Flow</span></span>
+          <span className="text-resort-800">Guest<span className="text-ocean-600">Flow AI</span></span>
         </Link>
         <div className="hidden md:flex items-center space-x-6">
           <button onClick={() => scrollToSection('features')} className="text-gray-600 hover:text-gray-900">Solutions</button>

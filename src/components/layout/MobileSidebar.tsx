@@ -36,7 +36,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ title, notificationButton
         <div className="flex flex-col h-full">
           <div className="flex h-14 items-center px-4 border-b border-gray-100 justify-between">
             <span className="font-bold text-lg tracking-tight text-resort-800">
-              BG Social Express
+              GuestFlow AI
             </span>
           </div>
           

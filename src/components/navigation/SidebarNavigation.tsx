@@ -63,7 +63,7 @@ const SidebarNavigation = () => {
         <SidebarGroup>
           <SidebarLink to="/dashboard" icon={<LayoutDashboard />}>Dashboard</SidebarLink>
           <SidebarLink to="/campaigns" icon={<BrainCircuit />}>Campaigns</SidebarLink>
-          <SidebarLink to="/calendar" icon={<Calendar />}>Calendar</SidebarLink>
+          <SidebarLink to="/calendar" icon={<Calendar />}>AI Marketing Calendar</SidebarLink>
           <SidebarLink to="/content" icon={<Library />}>Content Studio</SidebarLink>
           <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
           <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
