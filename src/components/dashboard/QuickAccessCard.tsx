@@ -12,6 +12,7 @@ interface QuickAccessCardProps {
   path: string;
   color: string;
   delay: number;
+  cta?: string;
 }
 
 const QuickAccessCard: React.FC<QuickAccessCardProps> = ({
@@ -20,7 +21,8 @@ const QuickAccessCard: React.FC<QuickAccessCardProps> = ({
   icon,
   path,
   color,
-  delay
+  delay,
+  cta
 }) => {
   return (
     <AnimatedCard
@@ -36,7 +38,7 @@ const QuickAccessCard: React.FC<QuickAccessCardProps> = ({
         <div className="mt-auto">
           <Link to={path}>
             <Button variant="ghost" className="text-ocean-600 hover:text-ocean-700 hover:bg-ocean-50 p-0">
-              Go to {title} <ArrowRight className="ml-1 h-4 w-4" />
+              {cta || `Go to ${title}`} <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           </Link>
         </div>
