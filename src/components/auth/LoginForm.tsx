@@ -14,7 +14,7 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  password: z.string().min(4, { message: 'Password must be at least 4 characters' }),
 });
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
@@ -53,7 +53,7 @@ const LoginForm = ({ onError }: LoginFormProps) => {
 
   const useDemo = () => {
     form.setValue('email', 'demo@demo.com');
-    form.setValue('password', 'demo');
+    form.setValue('password', 'demo1234');
     form.handleSubmit(onSubmit)();
   };
 
@@ -116,7 +116,7 @@ const LoginForm = ({ onError }: LoginFormProps) => {
                 <h4 className="font-medium text-sm text-ocean-800">Demo Account Access</h4>
                 <p className="text-xs text-ocean-700">
                   Email: <span className="font-mono bg-white/70 px-1 py-0.5 rounded">demo@demo.com</span><br />
-                  Password: <span className="font-mono bg-white/70 px-1 py-0.5 rounded">demo</span>
+                  Password: <span className="font-mono bg-white/70 px-1 py-0.5 rounded">demo1234</span>
                 </p>
                 <Button 
                   size="sm" 
