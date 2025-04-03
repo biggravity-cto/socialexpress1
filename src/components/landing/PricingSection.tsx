@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
@@ -14,11 +13,12 @@ const plans = [
     description: 'For boutique properties seeking to establish a strategic marketing foundation.',
     coreBenefit: 'Streamline your marketing workflow and create premium content.',
     features: [
-      'Intelligent Marketing Calendar',
-      'Premium Asset Library for photography & videos',
-      'AI-driven content suggestions for engaging positioning',
-      'Generate up to 15 premium content pieces monthly',
-      'Basic guest persona development',
+      'AI Marketing Calendar with strategic planning',
+      'Content Studio with AI-generated posts',
+      'Basic analytics dashboard',
+      'Multi-platform publishing',
+      'AI-powered caption & hashtag generation',
+      'Basic brand intelligence monitoring',
       'Export-ready content with brand guidelines',
       'Includes 2 team member accounts'
     ],
@@ -33,13 +33,13 @@ const plans = [
     coreBenefit: 'Maximize direct bookings and guest engagement across channels.',
     features: [
       'Everything in Essentials, plus:',
-      'Integrated multi-channel campaign management',
-      'Advanced guest journey mapping and optimization',
-      'Revenue attribution analytics',
-      'Direct booking conversion optimization',
+      'Advanced AI Content Studio with video generation',
+      'Comprehensive multi-channel analytics',
+      'Automated campaign management',
+      'Guest journey optimization tools',
+      'Direct booking conversion tracking',
       'Personalized guest communications',
       'Multi-language content support including Korean',
-      'Extended content generation (60 pieces monthly)',
       'Up to 5 team member accounts'
     ],
     disclaimer: '* Advanced integrations may require technical setup assistance',
@@ -60,10 +60,10 @@ const plans = [
       'Guest segmentation and targeting',
       'Advanced personalization engine',
       'Complete brand voice customization',
+      'Managed services & dedicated support',
       'PMS/CRM/Revenue Management integration',
       'Custom reporting and white-labeled dashboards',
-      'Unlimited content generation and usage',
-      'Dedicated success manager'
+      'Unlimited team accounts'
     ],
     cta: 'Contact Sales',
     variant: 'outline'

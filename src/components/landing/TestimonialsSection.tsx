@@ -5,21 +5,21 @@ import { Star, Quote } from 'lucide-react';
 
 const testimonials = [
   {
-    quote: "Guest Flow transformed our social media strategy with its AI-powered content generation. We've seen a 38% increase in engagement and 25% growth in direct bookings from social channels.",
+    quote: "GuestFlow transformed our digital strategy with intelligent AI content generation and scheduling. We've seen a 32% increase in engagement and 28% growth in direct bookings since implementation.",
     author: "Maria Johnson",
     role: "Marketing Director at Grand Resort & Spa",
     rating: 5,
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
   },
   {
-    quote: "The unified platform streamlined our communication process across all social channels. We're responding to guests in real-time, which has significantly improved our customer satisfaction scores.",
+    quote: "The AI Marketing Manager has become an essential part of our team. The platform's ability to analyze trends and create targeted content has significantly improved our customer satisfaction scores.",
     author: "Alex Thompson",
     role: "Social Media Manager at Oceanview Resorts",
     rating: 5,
     image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
   },
   {
-    quote: "The analytics dashboard provides insights that help us make data-driven decisions. We've optimized our content strategy and seen a 45% increase in booking inquiries directly from our social channels.",
+    quote: "The analytics dashboard provides invaluable insights for our multi-property group. We've optimized our marketing strategy and seen a 45% increase in ROI from our digital channels.",
     author: "Sarah Williams",
     role: "CEO at Mountain Lodge Collection",
     rating: 5,
@@ -57,30 +57,29 @@ const TestimonialsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+              className="bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 relative overflow-hidden"
             >
-              <div className="flex items-center mb-6">
-                <div className="bg-ocean-50 p-3 rounded-full mr-4">
-                  <Quote className="h-5 w-5 text-ocean-500" />
-                </div>
-                <div className="flex">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-ocean-50 rounded-full transform translate-x-16 -translate-y-16 opacity-50"></div>
+              
+              <div className="relative z-10">
+                <div className="flex mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
-              </div>
-              
-              <p className="text-resort-700 mb-8 leading-relaxed">"{testimonial.quote}"</p>
-              
-              <div className="flex items-center">
-                <img 
-                  src={testimonial.image} 
-                  alt={testimonial.author} 
-                  className="w-12 h-12 rounded-full mr-4 object-cover border-2 border-ocean-100"
-                />
-                <div>
-                  <h4 className="font-bold text-resort-800">{testimonial.author}</h4>
-                  <p className="text-resort-600 text-sm">{testimonial.role}</p>
+                
+                <p className="text-resort-700 mb-8 leading-relaxed italic">"​{testimonial.quote}"</p>
+                
+                <div className="flex items-center">
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.author} 
+                    className="w-12 h-12 rounded-full mr-4 object-cover border-2 border-ocean-100"
+                  />
+                  <div>
+                    <h4 className="font-bold text-resort-800">{testimonial.author}</h4>
+                    <p className="text-resort-600 text-sm">{testimonial.role}</p>
+                  </div>
                 </div>
               </div>
             </motion.div>

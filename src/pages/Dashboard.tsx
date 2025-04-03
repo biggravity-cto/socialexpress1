@@ -6,8 +6,70 @@ import QuickAccessGrid from '@/components/dashboard/QuickAccessGrid';
 import AIToolsSection from '@/components/dashboard/AIToolsSection';
 import RecentActivityCard from '@/components/dashboard/RecentActivityCard';
 import { Button } from '@/components/ui/button';
-import { LineChart, BarChart3, TrendingUp, Users } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { BrainCircuit, LineChart, BarChart3, TrendingUp, Users, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+
+const AIMarketingManagerDialog = ({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) => {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[800px] h-[80vh] flex flex-col">
+        <DialogHeader>
+          <DialogTitle className="text-xl font-semibold flex items-center">
+            <BrainCircuit className="mr-2 h-5 w-5 text-ocean-600" />
+            AI Marketing Manager
+          </DialogTitle>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="absolute right-4 top-4"
+            onClick={() => onOpenChange(false)}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </DialogHeader>
+        <div className="flex-1 overflow-auto p-1">
+          <div className="h-full bg-gray-50 rounded-md border p-4 flex flex-col">
+            <div className="flex-1 overflow-auto">
+              <div className="space-y-4 mb-4">
+                <div className="bg-ocean-50 p-4 rounded-lg border border-ocean-100">
+                  <p className="text-ocean-800 font-medium">How can I help manage your marketing today?</p>
+                </div>
+                
+                <div className="bg-gray-100 p-3 rounded-md">
+                  <p className="text-sm text-gray-600 font-medium mb-2">Try asking:</p>
+                  <div className="space-y-2">
+                    <div className="bg-white p-2 rounded border border-gray-200 text-sm cursor-pointer hover:bg-ocean-50 transition-colors">
+                      Create a summer promotion campaign for our resort
+                    </div>
+                    <div className="bg-white p-2 rounded border border-gray-200 text-sm cursor-pointer hover:bg-ocean-50 transition-colors">
+                      What are the current trends in hotel marketing?
+                    </div>
+                    <div className="bg-white p-2 rounded border border-gray-200 text-sm cursor-pointer hover:bg-ocean-50 transition-colors">
+                      Analyze our recent social media performance
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-auto border-t pt-4">
+              <div className="flex items-center rounded-md border bg-white">
+                <input 
+                  type="text" 
+                  className="flex-1 px-3 py-2 bg-transparent outline-none text-sm" 
+                  placeholder="Ask your AI Marketing Manager..."
+                />
+                <Button size="sm" className="rounded-l-none">Send</Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const DashboardMetrics = () => {
   return (
@@ -116,6 +178,8 @@ const RecommendedActions = () => {
 };
 
 const Dashboard = () => {
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -123,14 +187,14 @@ const Dashboard = () => {
       transition={{ duration: 0.3 }}
       className="space-y-6"
     >
-      <DashboardHeader />
+      <QuickAccessGrid />
+      
+      <DashboardHeader onAIButtonClick={() => setIsAIModalOpen(true)} />
       
       <DashboardMetrics />
       
       <RecommendedActions />
       
-      <QuickAccessGrid />
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <div className="lg:col-span-2">
           <AIToolsSection />
@@ -140,6 +204,8 @@ const Dashboard = () => {
           <RecentActivityCard />
         </div>
       </div>
+      
+      <AIMarketingManagerDialog open={isAIModalOpen} onOpenChange={setIsAIModalOpen} />
     </motion.div>
   );
 };

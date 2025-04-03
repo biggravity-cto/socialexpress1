@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
@@ -7,8 +6,8 @@ const footerLinks = [
   {
     title: "Product",
     links: [
-      { name: "Features", url: "#features" },
-      { name: "Pricing", url: "#pricing" },
+      { name: "Features", url: "/features" },
+      { name: "Pricing", url: "/pricing" },
       { name: "Integrations", url: "#" },
       { name: "Updates", url: "#" },
       { name: "API", url: "#" }
@@ -61,7 +60,7 @@ const Footer: React.FC = () => {
               <span className="font-bold text-2xl tracking-tight text-resort-800">Guest<span className="text-ocean-600">Flow</span></span>
             </Link>
             <p className="text-resort-600 mb-6 max-w-md">
-              The AI-powered hospitality marketing platform that helps hotels and resorts delight guests, drive revenue, and streamline operations.
+              The AI-powered digital marketing platform built exclusively for hotels, resorts, and hospitality brands to delight guests and drive revenue.
             </p>
             <div className="flex space-x-4 mb-6">
               <a href="#" className="bg-gray-100 p-2 rounded-full text-resort-700 hover:bg-ocean-100 hover:text-ocean-600 transition-colors">

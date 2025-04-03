@@ -1,11 +1,15 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Sparkles } from 'lucide-react';
+import { BrainCircuit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 
-const DashboardHeader: React.FC = () => {
+interface DashboardHeaderProps {
+  onAIButtonClick: () => void;
+}
+
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({ onAIButtonClick }) => {
   const { user } = useAuth();
   
   // Get user's first name from full name or email
@@ -35,15 +39,13 @@ const DashboardHeader: React.FC = () => {
         </h1>
         <p className="text-resort-500">Your AI-powered marketing command center is ready</p>
       </div>
-      <div className="flex items-center gap-3">
-        <Button variant="outline" className="bg-white border-ocean-200 text-ocean-700">
-          <Sparkles className="mr-1.5 h-4 w-4 text-amber-500" /> AI Assistant
+      <div>
+        <Button 
+          className="bg-ocean-600 hover:bg-ocean-700 shadow-sm"
+          onClick={onAIButtonClick}
+        >
+          <BrainCircuit className="mr-1.5 h-4 w-4 text-white" /> AI Marketing Manager
         </Button>
-        <Link to="/content">
-          <Button className="bg-ocean-600 hover:bg-ocean-700 shadow-sm">
-            <Plus className="mr-1.5 h-4 w-4" /> Create Content
-          </Button>
-        </Link>
       </div>
     </div>
   );
