@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 
 const CtaSection: React.FC = () => {
   return (
-    <section className="py-20 bg-gradient-to-br from-ocean-600 to-ocean-800 text-white">
+    <section className="py-20 bg-gradient-to-br from-ocean-700 via-ocean-600 to-ocean-800 text-white">
       <div className="container mx-auto px-4 md:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -27,7 +27,7 @@ const CtaSection: React.FC = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-white text-white hover:bg-white hover:text-ocean-700 group"
+              className="bg-transparent border-white text-white hover:bg-white/10"
             >
               <Link to="/calendar" className="flex items-center w-full">
                 See Live Demo
