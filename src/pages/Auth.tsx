@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 import LoginForm from '@/components/auth/LoginForm';
 import SignupForm from '@/components/auth/SignupForm';
 import EmailConfirmationHandler from '@/components/auth/EmailConfirmationHandler';
+import { ArrowLeft } from 'lucide-react';
 
 const Auth = () => {
   const location = useLocation();
@@ -62,9 +63,14 @@ const Auth = () => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="w-full max-w-md mx-auto pt-20 px-4"
+      className="w-full max-w-md mx-auto pt-20 px-4 pb-8"
     >
-      <Card className="p-6">
+      <Link to="/" className="inline-flex items-center text-resort-600 hover:text-resort-800 mb-6">
+        <ArrowLeft className="h-4 w-4 mr-1" />
+        Back to home
+      </Link>
+      
+      <Card className="p-6 shadow-lg border-resort-100">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-resort-800">Guest<span className="text-ocean-600">Flow</span></h1>
           <p className="text-resort-500 mt-1">Access your account</p>
@@ -85,6 +91,13 @@ const Auth = () => {
           </TabsContent>
         </Tabs>
       </Card>
+      
+      <p className="text-center text-xs text-resort-500 mt-4">
+        By continuing, you agree to GuestFlow's{' '}
+        <Link to="/terms" className="text-ocean-600 hover:underline">Terms of Service</Link>{' '}
+        and{' '}
+        <Link to="/privacy" className="text-ocean-600 hover:underline">Privacy Policy</Link>
+      </p>
     </motion.div>
   );
 };

@@ -7,9 +7,10 @@ import { Link } from 'react-router-dom';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Info } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent } from '@/components/ui/card';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -48,6 +49,12 @@ const LoginForm = ({ onError }: LoginFormProps) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const useDemo = () => {
+    form.setValue('email', 'demo@demo.com');
+    form.setValue('password', 'demo');
+    form.handleSubmit(onSubmit)();
   };
 
   return (
@@ -99,6 +106,31 @@ const LoginForm = ({ onError }: LoginFormProps) => {
           </Button>
         </form>
       </Form>
+
+      <div className="mt-6 pt-4 border-t border-gray-100">
+        <Card className="bg-ocean-50 border-ocean-100">
+          <CardContent className="p-4">
+            <div className="flex items-start space-x-2">
+              <Info className="h-5 w-5 text-ocean-600 mt-0.5 flex-shrink-0" />
+              <div className="space-y-1">
+                <h4 className="font-medium text-sm text-ocean-800">Demo Account Access</h4>
+                <p className="text-xs text-ocean-700">
+                  Email: <span className="font-mono bg-white/70 px-1 py-0.5 rounded">demo@demo.com</span><br />
+                  Password: <span className="font-mono bg-white/70 px-1 py-0.5 rounded">demo</span>
+                </p>
+                <Button 
+                  size="sm" 
+                  variant="secondary" 
+                  className="mt-2 w-full bg-ocean-100 hover:bg-ocean-200 text-ocean-800"
+                  onClick={useDemo}
+                >
+                  Use Demo Account
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </>
   );
 };
