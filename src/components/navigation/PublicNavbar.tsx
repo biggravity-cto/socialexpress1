@@ -6,6 +6,8 @@ import LogoComponent from './LogoComponent';
 import NavigationLinks from './NavigationLinks';
 import NavbarActions from './NavbarActions';
 import MobileMenu from './MobileMenu';
+import { Button } from '@/components/ui/button';
+import { AlignJustify } from 'lucide-react';
 
 const PublicNavbar = () => {
   const isMobile = useIsMobile();
@@ -43,7 +45,7 @@ const PublicNavbar = () => {
     }
   };
 
-  const navbarClasses = `fixed top-0 w-full z-50 transition-all duration-300 ${
+  const navbarClasses = `fixed top-0 w-full z-40 transition-all duration-300 ${
     isScrolled 
       ? 'bg-white/90 backdrop-blur-md py-3 shadow-sm' 
       : 'bg-white/70 backdrop-blur-sm py-4'
@@ -52,33 +54,36 @@ const PublicNavbar = () => {
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
-        {/* Only hide logo when mobile menu is open */}
-        {!isMenuOpen && (
-          <div className="flex items-center">
-            <LogoComponent />
-            {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
-          </div>
-        )}
+        <div className="flex items-center">
+          <LogoComponent />
+          {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
+        </div>
         
         <div className="flex items-center">
-          {/* Only show actions when mobile menu is not open */}
-          {!isMenuOpen && !isMobile && (
+          {!isMobile && (
             <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
           )}
           
-          {/* Mobile menu */}
           {isMobile && (
-            <div className={isMenuOpen ? "fixed right-4 top-4 z-50" : ""}>
-              <MobileMenu
-                isMenuOpen={isMenuOpen}
-                setIsMenuOpen={setIsMenuOpen}
-                scrollToSection={scrollToSection}
-                setIsModalOpen={setIsModalOpen}
-              />
-            </div>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setIsMenuOpen(true)}
+              aria-label="Toggle menu"
+            >
+              <AlignJustify className="h-5 w-5" />
+            </Button>
           )}
         </div>
       </div>
+      
+      {/* Mobile Menu */}
+      <MobileMenu
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        scrollToSection={scrollToSection}
+        setIsModalOpen={setIsModalOpen}
+      />
       
       {/* Early Access Modal */}
       <EarlyAccessModal open={isModalOpen} onOpenChange={setIsModalOpen} />
