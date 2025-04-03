@@ -10,6 +10,7 @@ import {
   Settings, 
   BrainCircuit,
   LineChart,
+  BarChart
 } from 'lucide-react';
 
 interface NavigationMenuProps {
@@ -44,8 +45,13 @@ const mainNavItems = [
     icon: <ClipboardCheck className="h-5 w-5" />
   },
   {
-    name: 'Market Intelligence',
-    path: '/market-intelligence',
+    name: 'Analytics & Insights',
+    path: '/analytics',
+    icon: <BarChart className="h-5 w-5" />
+  },
+  {
+    name: 'Brand Intelligence',
+    path: '/brand-intelligence',
     icon: <LineChart className="h-5 w-5" />
   },
   {

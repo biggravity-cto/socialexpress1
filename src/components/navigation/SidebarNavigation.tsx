@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
@@ -11,6 +12,7 @@ import {
   BrainCircuit,
   ClipboardCheck,
   LineChart,
+  BarChart
 } from 'lucide-react';
 import { 
   SidebarContent, 
@@ -65,7 +67,8 @@ const SidebarNavigation = () => {
           <SidebarLink to="/calendar" icon={<Calendar />}>AI Marketing Calendar</SidebarLink>
           <SidebarLink to="/content" icon={<Library />}>Content Studio</SidebarLink>
           <SidebarLink to="/approvals" icon={<ClipboardCheck />}>Approvals</SidebarLink>
-          <SidebarLink to="/market-intelligence" icon={<LineChart />}>Market Intelligence</SidebarLink>
+          <SidebarLink to="/analytics" icon={<BarChart />}>Analytics & Insights</SidebarLink>
+          <SidebarLink to="/brand-intelligence" icon={<LineChart />}>Brand Intelligence</SidebarLink>
           <SidebarLink to="/messages" icon={<MessageSquare />}>Unified Social Inbox</SidebarLink>
         </SidebarGroup>
         
@@ -95,8 +98,14 @@ const SidebarNavigation = () => {
                     <span>Settings</span>
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link to="/team" className="flex w-full items-center">
+                    <Users className="mr-2 h-4 w-4" />
+                    <span>Team</span>
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
+                <DropdownMenuItem className="text-red-600 cursor-pointer" onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>
