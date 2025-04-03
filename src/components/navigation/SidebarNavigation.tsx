@@ -1,18 +1,19 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  Calendar, 
+  Calendar,
+  Library, 
   MessageSquare, 
+  ClipboardCheck, 
   Settings, 
-  LogOut, 
-  BellDot, 
-  Library,
   BrainCircuit,
-  ClipboardCheck,
   LineChart,
-  BarChart
+  BarChart,
+  LogOut,
+  Users, // Added the missing Users import
+  BellDot 
 } from 'lucide-react';
 import { 
   SidebarContent, 
@@ -31,7 +32,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 
 const SidebarNavigation = () => {
