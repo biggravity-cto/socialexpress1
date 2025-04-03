@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -52,9 +51,9 @@ const PublicNavbar = () => {
   return (
     <header className={navbarClasses}>
       <div className="container flex items-center justify-between">
-        <Link to="/" className="flex-shrink-0">
+        <Link to="/" className="flex-shrink-0 pl-0 sm:pl-0">
           <motion.span 
-            className="text-resort-800 text-xl sm:text-2xl font-bold"
+            className="text-resort-800 text-lg sm:text-xl md:text-2xl font-bold"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -105,7 +104,7 @@ const PublicNavbar = () => {
           </motion.button>
         </div>
         
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link to="/auth" className="text-sm text-ocean-700 hover:text-ocean-900 font-medium hidden md:flex items-center">
             <User className="h-4 w-4 mr-1" />
             Demo Login
@@ -116,16 +115,21 @@ const PublicNavbar = () => {
             transition={{ type: "spring", stiffness: 400, damping: 17 }}
           >
             <Button 
-              className="bg-ocean-600 hover:bg-ocean-700 font-medium"
+              className="bg-ocean-600 hover:bg-ocean-700 font-medium text-xs sm:text-sm py-1 px-2 sm:px-4 h-8 sm:h-10"
               onClick={() => setIsModalOpen(true)}
             >
-              <Sparkles className="mr-1.5 h-4 w-4" /> Early Access
+              <Sparkles className="mr-1 h-3 w-3 sm:h-4 sm:w-4" /> Early Access
             </Button>
           </motion.div>
         </div>
         
         {isMobile && (
-          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden z-50">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => setIsMenuOpen(!isMenuOpen)} 
+            className="md:hidden z-50 ml-2"
+          >
             {isMenuOpen ? <X /> : <Menu />}
           </Button>
         )}
