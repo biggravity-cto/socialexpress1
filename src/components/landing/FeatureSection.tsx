@@ -122,7 +122,7 @@ const FeatureSection = ({ featureRef }: FeatureSectionProps) => {
           ))}
         </div>
         
-        <div className="mt-20 p-8 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center">
+        <div className="mt-20 p-8 rounded-2xl bg-gradient-to-r from-ocean-600 to-ocean-700 text-white text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">Custom-Tailored for the Hospitality Industry</h2>
           <p className="text-lg text-blue-100 max-w-3xl mx-auto mb-6">
             Unlike generic marketing tools, GuestFlow is built specifically for hotels, resorts, and spas with industry-specific templates, analytics, and AI capabilities.

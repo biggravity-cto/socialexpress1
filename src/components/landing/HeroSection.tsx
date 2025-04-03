@@ -24,11 +24,11 @@ const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-            Elevate Your <span className="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-ocean-600 to-ocean-500">Hospitality Brand</span> with GuestFlow
+            Redefine Hospitality Marketing <span className="text-gradient bg-clip-text text-transparent bg-gradient-to-r from-ocean-600 to-ocean-500">Intelligence</span>
           </h1>
           
           <p className="text-xl text-gray-600 mx-auto">
-            The all-in-one digital marketing platform designed exclusively for resorts, hotels, and spas. Simplify your workflow with AI-powered content creation, campaign management, and brand intelligence.
+            A sophisticated digital marketing platform designed exclusively for luxury hospitality brands. Streamline strategic marketing with AI-driven content creation, data-informed campaigns, and actionable brand intelligence.
           </p>
           
           <div className="flex flex-wrap gap-4 pt-2 justify-center">
