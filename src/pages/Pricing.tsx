@@ -1,13 +1,21 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '@/components/navigation/Navbar';
 import Footer from '@/components/landing/Footer';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import EarlyAccessModal from '@/components/landing/EarlyAccessModal';
 
 const Pricing = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("");
+  
+  const handlePlanSelect = (planName: string) => {
+    setSelectedPlan(planName);
+    setIsModalOpen(true);
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-resort-50">
       <Navbar />
@@ -53,14 +61,15 @@ const Pricing = () => {
                     <span className="text-4xl font-bold text-resort-900">{plan.price}</span>
                     <span className="text-resort-600">{plan.period}</span>
                   </div>
-                  <Link to="/dashboard">
-                    <Button 
-                      className={`w-full mb-6 ${plan.featured ? 'bg-ocean-600 hover:bg-ocean-700' : ''}`}
-                      variant={plan.featured ? 'default' : 'outline'}
-                    >
-                      {plan.buttonText}
-                    </Button>
-                  </Link>
+                  <Button 
+                    className={`w-full mb-6 ${plan.featured ? 'bg-ocean-600 hover:bg-ocean-700' : ''}`}
+                    variant={plan.featured ? 'default' : 'outline'}
+                    onClick={() => plan.buttonText !== "Contact Sales" ? handlePlanSelect(plan.name) : null}
+                  >
+                    {plan.buttonText === "Start Free Trial" || plan.buttonText === "Get Started" 
+                      ? "Request Early Access" 
+                      : plan.buttonText}
+                  </Button>
                   <ul className="space-y-3">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
@@ -107,6 +116,13 @@ const Pricing = () => {
         </div>
       </section>
       
+      {/* Early Access Modal */}
+      <EarlyAccessModal 
+        open={isModalOpen} 
+        onOpenChange={setIsModalOpen} 
+        selectedPlan={selectedPlan}
+      />
+      
       <Footer />
     </div>
   );
@@ -120,7 +136,7 @@ const pricingPlans = [
     coreBenefit: "Streamline your marketing workflow and create premium content.",
     price: "$149",
     period: "/month",
-    buttonText: "Get Started",
+    buttonText: "Request Early Access",
     featured: false,
     features: [
       "Intelligent Marketing Calendar",
@@ -138,7 +154,7 @@ const pricingPlans = [
     coreBenefit: "Maximize direct bookings and guest engagement across channels.",
     price: "$399",
     period: "/month",
-    buttonText: "Start Free Trial",
+    buttonText: "Request Early Access",
     featured: true,
     features: [
       "Everything in Essentials, plus:",

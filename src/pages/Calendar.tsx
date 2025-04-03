@@ -13,7 +13,7 @@ import { Campaign, Post } from '@/types/calendar';
 import { useToast } from "@/hooks/use-toast";
 import { CalendarContainer } from '@/components/dashboard/calendar/CalendarContainer';
 import { motion } from 'framer-motion';
-import { RotateCw, Filter, PlusCircle, Calendar as CalendarIcon } from 'lucide-react';
+import { RotateCw, Filter, Calendar as CalendarIcon } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import AICalendarAgent from '@/components/dashboard/calendar/AICalendarAgent';
@@ -102,14 +102,6 @@ const Calendar = () => {
     }
   };
 
-  const handleCreatePost = () => {
-    toast({
-      title: "Create New Post",
-      description: "Opening post creator...",
-    });
-    // Implement post creation logic here
-  };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -144,16 +136,6 @@ const Calendar = () => {
               <RotateCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
               <span>{loading ? (isMobile ? '' : 'Refreshing...') : (isMobile ? '' : 'Refresh')}</span>
             </Button>
-            
-            <Button 
-              variant="default" 
-              size="sm" 
-              className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700"
-              onClick={handleCreatePost}
-            >
-              <PlusCircle className="h-4 w-4" />
-              <span>{isMobile ? '' : 'Create Post'}</span>
-            </Button>
           </div>
         </div>
       </GlassPanel>
@@ -186,9 +168,18 @@ const Calendar = () => {
         <div className="fixed bottom-6 right-6 z-10">
           <Button 
             className="h-14 w-14 rounded-full shadow-lg bg-blue-600 hover:bg-blue-700 flex items-center justify-center"
-            onClick={handleCreatePost}
+            onClick={() => {
+              const calendarContainer = document.querySelector('.react-calendar');
+              if (calendarContainer) {
+                const today = new Date();
+                toast({
+                  title: "Create New Post",
+                  description: "Opening post creator...",
+                });
+              }
+            }}
           >
-            <PlusCircle className="h-6 w-6" />
+            <CalendarIcon className="h-6 w-6" />
           </Button>
         </div>
       )}

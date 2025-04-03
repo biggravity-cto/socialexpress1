@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import EarlyAccessModal from './EarlyAccessModal';
 
 const plans = [
   {
@@ -21,7 +22,7 @@ const plans = [
       'Export-ready content with brand guidelines',
       'Includes 2 team member accounts'
     ],
-    cta: 'Start Free Trial',
+    cta: 'Request Early Access',
     variant: 'outline'
   },
   {
@@ -42,7 +43,7 @@ const plans = [
       'Up to 5 team member accounts'
     ],
     disclaimer: '* Advanced integrations may require technical setup assistance',
-    cta: 'Start Free Trial',
+    cta: 'Request Early Access',
     variant: 'default',
     featured: true
   },
@@ -70,6 +71,14 @@ const plans = [
 ];
 
 const PricingSection = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("");
+  
+  const handlePlanSelect = (planName: string) => {
+    setSelectedPlan(planName);
+    setIsModalOpen(true);
+  };
+  
   return (
     <section id="pricing" className="py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="container mx-auto px-4">
@@ -132,6 +141,7 @@ const PricingSection = () => {
                 <Button 
                   variant={plan.variant as any} 
                   className={`w-full py-6 ${plan.featured ? 'bg-ocean-600 hover:bg-ocean-700' : ''}`}
+                  onClick={() => plan.cta !== "Contact Sales" ? handlePlanSelect(plan.name) : null}
                 >
                   {plan.cta}
                 </Button>
@@ -147,6 +157,13 @@ const PricingSection = () => {
           </p>
         </div>
       </div>
+      
+      {/* Early Access Modal */}
+      <EarlyAccessModal 
+        open={isModalOpen} 
+        onOpenChange={setIsModalOpen} 
+        selectedPlan={selectedPlan}
+      />
     </section>
   );
 };

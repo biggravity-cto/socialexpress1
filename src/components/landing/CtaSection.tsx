@@ -24,7 +24,7 @@ const CtaSection = () => {
             Ready to Transform Your Resort's Marketing?
           </h2>
           <p className="text-lg text-resort-700 mb-8 max-w-2xl mx-auto">
-            Join the growing community of luxury properties leveraging our AI-powered platform to attract high-value guests and maximize revenue.
+            Join the growing community of hospitality properties leveraging our AI-powered platform to attract high-value guests and maximize revenue.
           </p>
           <motion.div
             whileHover={{ scale: 1.03 }}

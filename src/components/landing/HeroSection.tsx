@@ -1,14 +1,17 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { ChevronRight, Sparkles, BrainCircuit, CalendarDays, BarChart3 } from 'lucide-react';
+import EarlyAccessModal from './EarlyAccessModal';
 
 interface HeroSectionProps {
   scrollToFeatures: () => void;
 }
 
 const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   return (
     <section className="relative py-20 md:py-28 px-4">
       <div className="max-w-7xl mx-auto">
@@ -22,9 +25,9 @@ const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-blue-50 text-blue-700 border border-blue-100"
+            className="inline-flex items-center rounded-full px-3 py-1 text-sm font-medium bg-ocean-50 text-ocean-600 border border-ocean-100"
           >
-            <Sparkles className="h-4 w-4 mr-1.5 text-blue-500" />
+            <Sparkles className="h-4 w-4 mr-1.5 text-ocean-500" />
             <span>Limited Spots Available</span>
           </motion.div>
           
@@ -52,7 +55,11 @@ const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
             transition={{ delay: 0.8, duration: 0.5 }}
             className="flex flex-wrap gap-4 pt-2 justify-center"
           >
-            <Button size="lg" className="h-12 px-6 bg-ocean-600 hover:bg-ocean-700 transition-all duration-300 shadow-md hover:shadow-lg">
+            <Button 
+              size="lg" 
+              className="h-12 px-6 bg-ocean-600 hover:bg-ocean-700 transition-all duration-300 shadow-md hover:shadow-lg"
+              onClick={() => setIsModalOpen(true)}
+            >
               Request Early Access
               <ChevronRight className="h-4 w-4 ml-2" />
             </Button>
@@ -121,6 +128,9 @@ const HeroSection = ({ scrollToFeatures }: HeroSectionProps) => {
           </div>
         </div>
       </motion.div>
+      
+      {/* Early Access Modal */}
+      <EarlyAccessModal open={isModalOpen} onOpenChange={setIsModalOpen} />
     </section>
   );
 };

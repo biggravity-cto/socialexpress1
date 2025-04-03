@@ -16,11 +16,13 @@ import {
 interface EarlyAccessModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  selectedPlan?: string;
 }
 
 const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({
   open,
-  onOpenChange
+  onOpenChange,
+  selectedPlan
 }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -54,7 +56,7 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({
       <DialogContent className="sm:max-w-md rounded-xl">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center text-resort-800">
-            Get Early Access
+            Get Early Access {selectedPlan ? `to ${selectedPlan}` : ''}
           </DialogTitle>
           <DialogDescription className="text-center text-resort-600 pt-2">
             Join our exclusive early access program and be among the first to experience our AI-powered guest journey platform.

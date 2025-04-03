@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Navbar from '@/components/navigation/Navbar';
 import Footer from '@/components/landing/Footer';
@@ -131,7 +130,6 @@ const Features = () => {
   );
 };
 
-// Updated features data
 const featuresData = [
   {
     title: "Visual Content Calendar",
@@ -169,7 +167,7 @@ const featuresData = [
     iconColor: "text-yellow-500"
   },
   {
-    title: "Unified Social Inbox",
+    title: "Unified Inbox",
     description: "Manage comments and direct messages from all your social platforms in one centralized inbox.",
     icon: Inbox,
     bgColor: "bg-orange-50",
@@ -198,7 +196,6 @@ const featuresData = [
   }
 ];
 
-// Plan comparison data
 const planComparisonData = [
   {
     feature: "Social Account Connections",
@@ -249,7 +246,7 @@ const planComparisonData = [
     enterprise: "Full Korean market features"
   },
   {
-    feature: "Social Inbox",
+    feature: "Unified Inbox",
     basic: "×",
     pro: "✓ (platform dependent)",
     enterprise: "✓ + Priority management"
@@ -262,7 +259,6 @@ const planComparisonData = [
   }
 ];
 
-// Hospitality-specific features
 const hospitalityFeatures = [
   {
     title: "Multilingual Support",
