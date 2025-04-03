@@ -77,7 +77,9 @@ const AICalendarAgent = () => {
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
-    setIsMinimized(false);
+    if (!isChatOpen) {
+      setIsMinimized(false);
+    }
   };
   
   const toggleMinimize = () => {
@@ -170,20 +172,22 @@ const AICalendarAgent = () => {
                 ))}
               </ScrollArea>
               
-              <div className="p-2 flex overflow-x-auto gap-2 border-t border-b bg-gray-50">
-                <div className="flex gap-2 pb-1 overflow-x-auto w-full custom-scrollbar">
-                  {suggestedPrompts.map((prompt, index) => (
-                    <Button 
-                      key={index} 
-                      variant="outline" 
-                      size="sm"
-                      className="whitespace-nowrap flex-shrink-0 bg-white border-blue-200 hover:bg-blue-50"
-                      onClick={() => handlePromptClick(prompt)}
-                    >
-                      {prompt}
-                    </Button>
-                  ))}
-                </div>
+              <div className="p-2 border-t border-b bg-gray-50">
+                <ScrollArea orientation="horizontal" className="w-full pb-1">
+                  <div className="flex gap-2 min-w-full">
+                    {suggestedPrompts.map((prompt, index) => (
+                      <Button 
+                        key={index} 
+                        variant="outline" 
+                        size="sm"
+                        className="whitespace-nowrap flex-shrink-0 bg-white border-blue-200 hover:bg-blue-50"
+                        onClick={() => handlePromptClick(prompt)}
+                      >
+                        {prompt}
+                      </Button>
+                    ))}
+                  </div>
+                </ScrollArea>
               </div>
               
               <div className="p-3 flex gap-2">
