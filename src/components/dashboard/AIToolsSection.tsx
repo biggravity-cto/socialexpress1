@@ -22,10 +22,10 @@ const AIToolsSection: React.FC = () => {
       iconColor: "text-purple-600"
     },
     {
-      title: "Market Intelligence",
-      description: "Monitor trends and track competitors",
+      title: "Brand Intelligence",
+      description: "Monitor trends and track your brand performance",
       icon: <LineChart />,
-      path: "/market-intelligence",
+      path: "/brand-intelligence",
       bgColor: "bg-blue-50",
       iconColor: "text-blue-600"
     },
@@ -64,7 +64,7 @@ const AIToolsSection: React.FC = () => {
   ];
 
   return (
-    <Card className="p-6 bg-white/80 backdrop-blur-sm h-full">
+    <Card className="p-6 bg-white/80 backdrop-blur-sm h-full shadow-sm border-ocean-100">
       <h3 className="text-lg font-medium text-resort-800 mb-4">AI Tools</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {tools.map((tool, index) => (
