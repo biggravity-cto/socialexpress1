@@ -27,7 +27,7 @@ const CtaSection: React.FC = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className="border-white text-white hover:bg-ocean-700 hover:text-white group"
+              className="border-white text-white hover:bg-white hover:text-ocean-700 group"
             >
               <Link to="/calendar" className="flex items-center w-full">
                 See Live Demo

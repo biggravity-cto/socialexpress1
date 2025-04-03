@@ -67,17 +67,29 @@ const HeroSection: React.FC<HeroSectionProps> = ({ scrollToFeatures }) => {
               className="relative z-10"
             >
               <div className="relative overflow-hidden rounded-xl shadow-2xl border border-gray-100">
+                <div className="absolute top-0 right-0 bg-ocean-600/90 text-white p-3 rounded-bl-xl z-10 text-sm font-medium">
+                  <div className="flex flex-col">
+                    <span className="text-lg font-bold">+42%</span>
+                    <span>Direct Bookings</span>
+                  </div>
+                </div>
+                <div className="absolute bottom-0 left-0 bg-ocean-600/90 text-white p-3 rounded-tr-xl z-10 text-sm font-medium">
+                  <div className="flex flex-col">
+                    <span className="text-lg font-bold">+67%</span>
+                    <span>Guest Engagement</span>
+                  </div>
+                </div>
                 <img 
-                  src="/img/resort-dashboard.jpg" 
-                  alt="GuestFlow Dashboard Preview" 
-                  className="w-full h-auto"
+                  src="/lovable-uploads/cc051c94-1076-431a-a6fb-a52602466763.png" 
+                  alt="Family enjoying resort experience" 
+                  className="w-full h-auto object-cover"
                   onError={(e) => {
                     // Fallback to placeholder if image fails to load
                     const target = e.target as HTMLImageElement;
-                    target.src = "https://images.unsplash.com/photo-1483058712412-4245e9b90334?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3648&q=80";
+                    target.src = "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80";
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-ocean-700/10 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-tr from-ocean-700/20 via-transparent to-transparent"></div>
               </div>
             </motion.div>
             
