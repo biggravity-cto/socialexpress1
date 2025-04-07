@@ -128,36 +128,36 @@ const weaknesses = [
 const KeyFindings = () => {
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ThumbsUp className="h-5 w-5 text-green-600" />
+      <Card className="border-[#6ad4e0]/30">
+        <CardHeader className="bg-gradient-to-r from-[#a3f7bf]/10 to-[#6ad4e0]/10">
+          <CardTitle className="flex items-center gap-2 text-[#333] font-display">
+            <ThumbsUp className="h-5 w-5 text-[#6ad4e0]" />
             Key Strengths
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {strengths.map((item) => (
-              <Card key={item.id} className="border border-green-100 bg-green-50/30 overflow-hidden">
+              <Card key={item.id} className="border border-[#a3f7bf]/30 bg-[#f7fcfd] overflow-hidden shadow-sm">
                 <div className="flex">
-                  <div className={`${item.iconBg} p-4 flex items-center justify-center`}>
+                  <div className={`bg-[#6ad4e0]/10 p-4 flex items-center justify-center`}>
                     {item.icon}
                   </div>
                   <div className="p-4 flex-grow">
                     <div className="flex justify-between items-start">
-                      <h4 className="font-medium text-resort-800">{item.title}</h4>
+                      <h4 className="font-medium text-[#333]">{item.title}</h4>
                       {item.highlight && (
-                        <Badge variant="outline" className="bg-green-100 text-green-700 border-green-200">
+                        <Badge variant="outline" className="bg-[#a3f7bf]/20 text-[#228b22] border-[#a3f7bf]/50">
                           {item.highlight}
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-resort-600 mt-1">{item.description}</p>
+                    <p className="text-sm text-[#555] mt-1">{item.description}</p>
                     
                     {item.recommendations && (
-                      <div className="mt-3 pt-3 border-t border-green-100">
-                        <h5 className="text-xs font-medium text-green-700 mb-1">Recommendations</h5>
-                        <ul className="text-xs text-resort-600 list-disc pl-4 space-y-0.5">
+                      <div className="mt-3 pt-3 border-t border-[#a3f7bf]/20">
+                        <h5 className="text-xs font-medium text-[#228b22] mb-1">Recommendations</h5>
+                        <ul className="text-xs text-[#555] list-disc pl-4 space-y-0.5">
                           {item.recommendations.map((rec, idx) => (
                             <li key={idx}>{rec}</li>
                           ))}
@@ -172,34 +172,34 @@ const KeyFindings = () => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ThumbsDown className="h-5 w-5 text-red-600" />
+      <Card className="border-[#6ad4e0]/30">
+        <CardHeader className="bg-gradient-to-r from-[#ffd6d6]/10 to-[#ffe9e9]/10">
+          <CardTitle className="flex items-center gap-2 text-[#333] font-display">
+            <ThumbsDown className="h-5 w-5 text-red-400" />
             Areas for Improvement
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {weaknesses.map((item) => (
-              <Card key={item.id} className="border border-red-100 bg-red-50/30 overflow-hidden">
+              <Card key={item.id} className="border border-red-100 bg-red-50/30 overflow-hidden shadow-sm">
                 <div className="flex">
                   <div className={`${item.iconBg} p-4 flex items-center justify-center`}>
                     {item.icon}
                   </div>
                   <div className="p-4 flex-grow">
                     <div className="flex justify-between items-start">
-                      <h4 className="font-medium text-resort-800">{item.title}</h4>
+                      <h4 className="font-medium text-[#333]">{item.title}</h4>
                       {item.impact && (
                         <Badge variant="outline" className="bg-red-100 text-red-700 border-red-200">
                           {item.impact}
                         </Badge>
                       )}
                     </div>
-                    <p className="text-sm text-resort-600 mt-1">{item.description}</p>
+                    <p className="text-sm text-[#555] mt-1">{item.description}</p>
                     
                     {item.quote && (
-                      <div className="mt-2 p-3 bg-white rounded-md border-l-4 border-gray-300">
+                      <div className="mt-2 p-3 bg-white rounded-md border-l-4 border-[#6ad4e0]">
                         <p className="text-sm italic text-gray-700">{item.quote}</p>
                         <p className="text-xs text-gray-500 mt-1">{item.translation}</p>
                       </div>
@@ -208,7 +208,7 @@ const KeyFindings = () => {
                     {item.recommendations && (
                       <div className="mt-3 pt-3 border-t border-red-100">
                         <h5 className="text-xs font-medium text-red-700 mb-1">Recommendations</h5>
-                        <ul className="text-xs text-resort-600 list-disc pl-4 space-y-0.5">
+                        <ul className="text-xs text-[#555] list-disc pl-4 space-y-0.5">
                           {item.recommendations.map((rec, idx) => (
                             <li key={idx}>{rec}</li>
                           ))}
