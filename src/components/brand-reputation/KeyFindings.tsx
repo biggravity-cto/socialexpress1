@@ -24,7 +24,7 @@ const strengths = [
     highlight: 'Most mentioned strength',
     recommendations: [
       'Continue to promote family-friendly amenities',
-      'Highlight children's activities in marketing materials'
+      "Highlight children's activities in marketing materials"
     ]
   },
   {
