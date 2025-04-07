@@ -31,7 +31,7 @@ const CustomTooltip = ({ active, payload }: any) => {
         <p className="text-sm">Previous: {data.previousValue}%</p>
         <p className="text-sm flex items-center gap-1 mt-1">
           Change: 
-          <span className={change > 0 ? "text-green-500" : change < 0 ? "text-red-500" : "text-gray-500"}>
+          <span className={data.change > 0 ? "text-green-500" : data.change < 0 ? "text-red-500" : "text-gray-500"}>
             {data.change > 0 ? '+' : ''}{data.change}%
           </span>
         </p>
