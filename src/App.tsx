@@ -20,6 +20,7 @@ import EmailConfirmation from '@/pages/EmailConfirmation'
 import ForgotPassword from '@/pages/ForgotPassword'
 import { Toaster } from '@/components/ui/toaster'
 import { Navigate } from 'react-router-dom'
+import BrandReputationReport from '@/pages/BrandReputationReport'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/brand-intelligence" element={<BrandIntelligence />} />
           <Route path="/market-intelligence" element={<MarketIntelligence />} />
+          <Route path="/BRR-Q125-MCR" element={<BrandReputationReport />} />
           
           {/* Standalone - Unified Social Inbox */}
           <Route path="/messages" element={<Messages />} />
