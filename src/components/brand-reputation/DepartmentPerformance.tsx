@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Info, ArrowDown, ArrowUp, Minus, ChevronDown, ChevronRight } from 'lucide-react';
@@ -16,38 +15,38 @@ import {
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
 
-// Updated department data
+// Updated department data with the Q1 2025 estimates
 const departmentData = [
   { 
     name: 'Location', 
-    q1Negative: 10, 
+    q1Negative: 6, 
     q4Negative: 3.88,
-    diffPercent: 158,
+    diffPercent: 55,
     trend: 'increase',
     keyThemes: 'Distance from Nha Trang city center',
     priority: 'high',
-    impact: '10% of guests',
+    impact: '~6% of guests',
     color: '#6ad4e0',
     recommendations: [
-      'Enhance shuttle services to Nha Trang city',
-      'Expand on-site activity programming',
-      'Strengthen partnerships with local tour operators'
+      'Continue enhancing and promoting shuttle services to Nha Trang city',
+      'Develop more robust and varied on-site entertainment and activity schedules',
+      'Explore partnerships with local tour operators for easy excursion booking'
     ]
   },
   { 
     name: 'Food & Beverage', 
-    q1Negative: 5, 
+    q1Negative: 4, 
     q4Negative: 2.94,
-    diffPercent: 70,
+    diffPercent: 36,
     trend: 'increase',
     keyThemes: 'Breakfast quality/variety, comparison to other hotels',
     priority: 'medium',
-    impact: '5% of guests',
+    impact: '~4% of guests',
     color: '#91e6c8',
     recommendations: [
-      'Review and enhance breakfast offerings',
-      'Consider rotating or seasonal menu items',
-      'Implement quality control for food preparation'
+      'Conduct a thorough review of breakfast offerings',
+      'Focus on quality, variety, and inclusion of popular Korean dishes',
+      'Implement stricter quality control measures in food preparation'
     ]
   },
   { 
@@ -56,14 +55,14 @@ const departmentData = [
     q4Negative: 1.89,
     diffPercent: 59,
     trend: 'increase',
-    keyThemes: 'Water quality (filters needed), AC issues',
+    keyThemes: 'Water quality (filters needed), AC/TV issues',
     priority: 'medium',
-    impact: '3% of guests',
+    impact: '~3% of guests',
     color: '#a3f7bf',
     recommendations: [
-      'Address water quality concerns',
-      'Implement regular AC maintenance',
-      'Enhance room inspection protocols'
+      'Urgently investigate room water quality',
+      'Provide complimentary shower filters',
+      'Ensure regular preventive maintenance for in-room amenities'
     ]
   },
   { 
@@ -77,8 +76,8 @@ const departmentData = [
     impact: '<1% of guests',
     color: '#c2f8cb',
     recommendations: [
-      'Review buggy service efficiency during peak times',
-      'Optimize scheduling for high-demand periods'
+      'Optimize buggy dispatching during peak times',
+      'Review scheduling for high-demand periods'
     ]
   },
   { 
@@ -92,7 +91,7 @@ const departmentData = [
     impact: '<1% of guests',
     color: '#d5f8d7',
     recommendations: [
-      'Monitor consistent operation of pool facilities'
+      'Ensure consistent operation and maintenance of recreational facilities'
     ]
   },
   { 
@@ -128,11 +127,11 @@ const departmentData = [
 const getTrendBadge = (trend: string) => {
   switch (trend) {
     case 'increase':
-      return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 flex items-center gap-1">
+      return <Badge variant="outline" className="bg-[#ffd6d6]/20 text-[#ff8c8c] border-[#ffd6d6]/50 flex items-center gap-1">
         <ArrowUp className="h-3 w-3" /> Increasing
       </Badge>;
     case 'decrease':
-      return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 flex items-center gap-1">
+      return <Badge variant="outline" className="bg-[#a3f7bf]/20 text-[#228b22] border-[#a3f7bf]/50 flex items-center gap-1">
         <ArrowDown className="h-3 w-3" /> Decreasing
       </Badge>;
     case 'stable':
@@ -140,7 +139,7 @@ const getTrendBadge = (trend: string) => {
         <Minus className="h-3 w-3" /> Stable
       </Badge>;
     case 'new':
-      return <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+      return <Badge variant="outline" className="bg-[#6ad4e0]/20 text-[#1d9cc8] border-[#6ad4e0]/50">
         New Issue
       </Badge>;
     default:
@@ -151,11 +150,11 @@ const getTrendBadge = (trend: string) => {
 const getPriorityBadge = (priority: string) => {
   switch (priority) {
     case 'high':
-      return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200">High</Badge>;
+      return <Badge variant="outline" className="bg-[#ffd6d6]/20 text-[#ff8c8c] border-[#ffd6d6]/50">High</Badge>;
     case 'medium':
-      return <Badge variant="outline" className="bg-amber-50 text-amber-700 border-amber-200">Medium</Badge>;
+      return <Badge variant="outline" className="bg-[#fff3cd]/20 text-amber-700 border-[#fff3cd]/50">Medium</Badge>;
     case 'low':
-      return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">Low</Badge>;
+      return <Badge variant="outline" className="bg-[#a3f7bf]/20 text-[#228b22] border-[#a3f7bf]/50">Low</Badge>;
     default:
       return null;
   }
@@ -169,11 +168,11 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         <p className="font-medium">{label}</p>
         <div className="flex flex-col gap-1 mt-2">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#6ad4e0' }}></div>
+            <div className="w-3 h-3 rounded-full bg-[#6ad4e0]"></div>
             <p className="text-sm">Q1 2025: {payload[0].value}%</p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#91e6c8' }}></div>
+            <div className="w-3 h-3 rounded-full bg-[#91e6c8]"></div>
             <p className="text-sm">Q4 2024: {payload[1].value}%</p>
           </div>
         </div>
@@ -201,7 +200,7 @@ const DepartmentPerformance = () => {
     <div className="space-y-6">
       <Card className="border-[#6ad4e0]/30">
         <CardHeader className="bg-gradient-to-r from-[#a3f7bf]/10 to-[#6ad4e0]/10">
-          <CardTitle className="text-[#333] font-display">Department & Category Performance Analysis</CardTitle>
+          <CardTitle className="text-[#333]">Department & Category Performance Analysis</CardTitle>
         </CardHeader>
         <CardContent className="pt-6">
           {/* Interactive vertical chart */}
@@ -289,8 +288,8 @@ const DepartmentPerformance = () => {
                       <TableCell className="text-right text-[#555]">{dept.q4Negative}%</TableCell>
                       <TableCell 
                         className={`text-right font-medium ${
-                          dept.diffPercent > 0 ? 'text-red-600' : 
-                          dept.diffPercent < 0 ? 'text-green-600' : 'text-gray-600'
+                          dept.diffPercent > 0 ? 'text-[#ff8c8c]' : 
+                          dept.diffPercent < 0 ? 'text-[#228b22]' : 'text-gray-600'
                         }`}
                       >
                         {dept.diffPercent > 0 ? '+' : ''}{dept.diffPercent}%
@@ -365,7 +364,7 @@ const DepartmentPerformance = () => {
         <Info className="h-5 w-5 text-[#6ad4e0] mt-0.5 flex-shrink-0" />
         <div>
           <p className="text-[#333] text-sm">
-            <span className="font-medium">Methodology Note:</span> Sentiment analysis and category performance for Q1 2025 are estimated based on qualitative review of the provided data snippets due to the limited number of posts (43 vs. 953 in Q4 2024) and lack of automated NLP analysis tools.
+            <span className="font-medium">Methodology Note:</span> This analysis examines guest sentiment data collected from 155 unique blog posts dated between January 1, 2025, and March 31, 2025, sourced from Naver.com. Quantitative estimates (percentages, BSA score) are approximations based on qualitative review.
           </p>
         </div>
       </div>

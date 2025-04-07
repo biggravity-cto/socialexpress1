@@ -27,12 +27,12 @@ const BrandReputationReport = () => {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl md:text-3xl font-bold text-resort-800">Brand Reputation Report</h1>
-            <span className="bg-ocean-100 text-ocean-800 text-xs px-2.5 py-1 rounded-full font-medium">
+            <h1 className="text-2xl md:text-3xl font-bold text-[#333] mb-1">Brand Reputation Report</h1>
+            <span className="bg-[#6ad4e0]/20 text-[#1d9cc8] text-xs px-2.5 py-1 rounded-full font-medium">
               Q1 2025
             </span>
           </div>
-          <p className="text-resort-500">Movenpick Resort Cam Ranh | January 1 - March 31, 2025</p>
+          <p className="text-[#555]">Movenpick Resort Cam Ranh | January 1 - March 31, 2025</p>
         </div>
         
         <div className="flex items-center gap-2">
@@ -45,7 +45,7 @@ const BrandReputationReport = () => {
             variant={viewingFullReport ? "secondary" : "default"}
             className={viewingFullReport 
               ? "bg-gray-200 hover:bg-gray-300 text-gray-800" 
-              : "bg-ocean-600 hover:bg-ocean-700 flex items-center gap-2"
+              : "bg-[#6ad4e0] hover:bg-[#1d9cc8] text-white flex items-center gap-2"
             }
             onClick={() => setViewingFullReport(!viewingFullReport)}
           >
@@ -55,38 +55,28 @@ const BrandReputationReport = () => {
         </div>
       </div>
 
-      <div className="bg-amber-50 border border-amber-200 rounded-md p-4 flex items-start gap-3">
-        <Info className="h-5 w-5 text-amber-700 mt-0.5 flex-shrink-0" />
-        <div>
-          <p className="text-amber-800 text-sm">
-            <span className="font-medium">Data Sample Note:</span> This analysis is based on 43 blog posts from Q1 2025 compared to 953 posts in Q4 2024. 
-            Interpret trends with caution due to the significant difference in sample size.
-          </p>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Card className="p-4 bg-blue-50 border-blue-200">
+        <Card className="p-4 bg-gradient-to-br from-[#6ad4e0]/10 to-[#91e6c8]/10 border-[#6ad4e0]/20">
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-700">7.7</div>
-            <div className="text-sm font-medium text-blue-800">BSA Score</div>
-            <div className="text-xs text-blue-600 mt-1">7.9 in Q4 2024</div>
+            <div className="text-3xl font-bold text-[#1d9cc8]">7.8</div>
+            <div className="text-sm font-medium text-[#333]">BSA Score</div>
+            <div className="text-xs text-[#555] mt-1">7.9 in Q4 2024</div>
           </div>
         </Card>
         
-        <Card className="p-4 bg-green-50 border-green-200">
+        <Card className="p-4 bg-gradient-to-br from-[#a3f7bf]/10 to-[#91e6c8]/10 border-[#a3f7bf]/20">
           <div className="text-center">
-            <div className="text-3xl font-bold text-green-700">75%</div>
-            <div className="text-sm font-medium text-green-800">Positive Sentiment</div>
-            <div className="text-xs text-green-600 mt-1">82.37% in Q4 2024</div>
+            <div className="text-3xl font-bold text-[#228b22]">80%</div>
+            <div className="text-sm font-medium text-[#333]">Positive Sentiment</div>
+            <div className="text-xs text-[#555] mt-1">82.37% in Q4 2024</div>
           </div>
         </Card>
         
-        <Card className="p-4 bg-red-50 border-red-200">
+        <Card className="p-4 bg-gradient-to-br from-[#ffd6d6]/10 to-[#ffe9e9]/10 border-[#ffd6d6]/20">
           <div className="text-center">
-            <div className="text-3xl font-bold text-red-700">20%</div>
-            <div className="text-sm font-medium text-red-800">Negative Sentiment</div>
-            <div className="text-xs text-red-600 mt-1">11.44% in Q4 2024</div>
+            <div className="text-3xl font-bold text-[#ef4444]">15%</div>
+            <div className="text-sm font-medium text-[#333]">Negative Sentiment</div>
+            <div className="text-xs text-[#555] mt-1">11.44% in Q4 2024</div>
           </div>
         </Card>
       </div>
@@ -165,13 +155,13 @@ const BrandReputationReport = () => {
       </Tabs>
 
       {viewingFullReport && (
-        <Card className="bg-blue-50 border-blue-200 mt-6">
+        <Card className="bg-[#6ad4e0]/10 border-[#6ad4e0]/20 mt-6">
           <CardContent className="p-4">
             <div className="flex items-start gap-3">
-              <Info className="h-5 w-5 text-blue-600 mt-0.5" />
+              <Info className="h-5 w-5 text-[#1d9cc8] mt-0.5" />
               <div>
-                <p className="text-sm text-blue-800">
-                  <span className="font-medium">Report Overview:</span> This report analyzes online guest sentiment for Movenpick Resort Cam Ranh during Q1 2025 (January 1 - March 31, 2025). The analysis is based on 43 relevant blog posts identified from Naver.com. The overall sentiment remains positive, though the significantly smaller sample size compared to Q4 2024 (43 posts vs. 953 posts) warrants caution when interpreting trends. Key areas like location convenience and dining experience continue to be focal points for guest feedback, alongside recurring positive mentions of family-friendly amenities and airport proximity.
+                <p className="text-sm text-[#333]">
+                  <span className="font-medium">Report Overview:</span> This report analyzes online guest sentiment for Movenpick Resort Cam Ranh during Q1 2025 (January 1 - March 31, 2025). The analysis is based on 155 relevant blog posts identified from Naver.com. The overall sentiment remains predominantly positive (80%), aligning closely with Q4 2024 levels (82.37%). The resort continues to be highly praised for its family-friendly amenities, pool villas, and airport proximity.
                 </p>
               </div>
             </div>

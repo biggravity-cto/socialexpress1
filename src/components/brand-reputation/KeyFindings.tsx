@@ -18,7 +18,7 @@ const strengths = [
   {
     id: 1,
     title: 'Family & Kid-Friendly',
-    description: 'Consistently praised for pools, water slides, Little Birds Club, chocolate hour, and overall suitability for families with children.',
+    description: 'Extensive facilities and activities (pools, slides, Little Birds Club, chocolate hour) make it a top choice for families.',
     icon: <ShieldCheck className="h-5 w-5 text-amber-500" />,
     iconBg: 'bg-amber-100',
     highlight: 'Most mentioned strength',
@@ -30,7 +30,7 @@ const strengths = [
   {
     id: 2,
     title: 'Pool Villas',
-    description: 'Highly regarded option, often recommended.',
+    description: 'Consistently mentioned as a desirable and high-quality accommodation option.',
     icon: <Building2 className="h-5 w-5 text-blue-500" />,
     iconBg: 'bg-blue-100',
     highlight: 'Premium option',
@@ -42,7 +42,7 @@ const strengths = [
   {
     id: 3,
     title: 'Airport Proximity',
-    description: 'Convenient location near Cam Ranh airport is a frequently mentioned advantage.',
+    description: 'Major convenience factor for arrivals and departures to Cam Ranh airport.',
     icon: <MapPin className="h-5 w-5 text-green-500" />,
     iconBg: 'bg-green-100',
     recommendations: [
@@ -53,7 +53,7 @@ const strengths = [
   {
     id: 4,
     title: 'Atmosphere',
-    description: 'Quiet, secluded, and private environment appreciated by some guests.',
+    description: 'Often described as quiet and suitable for relaxation, appealing to those seeking seclusion.',
     icon: <CloudSun className="h-5 w-5 text-purple-500" />,
     iconBg: 'bg-purple-100',
     recommendations: [
@@ -67,29 +67,29 @@ const weaknesses = [
   {
     id: 1,
     title: 'Location (Distance from City)',
-    description: 'The most common concern remains the distance from Nha Trang city center, impacting guests wanting easy access to city attractions.',
+    description: 'Remains the primary drawback for guests wishing to explore Nha Trang city frequently.',
     quote: '"시내와는 거리가 있어 조용하고 한적한 분위기를 원하는 여행객에게 추천합니다."',
     translation: 'Recommended for travelers who want a quiet and secluded atmosphere due to its distance from the city.',
     icon: <MapPin className="h-5 w-5 text-red-500" />,
     iconBg: 'bg-red-100',
-    impact: 'High - 10% of guests',
+    impact: 'High - ~6% of guests',
     recommendations: [
       'Enhance shuttle services to Nha Trang city',
-      'Expand on-site activity programming',
+      'Develop more robust on-site entertainment options',
       'Strengthen partnerships with local tour operators'
     ]
   },
   {
     id: 2,
     title: 'Dining Experience',
-    description: 'Feedback points to potential improvements in breakfast quality and variety, especially compared to other resorts.',
+    description: 'Feedback indicates breakfast quality and variety could be improved, with unfavorable comparisons to other hotels mentioned.',
     quote: '"개인적으로 깜란 모벤픽 리조트의 조식보다 훨씬 더 좋았어요."',
     translation: "Personally, it [another resort's breakfast] was much better than the breakfast at Cam Ranh Movenpick Resort.",
     icon: <Star className="h-5 w-5 text-orange-500" />,
     iconBg: 'bg-orange-100',
-    impact: 'Medium - 5% of guests',
+    impact: 'Medium - ~4% of guests',
     recommendations: [
-      'Review and enhance breakfast offerings',
+      'Conduct review of breakfast offerings',
       'Add more Korean-friendly options',
       'Implement quality control for food preparation'
     ]
@@ -97,30 +97,30 @@ const weaknesses = [
   {
     id: 3,
     title: 'Room Water Quality',
-    description: 'Several guests specifically mentioned the need for shower filters, indicating potential water quality issues.',
+    description: 'Multiple guests reported needing shower filters, suggesting water quality needs assessment.',
     quote: '"모벤픽은 샤워기를 켜는순간 필터가 갈색으로 변해가는게 실시간으로 눈에 보이더라고요."',
     translation: 'At Movenpick, you could see the filter turning brown in real-time the moment you turned on the shower.',
     icon: <Droplets className="h-5 w-5 text-blue-500" />,
     iconBg: 'bg-blue-100',
-    impact: 'Medium - 3% of guests',
+    impact: 'Medium - ~3% of guests',
     recommendations: [
       'Investigate and address water quality concerns',
       'Provide complimentary shower filters',
-      'Communicate proactively about water system'
+      'Communicate proactively about water system improvements'
     ]
   },
   {
     id: 4,
     title: 'Service Speed',
-    description: 'Occasional mentions of slow buggy service.',
+    description: 'Some guests experienced delays with the internal resort transportation.',
     quote: '',
     translation: '',
     icon: <Clock className="h-5 w-5 text-slate-500" />,
     iconBg: 'bg-slate-100',
     impact: 'Low - <1% of guests',
     recommendations: [
-      'Review buggy service efficiency during peak times',
-      'Optimize scheduling for high-demand periods'
+      'Optimize buggy dispatching during peak times',
+      'Review scheduling for high-demand periods'
     ]
   }
 ];
@@ -130,7 +130,7 @@ const KeyFindings = () => {
     <div className="space-y-6">
       <Card className="border-[#6ad4e0]/30">
         <CardHeader className="bg-gradient-to-r from-[#a3f7bf]/10 to-[#6ad4e0]/10">
-          <CardTitle className="flex items-center gap-2 text-[#333] font-display">
+          <CardTitle className="flex items-center gap-2 text-[#333]">
             <ThumbsUp className="h-5 w-5 text-[#6ad4e0]" />
             Key Strengths
           </CardTitle>
@@ -174,7 +174,7 @@ const KeyFindings = () => {
 
       <Card className="border-[#6ad4e0]/30">
         <CardHeader className="bg-gradient-to-r from-[#ffd6d6]/10 to-[#ffe9e9]/10">
-          <CardTitle className="flex items-center gap-2 text-[#333] font-display">
+          <CardTitle className="flex items-center gap-2 text-[#333]">
             <ThumbsDown className="h-5 w-5 text-red-400" />
             Areas for Improvement
           </CardTitle>

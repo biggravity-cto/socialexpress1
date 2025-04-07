@@ -4,10 +4,11 @@ import { Card } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
+// Updated sentiment data to match the latest report
 const sentimentData = [
-  { name: 'Positive', value: 72, previousValue: 67, change: 5, color: '#6ad4e0' },
-  { name: 'Neutral', value: 18, previousValue: 20, change: -2, color: '#91e6c8' },
-  { name: 'Negative', value: 10, previousValue: 13, change: -3, color: '#a3f7bf' }
+  { name: 'Positive', value: 80, previousValue: 82.37, change: -2.37, color: '#6ad4e0' },
+  { name: 'Neutral', value: 5, previousValue: 6.19, change: -1.19, color: '#91e6c8' },
+  { name: 'Negative', value: 15, previousValue: 11.44, change: 3.56, color: '#a3f7bf' }
 ];
 
 const trendIcon = (change: number) => {
@@ -60,7 +61,7 @@ const MarketSentiment = () => {
               <div className="flex items-center justify-center gap-1 mt-1 text-xs">
                 {trendIcon(item.change)}
                 <span className={item.change > 0 ? "text-green-600" : item.change < 0 ? "text-red-600" : "text-gray-600"}>
-                  {item.change > 0 ? '+' : ''}{item.change}% from last month
+                  {item.change > 0 ? '+' : ''}{item.change}% from last quarter
                 </span>
               </div>
             </div>
@@ -103,7 +104,7 @@ const MarketSentiment = () => {
       </div>
 
       <div className="mt-6 text-center">
-        <p className="text-xs text-[#666] italic">Data represents sentiment analysis from 2,500+ reviews and social media mentions</p>
+        <p className="text-xs text-[#666] italic">Data represents sentiment analysis from 155 blogs and social media mentions in Q1 2025</p>
       </div>
     </Card>
   );

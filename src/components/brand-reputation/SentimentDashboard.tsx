@@ -1,23 +1,23 @@
 
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { ArrowDown, ArrowUp, Info } from 'lucide-react';
 
+// Updated sentiment data based on the new report
 const sentimentData = [
-  { name: 'Positive', value: 75, color: '#22c55e', lastQuarter: 82.37 },
-  { name: 'Negative', value: 20, color: '#ef4444', lastQuarter: 11.44 },
+  { name: 'Positive', value: 80, color: '#a3f7bf', lastQuarter: 82.37 },
+  { name: 'Negative', value: 15, color: '#ff8c8c', lastQuarter: 11.44 },
   { name: 'Neutral', value: 5, color: '#94a3b8', lastQuarter: 6.19 },
 ];
 
 const sentimentTrendData = [
-  { name: 'Positive', current: 75, previous: 82.37, change: -7.37, trend: 'down' },
-  { name: 'Negative', current: 20, previous: 11.44, change: 8.56, trend: 'up' },
+  { name: 'Positive', current: 80, previous: 82.37, change: -2.37, trend: 'down' },
+  { name: 'Negative', current: 15, previous: 11.44, change: 3.56, trend: 'up' },
   { name: 'Neutral', current: 5, previous: 6.19, change: -1.19, trend: 'down' },
 ];
 
-const COLORS = ['#22c55e', '#ef4444', '#94a3b8'];
+const COLORS = ['#a3f7bf', '#ff8c8c', '#94a3b8'];
 const RADIAN = Math.PI / 180;
 
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }: any) => {
@@ -35,50 +35,40 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 const SentimentDashboard = () => {
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-blue-50 border-blue-200">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-gradient-to-br from-[#6ad4e0]/10 to-[#91e6c8]/10 border-[#6ad4e0]/20">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-700 flex items-center justify-center gap-1">
-                7.7
-                <span className="text-base text-blue-500 font-normal">/ 10</span>
+              <div className="text-3xl font-bold text-[#1d9cc8] flex items-center justify-center gap-1">
+                7.8
+                <span className="text-base text-[#6ad4e0] font-normal">/ 10</span>
               </div>
-              <div className="text-sm font-medium text-blue-800">BSA Score</div>
-              <div className="text-xs text-blue-600 mt-1 flex items-center justify-center">
-                <ArrowDown className="h-3 w-3 mr-1" />
+              <div className="text-sm font-medium text-[#333]">BSA Score</div>
+              <div className="text-xs text-[#555] mt-1 flex items-center justify-center">
+                <ArrowDown className="h-3 w-3 mr-1 text-[#ff8c8c]" />
                 <span>From 7.9 in Q4 2024</span>
               </div>
             </div>
           </CardContent>
         </Card>
         
-        <Card className="bg-gradient-to-br from-ocean-50 to-ocean-100 border-ocean-200">
+        <Card className="bg-gradient-to-br from-[#91e6c8]/10 to-[#a3f7bf]/10 border-[#91e6c8]/20">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-ocean-700">43</div>
-              <div className="text-sm font-medium text-ocean-800">Blog Posts Analyzed</div>
-              <div className="text-xs text-ocean-600 mt-1 flex items-center justify-center">
-                <ArrowDown className="h-3 w-3 mr-1" />
+              <div className="text-3xl font-bold text-[#228b22]">155</div>
+              <div className="text-sm font-medium text-[#333]">Blog Posts Analyzed</div>
+              <div className="text-xs text-[#555] mt-1 flex items-center justify-center">
+                <ArrowDown className="h-3 w-3 mr-1 text-[#ff8c8c]" />
                 <span>Vs. 953 in Q4 2024</span>
               </div>
             </div>
           </CardContent>
         </Card>
-
-        <Card className="bg-amber-50 border-amber-200">
-          <CardContent className="pt-6">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-amber-700">Korean</div>
-              <div className="text-sm font-medium text-amber-800">Primary Audience</div>
-              <div className="text-xs text-amber-600 mt-1">Naver.com blog posts</div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Sentiment Distribution</CardTitle>
+      <Card className="border-[#6ad4e0]/20">
+        <CardHeader className="bg-gradient-to-r from-[#a3f7bf]/10 to-[#6ad4e0]/10">
+          <CardTitle className="text-[#333]">Sentiment Distribution</CardTitle>
           <CardDescription>
             Q1 2025 vs Q4 2024 Comparison
           </CardDescription>
@@ -107,8 +97,8 @@ const SentimentDashboard = () => {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="text-center text-xs text-resort-500 mt-2">
-              Based on analysis of 43 blog posts in Q1 2025
+            <div className="text-center text-xs text-[#555] mt-2">
+              Based on analysis of 155 blog posts in Q1 2025
             </div>
           </div>
           
@@ -124,16 +114,16 @@ const SentimentDashboard = () => {
                       <span className={`text-sm font-medium ${
                         (item.name === 'Positive' && item.trend === 'down') || 
                         (item.name === 'Negative' && item.trend === 'up') 
-                          ? 'text-red-600' 
-                          : 'text-green-600'
+                          ? 'text-[#ff8c8c]' 
+                          : 'text-[#a3f7bf]'
                       }`}>
                         {item.current}%
                       </span>
                       <div className={`flex items-center text-xs ${
                         (item.name === 'Positive' && item.trend === 'down') || 
                         (item.name === 'Negative' && item.trend === 'up') 
-                          ? 'text-red-500' 
-                          : 'text-green-500'
+                          ? 'text-[#ff8c8c]' 
+                          : 'text-[#a3f7bf]'
                       }`}>
                         {item.trend === 'up' ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
                         <span>{Math.abs(item.change).toFixed(2)}%</span>
@@ -144,21 +134,21 @@ const SentimentDashboard = () => {
                   <div className="flex h-2 bg-gray-100 rounded-full overflow-hidden">
                     <div 
                       className={`${
-                        item.name === 'Positive' ? 'bg-green-500' : 
-                        item.name === 'Negative' ? 'bg-red-500' : 'bg-gray-400'
+                        item.name === 'Positive' ? 'bg-[#a3f7bf]' : 
+                        item.name === 'Negative' ? 'bg-[#ff8c8c]' : 'bg-gray-400'
                       }`}
                       style={{ width: `${item.current}%` }}
                     />
                     <div 
                       className={`${
-                        item.name === 'Positive' ? 'bg-green-300' : 
-                        item.name === 'Negative' ? 'bg-red-300' : 'bg-gray-300'
+                        item.name === 'Positive' ? 'bg-[#a3f7bf]/50' : 
+                        item.name === 'Negative' ? 'bg-[#ff8c8c]/50' : 'bg-gray-300'
                       }`}
                       style={{ width: `${item.name === 'Positive' ? (item.previous - item.current) : 0}%` }}
                     />
                   </div>
                   
-                  <div className="text-xs text-resort-500">
+                  <div className="text-xs text-[#555]">
                     {item.previous}% in Q4 2024
                   </div>
                 </div>
@@ -166,9 +156,9 @@ const SentimentDashboard = () => {
               
               <div className="pt-2 mt-2 border-t border-gray-100">
                 <div className="flex items-start gap-2">
-                  <Info className="h-4 w-4 text-blue-500 mt-0.5" />
-                  <p className="text-xs text-resort-500">
-                    <span className="font-medium">Sample Size Note:</span> Q1 2025 analysis based on 43 blog posts compared to 953 posts in Q4 2024. Exercise caution when interpreting trends.
+                  <Info className="h-4 w-4 text-[#6ad4e0] mt-0.5" />
+                  <p className="text-xs text-[#555]">
+                    <span className="font-medium">Sample Size Note:</span> Q1 2025 analysis based on 155 blog posts compared to 953 posts in Q4 2024. Exercise caution when interpreting trends.
                   </p>
                 </div>
               </div>
