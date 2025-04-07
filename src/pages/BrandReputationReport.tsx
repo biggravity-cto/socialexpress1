@@ -3,14 +3,16 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Download, FileText, Info, MessageSquare } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import { Download, FileText, Info, MessageSquare, BarChart2, Lightbulb, Star } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import SentimentDashboard from '@/components/brand-reputation/SentimentDashboard';
 import DepartmentPerformance from '@/components/brand-reputation/DepartmentPerformance';
 import KeyFindings from '@/components/brand-reputation/KeyFindings';
 import TrendAnalysis from '@/components/brand-reputation/TrendAnalysis';
 import ReviewsHighlights from '@/components/brand-reputation/ReviewsHighlights';
 import RecommendationsSection from '@/components/brand-reputation/RecommendationsSection';
+import StrategicRecommendations from '@/components/brand-reputation/StrategicRecommendations';
+import MethodologySection from '@/components/brand-reputation/MethodologySection';
 
 const BrandReputationReport = () => {
   const [viewingFullReport, setViewingFullReport] = useState(false);
@@ -26,7 +28,7 @@ const BrandReputationReport = () => {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl md:text-3xl font-bold text-resort-800">Brand Reputation Report</h1>
-            <span className="bg-ocean-100 text-ocean-800 text-xs px-2 py-1 rounded-full font-medium">
+            <span className="bg-ocean-100 text-ocean-800 text-xs px-2.5 py-1 rounded-full font-medium">
               Q1 2025
             </span>
           </div>
@@ -38,9 +40,17 @@ const BrandReputationReport = () => {
             <Download className="h-4 w-4" />
             Export PDF
           </Button>
-          <Button size="sm" variant="default" className="bg-ocean-600 hover:bg-ocean-700 flex items-center gap-2">
+          <Button 
+            size="sm" 
+            variant={viewingFullReport ? "secondary" : "default"}
+            className={viewingFullReport 
+              ? "bg-gray-200 hover:bg-gray-300 text-gray-800" 
+              : "bg-ocean-600 hover:bg-ocean-700 flex items-center gap-2"
+            }
+            onClick={() => setViewingFullReport(!viewingFullReport)}
+          >
             <FileText className="h-4 w-4" />
-            Full Report
+            {viewingFullReport ? 'Compact View' : 'Full Report'}
           </Button>
         </div>
       </div>
@@ -83,41 +93,91 @@ const BrandReputationReport = () => {
 
       <Tabs defaultValue="dashboard">
         <TabsList className="mb-4">
-          <TabsTrigger value="dashboard">Overview</TabsTrigger>
-          <TabsTrigger value="sentiment">Sentiment Analysis</TabsTrigger>
-          <TabsTrigger value="department">Department Performance</TabsTrigger>
-          <TabsTrigger value="findings">Key Findings</TabsTrigger>
-          <TabsTrigger value="trends">Trend Analysis</TabsTrigger>
-          <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
+          <TabsTrigger value="dashboard" className="flex items-center gap-1.5">
+            <BarChart2 className="h-4 w-4" /> Overview
+          </TabsTrigger>
+          <TabsTrigger value="findings" className="flex items-center gap-1.5">
+            <Star className="h-4 w-4" /> Key Findings
+          </TabsTrigger>
+          <TabsTrigger value="department" className="flex items-center gap-1.5">
+            <BarChart2 className="h-4 w-4" /> Department Performance
+          </TabsTrigger>
+          <TabsTrigger value="trends" className="flex items-center gap-1.5">
+            <BarChart2 className="h-4 w-4" /> Trend Analysis
+          </TabsTrigger>
+          <TabsTrigger value="reviews" className="flex items-center gap-1.5">
+            <MessageSquare className="h-4 w-4" /> Key Reviews
+          </TabsTrigger>
+          <TabsTrigger value="recommendations" className="flex items-center gap-1.5">
+            <Lightbulb className="h-4 w-4" /> Recommendations
+          </TabsTrigger>
+          {viewingFullReport && (
+            <TabsTrigger value="methodology" className="flex items-center gap-1.5">
+              <Info className="h-4 w-4" /> Methodology
+            </TabsTrigger>
+          )}
         </TabsList>
         
         <TabsContent value="dashboard">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="space-y-6">
             <SentimentDashboard />
-            <ReviewsHighlights />
+            {viewingFullReport ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ReviewsHighlights />
+                <DepartmentPerformance />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <ReviewsHighlights />
+              </div>
+            )}
           </div>
-        </TabsContent>
-        
-        <TabsContent value="sentiment">
-          <SentimentDashboard />
-        </TabsContent>
-        
-        <TabsContent value="department">
-          <DepartmentPerformance />
         </TabsContent>
         
         <TabsContent value="findings">
           <KeyFindings />
         </TabsContent>
         
+        <TabsContent value="department">
+          <DepartmentPerformance />
+        </TabsContent>
+        
         <TabsContent value="trends">
           <TrendAnalysis />
         </TabsContent>
         
-        <TabsContent value="recommendations">
-          <RecommendationsSection />
+        <TabsContent value="reviews">
+          <ReviewsHighlights />
         </TabsContent>
+        
+        <TabsContent value="recommendations">
+          <div className="space-y-6">
+            {viewingFullReport ? <RecommendationsSection /> : null}
+            <StrategicRecommendations />
+          </div>
+        </TabsContent>
+        
+        {viewingFullReport && (
+          <TabsContent value="methodology">
+            <MethodologySection />
+          </TabsContent>
+        )}
       </Tabs>
+
+      {viewingFullReport && (
+        <Card className="bg-blue-50 border-blue-200 mt-6">
+          <CardContent className="p-4">
+            <div className="flex items-start gap-3">
+              <Info className="h-5 w-5 text-blue-600 mt-0.5" />
+              <div>
+                <p className="text-sm text-blue-800">
+                  <span className="font-medium">Report Overview:</span> This report analyzes online guest sentiment for Movenpick Resort Cam Ranh during Q1 2025 (January 1 - March 31, 2025). The analysis is based on 43 relevant blog posts identified from Naver.com. The overall sentiment remains positive, though the significantly smaller sample size compared to Q4 2024 (43 posts vs. 953 posts) warrants caution when interpreting trends. Key areas like location convenience and dining experience continue to be focal points for guest feedback, alongside recurring positive mentions of family-friendly amenities and airport proximity.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </motion.div>
   );
 };
