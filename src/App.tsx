@@ -21,6 +21,7 @@ import ForgotPassword from '@/pages/ForgotPassword'
 import { Toaster } from '@/components/ui/toaster'
 import { Navigate } from 'react-router-dom'
 import BrandReputationReport from '@/pages/BrandReputationReport'
+import BSADashboard from '@/pages/BSADashboard'
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/brand-intelligence" element={<BrandIntelligence />} />
           <Route path="/market-intelligence" element={<MarketIntelligence />} />
           <Route path="/BRR-Q125-MCR" element={<BrandReputationReport />} />
+          <Route path="/bsa-dashboard" element={<BSADashboard />} />
           
           {/* Standalone - Unified Social Inbox */}
           <Route path="/messages" element={<Messages />} />

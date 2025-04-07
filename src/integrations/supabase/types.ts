@@ -50,6 +50,198 @@ export type Database = {
           },
         ]
       }
+      bsa_clients: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      bsa_data_sources: {
+        Row: {
+          client_id: string
+          created_at: string
+          id: string
+          name: string
+          source_type: string
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          id?: string
+          name: string
+          source_type: string
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          id?: string
+          name?: string
+          source_type?: string
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bsa_data_sources_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "bsa_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bsa_files: {
+        Row: {
+          client_id: string
+          created_at: string
+          created_by: string | null
+          file_path: string
+          file_size: number
+          file_type: string
+          filename: string
+          id: string
+          quarter: number | null
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          file_path: string
+          file_size: number
+          file_type: string
+          filename: string
+          id?: string
+          quarter?: number | null
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          file_path?: string
+          file_size?: number
+          file_type?: string
+          filename?: string
+          id?: string
+          quarter?: number | null
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bsa_files_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "bsa_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bsa_reports: {
+        Row: {
+          bsa_score: number | null
+          client_id: string
+          created_at: string
+          created_by: string | null
+          data: Json
+          id: string
+          quarter: number
+          title: string
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          bsa_score?: number | null
+          client_id: string
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          id?: string
+          quarter: number
+          title: string
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          bsa_score?: number | null
+          client_id?: string
+          created_at?: string
+          created_by?: string | null
+          data?: Json
+          id?: string
+          quarter?: number
+          title?: string
+          updated_at?: string
+          year?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bsa_reports_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "bsa_clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      bsa_user_settings: {
+        Row: {
+          anthropic_api_key: string | null
+          created_at: string
+          deepseek_api_key: string | null
+          default_llm: string | null
+          gemini_api_key: string | null
+          id: string
+          openai_api_key: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          anthropic_api_key?: string | null
+          created_at?: string
+          deepseek_api_key?: string | null
+          default_llm?: string | null
+          gemini_api_key?: string | null
+          id?: string
+          openai_api_key?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          anthropic_api_key?: string | null
+          created_at?: string
+          deepseek_api_key?: string | null
+          default_llm?: string | null
+          gemini_api_key?: string | null
+          id?: string
+          openai_api_key?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       campaigns: {
         Row: {
           color: string

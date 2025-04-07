@@ -1,1 +1,5 @@
+
 project_id = "tqsdbluknhotwkpjuvvp"
+
+[functions.generate-bsa-report]
+verify_jwt = false
