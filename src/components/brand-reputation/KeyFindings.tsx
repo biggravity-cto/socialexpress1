@@ -58,7 +58,7 @@ const weaknesses = [
     title: 'Dining Experience',
     description: 'Feedback points to potential improvements in breakfast quality and variety, especially compared to other resorts.',
     quote: '"개인적으로 깜란 모벤픽 리조트의 조식보다 훨씬 더 좋았어요."',
-    translation: 'Personally, it [another resort's breakfast] was much better than the breakfast at Cam Ranh Movenpick Resort.',
+    translation: "Personally, it [another resort's breakfast] was much better than the breakfast at Cam Ranh Movenpick Resort.",
     icon: <Star className="h-5 w-5 text-orange-500" />,
     iconBg: 'bg-orange-100'
   },
