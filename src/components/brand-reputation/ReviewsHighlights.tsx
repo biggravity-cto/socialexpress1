@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { MessageSquare, ThumbsUp, ThumbsDown, Calendar, User } from 'lucide-react';
@@ -30,8 +29,8 @@ const reviewsData = [
   {
     id: 3,
     type: 'critical',
-    author: '여행자',
-    date: 'January 15, 2025',
+    author: '먹고자',
+    date: 'February 27, 2025',
     content: '모벤픽은 샤워기를 켜는순간 필터가 갈색으로 변해가는게 실시간으로 눈에 보이더라고요.',
     translation: 'At Movenpick, you could see the filter turning brown in real-time the moment you turned on the shower.',
     impact: 'Medium',
@@ -41,13 +40,13 @@ const reviewsData = [
   {
     id: 4,
     type: 'positive',
-    author: '가족여행객',
-    date: 'March 22, 2025',
-    content: '키즈클럽과 수영장이 정말 좋았어요. 아이들이 정말 즐거워했고 우리도 휴식을 취할 수 있었습니다.',
-    translation: 'The kids club and swimming pool were really good. The children really enjoyed it and we were able to relax too.',
+    author: '준언서',
+    date: 'March 10, 2025',
+    content: '아이 2명과 함께 모벤픽 깜란 리조트에서 3박 4일간 숙박을 했답니다... 아이들이 잘 먹는 음식, 맛있었던 음식 등 나름 후기를 적어보려...',
+    translation: 'We stayed at Movenpick Cam Ranh Resort for 3 nights and 4 days with our 2 children... I tried to write a review including foods the kids ate well and delicious foods...',
     impact: 'High',
     sentiment: 'Very positive',
-    key_themes: ['Kids facilities', 'Pool', 'Family experience']
+    key_themes: ['Kids facilities', 'Family experience', 'Dining']
   }
 ];
 

@@ -18,33 +18,33 @@ export type DepartmentDataType = {
 export const departmentData: DepartmentDataType[] = [
   { 
     name: 'Location', 
-    q1Negative: 6, 
+    q1Negative: 10, 
     q4Negative: 3.88,
-    diffPercent: 55,
+    diffPercent: 158,
     trend: 'increase',
     keyThemes: 'Distance from Nha Trang city center',
     priority: 'high',
-    impact: '~6% of guests',
+    impact: '~10% of guests',
     color: '#6ad4e0',
     recommendations: [
-      'Continue enhancing and promoting shuttle services to Nha Trang city',
+      'Continue enhancing shuttle services to Nha Trang city (frequency, reliability)',
       'Develop more robust and varied on-site entertainment and activity schedules',
       'Explore partnerships with local tour operators for easy excursion booking'
     ]
   },
   { 
     name: 'Food & Beverage', 
-    q1Negative: 4, 
+    q1Negative: 5, 
     q4Negative: 2.94,
-    diffPercent: 36,
+    diffPercent: 70,
     trend: 'increase',
     keyThemes: 'Breakfast quality/variety, comparison to other hotels',
     priority: 'medium',
-    impact: '~4% of guests',
+    impact: '~5% of guests',
     color: '#91e6c8',
     recommendations: [
-      'Conduct a thorough review of breakfast offerings',
-      'Focus on quality, variety, and inclusion of popular Korean dishes',
+      'Review and enhance breakfast offerings, focusing on quality and potentially adding more Korean-friendly options',
+      'Consider introducing rotating or seasonal menu items for variety',
       'Implement stricter quality control measures in food preparation'
     ]
   },
@@ -54,7 +54,7 @@ export const departmentData: DepartmentDataType[] = [
     q4Negative: 1.89,
     diffPercent: 59,
     trend: 'increase',
-    keyThemes: 'Water quality (filters needed), AC/TV issues',
+    keyThemes: 'Water quality (filters needed), AC issues',
     priority: 'medium',
     impact: '~3% of guests',
     color: '#a3f7bf',

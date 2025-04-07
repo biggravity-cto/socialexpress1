@@ -58,7 +58,7 @@ const BrandReputationReport = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <Card className="p-4 bg-gradient-to-br from-[#6ad4e0]/10 to-[#91e6c8]/10 border-[#6ad4e0]/20">
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#1d9cc8]">7.8</div>
+            <div className="text-3xl font-bold text-[#1d9cc8]">7.7</div>
             <div className="text-sm font-medium text-[#333]">BSA Score</div>
             <div className="text-xs text-[#555] mt-1">7.9 in Q4 2024</div>
           </div>
@@ -66,7 +66,7 @@ const BrandReputationReport = () => {
         
         <Card className="p-4 bg-gradient-to-br from-[#a3f7bf]/10 to-[#91e6c8]/10 border-[#a3f7bf]/20">
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#228b22]">80%</div>
+            <div className="text-3xl font-bold text-[#228b22]">75%</div>
             <div className="text-sm font-medium text-[#333]">Positive Sentiment</div>
             <div className="text-xs text-[#555] mt-1">82.37% in Q4 2024</div>
           </div>
@@ -74,7 +74,7 @@ const BrandReputationReport = () => {
         
         <Card className="p-4 bg-gradient-to-br from-[#ffd6d6]/10 to-[#ffe9e9]/10 border-[#ffd6d6]/20">
           <div className="text-center">
-            <div className="text-3xl font-bold text-[#ef4444]">15%</div>
+            <div className="text-3xl font-bold text-[#ef4444]">20%</div>
             <div className="text-sm font-medium text-[#333]">Negative Sentiment</div>
             <div className="text-xs text-[#555] mt-1">11.44% in Q4 2024</div>
           </div>
@@ -153,21 +153,6 @@ const BrandReputationReport = () => {
           </TabsContent>
         )}
       </Tabs>
-
-      {viewingFullReport && (
-        <Card className="bg-[#6ad4e0]/10 border-[#6ad4e0]/20 mt-6">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              <Info className="h-5 w-5 text-[#1d9cc8] mt-0.5" />
-              <div>
-                <p className="text-sm text-[#333]">
-                  <span className="font-medium">Report Overview:</span> This report analyzes online guest sentiment for Movenpick Resort Cam Ranh during Q1 2025 (January 1 - March 31, 2025). The analysis is based on 155 relevant blog posts identified from Naver.com. The overall sentiment remains predominantly positive (80%), aligning closely with Q4 2024 levels (82.37%). The resort continues to be highly praised for its family-friendly amenities, pool villas, and airport proximity.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </motion.div>
   );
 };

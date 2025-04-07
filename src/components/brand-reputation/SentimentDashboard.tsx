@@ -6,14 +6,14 @@ import { ArrowDown, ArrowUp, Info } from 'lucide-react';
 
 // Updated sentiment data based on the new report
 const sentimentData = [
-  { name: 'Positive', value: 80, color: '#a3f7bf', lastQuarter: 82.37 },
-  { name: 'Negative', value: 15, color: '#ff8c8c', lastQuarter: 11.44 },
+  { name: 'Positive', value: 75, color: '#a3f7bf', lastQuarter: 82.37 },
+  { name: 'Negative', value: 20, color: '#ff8c8c', lastQuarter: 11.44 },
   { name: 'Neutral', value: 5, color: '#94a3b8', lastQuarter: 6.19 },
 ];
 
 const sentimentTrendData = [
-  { name: 'Positive', current: 80, previous: 82.37, change: -2.37, trend: 'down' },
-  { name: 'Negative', current: 15, previous: 11.44, change: 3.56, trend: 'up' },
+  { name: 'Positive', current: 75, previous: 82.37, change: -7.37, trend: 'down' },
+  { name: 'Negative', current: 20, previous: 11.44, change: 8.56, trend: 'up' },
   { name: 'Neutral', current: 5, previous: 6.19, change: -1.19, trend: 'down' },
 ];
 
@@ -40,7 +40,7 @@ const SentimentDashboard = () => {
           <CardContent className="pt-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-[#1d9cc8] flex items-center justify-center gap-1">
-                7.8
+                7.7
                 <span className="text-base text-[#6ad4e0] font-normal">/ 10</span>
               </div>
               <div className="text-sm font-medium text-[#333]">BSA Score</div>
@@ -55,7 +55,7 @@ const SentimentDashboard = () => {
         <Card className="bg-gradient-to-br from-[#91e6c8]/10 to-[#a3f7bf]/10 border-[#91e6c8]/20">
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="text-3xl font-bold text-[#228b22]">155</div>
+              <div className="text-3xl font-bold text-[#228b22]">43</div>
               <div className="text-sm font-medium text-[#333]">Blog Posts Analyzed</div>
               <div className="text-xs text-[#555] mt-1 flex items-center justify-center">
                 <ArrowDown className="h-3 w-3 mr-1 text-[#ff8c8c]" />
@@ -98,7 +98,7 @@ const SentimentDashboard = () => {
               </ResponsiveContainer>
             </div>
             <div className="text-center text-xs text-[#555] mt-2">
-              Based on analysis of 155 blog posts in Q1 2025
+              Based on analysis of 43 blog posts in Q1 2025
             </div>
           </div>
           
@@ -158,7 +158,7 @@ const SentimentDashboard = () => {
                 <div className="flex items-start gap-2">
                   <Info className="h-4 w-4 text-[#6ad4e0] mt-0.5" />
                   <p className="text-xs text-[#555]">
-                    <span className="font-medium">Sample Size Note:</span> Q1 2025 analysis based on 155 blog posts compared to 953 posts in Q4 2024. Exercise caution when interpreting trends.
+                    <span className="font-medium">Sample Size Note:</span> Q1 2025 analysis based on 43 blog posts compared to 953 posts in Q4 2024. Exercise caution when interpreting trends.
                   </p>
                 </div>
               </div>
