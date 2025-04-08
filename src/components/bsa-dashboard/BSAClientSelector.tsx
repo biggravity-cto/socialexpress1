@@ -9,9 +9,10 @@ import {
   SelectTrigger, 
   SelectValue 
 } from '@/components/ui/select';
+import { BSAClient } from '@/types/database.types';
 
 interface BSAClientSelectorProps {
-  clients: any[];
+  clients: BSAClient[];
   selectedClientId: string | null;
   onClientChange: (clientId: string) => void;
   isLoading: boolean;

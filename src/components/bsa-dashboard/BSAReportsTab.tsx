@@ -1,22 +1,26 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Check, Download, Eye, FileText, Trash2 } from 'lucide-react';
 import BSAReportViewDialog from './BSAReportViewDialog';
 import BSAReportDeleteConfirmDialog from './BSAReportDeleteConfirmDialog';
+import { bsaReports } from '@/utils/supabaseHelpers';
+import { BSAReport } from '@/types/database.types';
 
-const BSAReportsTab = ({ clientId }) => {
+interface BSAReportsTabProps {
+  clientId: string | undefined;
+}
+
+const BSAReportsTab: React.FC<BSAReportsTabProps> = ({ clientId }) => {
   const { toast } = useToast();
-  const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState<BSAReport[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeReport, setActiveReport] = useState(null);
+  const [activeReport, setActiveReport] = useState<BSAReport | null>(null);
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedReportForDelete, setSelectedReportForDelete] = useState(null);
+  const [selectedReportForDelete, setSelectedReportForDelete] = useState<BSAReport | null>(null);
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -28,12 +32,7 @@ const BSAReportsTab = ({ clientId }) => {
 
       setIsLoading(true);
       try {
-        const { data, error } = await supabase
-          .from('bsa_reports')
-          .select('*')
-          .eq('client_id', clientId)
-          .order('year', { ascending: false })
-          .order('quarter', { ascending: false });
+        const { data, error } = await bsaReports.getByClientId(clientId);
 
         if (error) throw error;
         setReports(data || []);
@@ -52,12 +51,12 @@ const BSAReportsTab = ({ clientId }) => {
     fetchReports();
   }, [clientId, toast]);
 
-  const handleViewReport = (report) => {
+  const handleViewReport = (report: BSAReport) => {
     setActiveReport(report);
     setIsViewDialogOpen(true);
   };
 
-  const handleDeleteReport = (report) => {
+  const handleDeleteReport = (report: BSAReport) => {
     setSelectedReportForDelete(report);
     setIsDeleteDialogOpen(true);
   };
@@ -66,10 +65,7 @@ const BSAReportsTab = ({ clientId }) => {
     if (!selectedReportForDelete) return;
     
     try {
-      const { error } = await supabase
-        .from('bsa_reports')
-        .delete()
-        .eq('id', selectedReportForDelete.id);
+      const { error } = await bsaReports.delete(selectedReportForDelete.id);
 
       if (error) throw error;
 
@@ -78,7 +74,7 @@ const BSAReportsTab = ({ clientId }) => {
         title: 'Report deleted',
         description: 'The report has been successfully deleted.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting report:', error);
       toast({
         title: 'Error',
@@ -91,7 +87,7 @@ const BSAReportsTab = ({ clientId }) => {
     }
   };
 
-  const downloadReport = (report, format = 'json') => {
+  const downloadReport = (report: BSAReport, format = 'json') => {
     try {
       let content;
       let filename;
@@ -101,21 +97,14 @@ const BSAReportsTab = ({ clientId }) => {
         filename = `${report.title.replace(/\s+/g, '_')}_Q${report.quarter}_${report.year}.json`;
       } else {
         // Convert JSON to plain text format
+        const reportData = report.data as { report?: string };
         content = `BSA Report: ${report.title}\n`;
         content += `Quarter: Q${report.quarter} ${report.year}\n`;
         content += `BSA Score: ${report.bsa_score}\n\n`;
         
-        // Add other report sections based on your data structure
-        if (report.data.summary) content += `Summary:\n${report.data.summary}\n\n`;
-        if (report.data.sentiment) {
-          content += `Sentiment Distribution:\n`;
-          for (const [key, value] of Object.entries(report.data.sentiment)) {
-            content += `${key}: ${value}\n`;
-          }
-          content += '\n';
-        }
+        // Add report content
+        if (reportData.report) content += reportData.report;
         
-        // Add more sections as needed based on your report structure
         filename = `${report.title.replace(/\s+/g, '_')}_Q${report.quarter}_${report.year}.txt`;
       }
       

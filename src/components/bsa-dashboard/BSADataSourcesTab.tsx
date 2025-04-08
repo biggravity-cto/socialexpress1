@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,10 +8,16 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { PlusCircle, Database, Link, Trash2, Globe } from 'lucide-react';
+import { bsaDataSources } from '@/utils/supabaseHelpers';
+import { BSADataSource } from '@/types/database.types';
 
-const BSADataSourcesTab = ({ clientId }) => {
+interface BSADataSourcesTabProps {
+  clientId: string | undefined;
+}
+
+const BSADataSourcesTab: React.FC<BSADataSourcesTabProps> = ({ clientId }) => {
   const { toast } = useToast();
-  const [dataSources, setDataSources] = useState([]);
+  const [dataSources, setDataSources] = useState<BSADataSource[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [newSource, setNewSource] = useState({ name: '', source_type: 'file', source_url: '' });
   const [isAddingSource, setIsAddingSource] = useState(false);
@@ -27,11 +32,7 @@ const BSADataSourcesTab = ({ clientId }) => {
 
       setIsLoading(true);
       try {
-        const { data, error } = await supabase
-          .from('bsa_data_sources')
-          .select('*')
-          .eq('client_id', clientId)
-          .order('name');
+        const { data, error } = await bsaDataSources.getByClientId(clientId);
 
         if (error) throw error;
         setDataSources(data || []);
@@ -50,16 +51,16 @@ const BSADataSourcesTab = ({ clientId }) => {
     fetchDataSources();
   }, [clientId, toast]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setNewSource((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleTypeChange = (value) => {
+  const handleTypeChange = (value: string) => {
     setNewSource((prev) => ({ ...prev, source_type: value }));
   };
 
-  const handleAddSource = async (e) => {
+  const handleAddSource = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!clientId) return;
 
@@ -74,25 +75,25 @@ const BSADataSourcesTab = ({ clientId }) => {
 
     setIsAddingSource(true);
     try {
-      const { error, data } = await supabase
-        .from('bsa_data_sources')
-        .insert({
-          client_id: clientId,
-          name: newSource.name,
-          source_type: newSource.source_type,
-          source_url: newSource.source_url || null,
-        })
-        .select();
+      const { data, error } = await bsaDataSources.add({
+        client_id: clientId,
+        name: newSource.name,
+        source_type: newSource.source_type,
+        source_url: newSource.source_url || null,
+      });
 
       if (error) throw error;
 
-      setDataSources([...dataSources, data[0]]);
+      if (data && data.length > 0) {
+        setDataSources([...dataSources, data[0]]);
+      }
+      
       setNewSource({ name: '', source_type: 'file', source_url: '' });
       toast({
         title: 'Data source added',
         description: 'The data source has been successfully added.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding data source:', error);
       toast({
         title: 'Error',
@@ -104,12 +105,9 @@ const BSADataSourcesTab = ({ clientId }) => {
     }
   };
 
-  const handleDeleteSource = async (sourceId) => {
+  const handleDeleteSource = async (sourceId: string) => {
     try {
-      const { error } = await supabase
-        .from('bsa_data_sources')
-        .delete()
-        .eq('id', sourceId);
+      const { error } = await bsaDataSources.delete(sourceId);
 
       if (error) throw error;
 
@@ -118,7 +116,7 @@ const BSADataSourcesTab = ({ clientId }) => {
         title: 'Data source deleted',
         description: 'The data source has been successfully deleted.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting data source:', error);
       toast({
         title: 'Error',
@@ -140,7 +138,7 @@ const BSADataSourcesTab = ({ clientId }) => {
     );
   }
 
-  const getSourceTypeIcon = (type) => {
+  const getSourceTypeIcon = (type: string) => {
     switch (type) {
       case 'file':
         return <Database className="h-4 w-4" />;

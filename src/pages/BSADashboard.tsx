@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import BSAReportsTab from '@/components/bsa-dashboard/BSAReportsTab';
@@ -11,13 +10,15 @@ import BSADataSourcesTab from '@/components/bsa-dashboard/BSADataSourcesTab';
 import BSASettingsTab from '@/components/bsa-dashboard/BSASettingsTab';
 import BSAClientSelector from '@/components/bsa-dashboard/BSAClientSelector';
 import BSAGenerateReportDialog from '@/components/bsa-dashboard/BSAGenerateReportDialog';
+import { bsaClients } from '@/utils/supabaseHelpers';
+import { BSAClient } from '@/types/database.types';
 
 const BSADashboard = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('reports');
-  const [clients, setClients] = useState([]);
-  const [selectedClient, setSelectedClient] = useState(null);
+  const [clients, setClients] = useState<BSAClient[]>([]);
+  const [selectedClient, setSelectedClient] = useState<BSAClient | null>(null);
   const [isGenerateDialogOpen, setIsGenerateDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -25,18 +26,18 @@ const BSADashboard = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const { data, error } = await supabase
-          .from('bsa_clients')
-          .select('*')
-          .order('name');
+        setIsLoading(true);
+        const { data, error } = await bsaClients.getAll();
 
         if (error) {
           throw error;
         }
 
-        setClients(data || []);
         if (data && data.length > 0) {
+          setClients(data);
           setSelectedClient(data[0]);
+        } else {
+          setClients([]);
         }
       } catch (error) {
         console.error('Error fetching clients:', error);
@@ -58,9 +59,9 @@ const BSADashboard = () => {
   }, [user, toast]);
 
   // Handle client change
-  const handleClientChange = (clientId) => {
+  const handleClientChange = (clientId: string) => {
     const client = clients.find(c => c.id === clientId);
-    setSelectedClient(client);
+    setSelectedClient(client || null);
   };
 
   return (
@@ -79,7 +80,7 @@ const BSADashboard = () => {
         <div className="flex items-center gap-3">
           <BSAClientSelector 
             clients={clients} 
-            selectedClientId={selectedClient?.id} 
+            selectedClientId={selectedClient?.id || null} 
             onClientChange={handleClientChange}
             isLoading={isLoading}
           />

@@ -11,12 +11,19 @@ import {
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 
+interface BSAReportDeleteConfirmDialogProps {
+  isOpen: boolean; 
+  onOpenChange: (open: boolean) => void; 
+  onConfirm: () => void; 
+  reportTitle: string | null | undefined;
+}
+
 const BSAReportDeleteConfirmDialog = ({ 
   isOpen, 
   onOpenChange, 
   onConfirm, 
   reportTitle 
-}) => {
+}: BSAReportDeleteConfirmDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent>

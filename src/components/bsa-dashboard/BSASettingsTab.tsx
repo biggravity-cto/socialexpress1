@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Eye, EyeOff, Save, Key } from 'lucide-react';
+import { bsaUserSettings } from '@/utils/supabaseHelpers';
+import { BSAUserSettings } from '@/types/database.types';
 
 const BSASettingsTab = () => {
   const { toast } = useToast();
@@ -19,7 +20,7 @@ const BSASettingsTab = () => {
   const [showAnthropic, setShowAnthropic] = useState(false);
   const [showGemini, setShowGemini] = useState(false);
   const [showDeepseek, setShowDeepseek] = useState(false);
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<Partial<BSAUserSettings>>({
     openai_api_key: '',
     anthropic_api_key: '',
     gemini_api_key: '',
@@ -36,11 +37,7 @@ const BSASettingsTab = () => {
 
       setIsLoading(true);
       try {
-        const { data, error } = await supabase
-          .from('bsa_user_settings')
-          .select('*')
-          .eq('user_id', user.id)
-          .maybeSingle();
+        const { data, error } = await bsaUserSettings.getByUserId(user.id);
 
         if (error && error.code !== 'PGRST116') throw error;
 
@@ -68,7 +65,7 @@ const BSASettingsTab = () => {
     fetchSettings();
   }, [user, toast]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSettings((prev) => ({ ...prev, [name]: value }));
   };
@@ -78,45 +75,14 @@ const BSASettingsTab = () => {
 
     setIsSaving(true);
     try {
-      // Check if settings row exists
-      const { data: existingSettings, error: fetchError } = await supabase
-        .from('bsa_user_settings')
-        .select('id')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (fetchError && fetchError.code !== 'PGRST116') throw fetchError;
-
-      let error;
-      if (existingSettings) {
-        // Update existing settings
-        const { error: updateError } = await supabase
-          .from('bsa_user_settings')
-          .update({
-            openai_api_key: settings.openai_api_key,
-            anthropic_api_key: settings.anthropic_api_key,
-            gemini_api_key: settings.gemini_api_key,
-            deepseek_api_key: settings.deepseek_api_key,
-            default_llm: settings.default_llm,
-          })
-          .eq('user_id', user.id);
-        
-        error = updateError;
-      } else {
-        // Insert new settings
-        const { error: insertError } = await supabase
-          .from('bsa_user_settings')
-          .insert({
-            user_id: user.id,
-            openai_api_key: settings.openai_api_key,
-            anthropic_api_key: settings.anthropic_api_key,
-            gemini_api_key: settings.gemini_api_key,
-            deepseek_api_key: settings.deepseek_api_key,
-            default_llm: settings.default_llm,
-          });
-        
-        error = insertError;
-      }
+      const { error } = await bsaUserSettings.upsert({
+        user_id: user.id,
+        openai_api_key: settings.openai_api_key || null,
+        anthropic_api_key: settings.anthropic_api_key || null,
+        gemini_api_key: settings.gemini_api_key || null,
+        deepseek_api_key: settings.deepseek_api_key || null,
+        default_llm: settings.default_llm || 'openai',
+      });
 
       if (error) throw error;
 
@@ -124,7 +90,7 @@ const BSASettingsTab = () => {
         title: 'Settings saved',
         description: 'Your settings have been successfully saved.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving settings:', error);
       toast({
         title: 'Error',
@@ -157,7 +123,7 @@ const BSASettingsTab = () => {
           <div>
             <Label htmlFor="default_llm">Default LLM Provider</Label>
             <Select
-              value={settings.default_llm}
+              value={settings.default_llm || 'openai'}
               onValueChange={(value) => setSettings((prev) => ({ ...prev, default_llm: value }))}
               disabled={isSaving}
             >
@@ -185,7 +151,7 @@ const BSASettingsTab = () => {
                 id="openai_api_key"
                 name="openai_api_key"
                 type={showOpenAI ? "text" : "password"}
-                value={settings.openai_api_key}
+                value={settings.openai_api_key || ''}
                 onChange={handleInputChange}
                 placeholder="Enter your OpenAI API key"
                 className="w-full md:w-[400px] pr-10"
@@ -215,7 +181,7 @@ const BSASettingsTab = () => {
                 id="anthropic_api_key"
                 name="anthropic_api_key"
                 type={showAnthropic ? "text" : "password"}
-                value={settings.anthropic_api_key}
+                value={settings.anthropic_api_key || ''}
                 onChange={handleInputChange}
                 placeholder="Enter your Anthropic API key"
                 className="w-full md:w-[400px] pr-10"
@@ -245,7 +211,7 @@ const BSASettingsTab = () => {
                 id="gemini_api_key"
                 name="gemini_api_key"
                 type={showGemini ? "text" : "password"}
-                value={settings.gemini_api_key}
+                value={settings.gemini_api_key || ''}
                 onChange={handleInputChange}
                 placeholder="Enter your Google AI Studio API key"
                 className="w-full md:w-[400px] pr-10"
@@ -275,7 +241,7 @@ const BSASettingsTab = () => {
                 id="deepseek_api_key"
                 name="deepseek_api_key"
                 type={showDeepseek ? "text" : "password"}
-                value={settings.deepseek_api_key}
+                value={settings.deepseek_api_key || ''}
                 onChange={handleInputChange}
                 placeholder="Enter your DeepSeek API key"
                 className="w-full md:w-[400px] pr-10"

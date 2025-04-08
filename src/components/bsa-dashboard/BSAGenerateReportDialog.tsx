@@ -17,16 +17,24 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
+import { bsaUserSettings, bsaFiles, bsaDataSources, bsaReports } from '@/utils/supabaseHelpers';
+import { BSAClient, BSAFile, BSADataSource, BSAUserSettings } from '@/types/database.types';
 
-const BSAGenerateReportDialog = ({ isOpen, onOpenChange, client }) => {
+interface BSAGenerateReportDialogProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  client: BSAClient | null;
+}
+
+const BSAGenerateReportDialog: React.FC<BSAGenerateReportDialogProps> = ({ isOpen, onOpenChange, client }) => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [isGenerating, setIsGenerating] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [dataSources, setDataSources] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [files, setFiles] = useState<BSAFile[]>([]);
+  const [dataSources, setDataSources] = useState<BSADataSource[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
   const [selectedDataSource, setSelectedDataSource] = useState('');
-  const [settings, setSettings] = useState(null);
+  const [settings, setSettings] = useState<BSAUserSettings | null>(null);
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [quarter, setQuarter] = useState(
     Math.ceil((new Date().getMonth() + 1) / 3).toString()
@@ -61,11 +69,7 @@ const BSAGenerateReportDialog = ({ isOpen, onOpenChange, client }) => {
     if (!user) return;
     
     try {
-      const { data, error } = await supabase
-        .from('bsa_user_settings')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
+      const { data, error } = await bsaUserSettings.getByUserId(user.id);
 
       if (error && error.code !== 'PGRST116') throw error;
       setSettings(data);
@@ -78,11 +82,7 @@ const BSAGenerateReportDialog = ({ isOpen, onOpenChange, client }) => {
     if (!client) return;
     
     try {
-      const { data, error } = await supabase
-        .from('bsa_files')
-        .select('*')
-        .eq('client_id', client.id)
-        .order('created_at', { ascending: false });
+      const { data, error } = await bsaFiles.getByClientId(client.id);
 
       if (error) throw error;
       setFiles(data || []);
@@ -95,11 +95,7 @@ const BSAGenerateReportDialog = ({ isOpen, onOpenChange, client }) => {
     if (!client) return;
     
     try {
-      const { data, error } = await supabase
-        .from('bsa_data_sources')
-        .select('*')
-        .eq('client_id', client.id)
-        .order('name');
+      const { data, error } = await bsaDataSources.getByClientId(client.id);
 
       if (error) throw error;
       setDataSources(data || []);
@@ -108,7 +104,7 @@ const BSAGenerateReportDialog = ({ isOpen, onOpenChange, client }) => {
     }
   };
 
-  const handleFileSelect = (fileId) => {
+  const handleFileSelect = (fileId: string) => {
     setSelectedFiles((prev) => {
       if (prev.includes(fileId)) {
         return prev.filter(id => id !== fileId);
@@ -195,7 +191,7 @@ const BSAGenerateReportDialog = ({ isOpen, onOpenChange, client }) => {
 
     // Check if we have an API key for the selected LLM
     const llmType = settings?.default_llm || 'openai';
-    const apiKeyField = `${llmType}_api_key`;
+    const apiKeyField = `${llmType}_api_key` as keyof BSAUserSettings;
     const apiKey = settings?.[apiKeyField];
 
     if (!apiKey) {
@@ -223,33 +219,32 @@ const BSAGenerateReportDialog = ({ isOpen, onOpenChange, client }) => {
 
       if (functionError) throw functionError;
 
-      if (!reportData || reportData.error) {
-        throw new Error(reportData?.error || 'Failed to generate report');
+      if (!reportData || (reportData as any).error) {
+        throw new Error((reportData as any)?.error || 'Failed to generate report');
       }
 
       // Process the generated report
-      const bsaScoreMatch = reportData.report.match(/BSA Score.*?(\d+\.?\d*)/i);
+      const typedReportData = reportData as { report: string };
+      const bsaScoreMatch = typedReportData.report.match(/BSA Score.*?(\d+\.?\d*)/i);
       const bsaScore = bsaScoreMatch ? parseFloat(bsaScoreMatch[1]) : null;
 
       // Save report to database
-      const { error: saveError } = await supabase
-        .from('bsa_reports')
-        .insert({
-          client_id: client.id,
-          title: reportTitle,
-          year: parseInt(year),
-          quarter: parseInt(quarter),
-          bsa_score: bsaScore,
-          data: {
-            report: reportData.report,
-            files: selectedFiles,
-            dataSources: selectedDataSource ? [selectedDataSource] : [],
-            generatedAt: new Date().toISOString(),
-            generatedBy: user.id,
-            model: llmType
-          },
-          created_by: user.id
-        });
+      const { error: saveError } = await bsaReports.create({
+        client_id: client.id,
+        title: reportTitle,
+        year: parseInt(year),
+        quarter: parseInt(quarter),
+        bsa_score: bsaScore,
+        data: {
+          report: typedReportData.report,
+          files: selectedFiles,
+          dataSources: selectedDataSource ? [selectedDataSource] : [],
+          generatedAt: new Date().toISOString(),
+          generatedBy: user.id,
+          model: llmType
+        },
+        created_by: user.id
+      });
 
       if (saveError) throw saveError;
 
@@ -259,7 +254,7 @@ const BSAGenerateReportDialog = ({ isOpen, onOpenChange, client }) => {
       });
 
       onOpenChange(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating report:', error);
       toast({
         title: 'Error',

@@ -11,18 +11,28 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card } from '@/components/ui/card';
 import { Download, FileJson, FileText } from 'lucide-react';
+import { BSAReport, ReportSections } from '@/types/database.types';
 
-const formatReportToSections = (reportText) => {
-  if (!reportText) return {};
-
-  // Try to extract basic sections
-  const sections = {
+const formatReportToSections = (reportText: string | undefined): ReportSections => {
+  if (!reportText) return {
     summary: '',
     sentimentDistribution: '',
     departmentPerformance: '',
     keyFindings: '',
     recommendations: '',
     trendAnalysis: '',
+    bsaScore: null
+  };
+
+  // Try to extract basic sections
+  const sections: ReportSections = {
+    summary: '',
+    sentimentDistribution: '',
+    departmentPerformance: '',
+    keyFindings: '',
+    recommendations: '',
+    trendAnalysis: '',
+    bsaScore: null
   };
 
   // Extract BSA Score
@@ -42,11 +52,11 @@ const formatReportToSections = (reportText) => {
     { key: 'keyFindings', pattern: /Key Findings|Main Points|Findings/i },
     { key: 'recommendations', pattern: /Recommendations|Strategic Recommendations|Suggested Actions/i },
     { key: 'trendAnalysis', pattern: /Trend Analysis|Comparison|Historical/i },
-  ];
+  ] as const;
 
   // Basic content splitting based on common markdown headings
   const lines = reportText.split('\n');
-  let currentSection = 'summary';
+  let currentSection: keyof ReportSections = 'summary';
   
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -62,7 +72,7 @@ const formatReportToSections = (reportText) => {
     }
     
     // Add line to current section
-    if (!foundSection) {
+    if (!foundSection && currentSection in sections) {
       sections[currentSection] = (sections[currentSection] || '') + line + '\n';
     }
   }
@@ -75,12 +85,21 @@ const formatReportToSections = (reportText) => {
   return sections;
 };
 
-const BSAReportViewDialog = ({ isOpen, onOpenChange, report, onDownloadJson, onDownloadTxt }) => {
+interface BSAReportViewDialogProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  report: BSAReport | null;
+  onDownloadJson: () => void;
+  onDownloadTxt: () => void;
+}
+
+const BSAReportViewDialog: React.FC<BSAReportViewDialogProps> = ({ isOpen, onOpenChange, report, onDownloadJson, onDownloadTxt }) => {
   const [activeTab, setActiveTab] = useState('overview');
   
   if (!report) return null;
   
-  const reportSections = formatReportToSections(report.data?.report);
+  const reportData = report.data as { report?: string };
+  const reportSections = formatReportToSections(reportData?.report);
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -115,7 +134,7 @@ const BSAReportViewDialog = ({ isOpen, onOpenChange, report, onDownloadJson, onD
                 <Card className="p-4">
                   <h3 className="text-lg font-semibold mb-2">Report Summary</h3>
                   <div className="whitespace-pre-line">
-                    {reportSections.summary || report.data?.report}
+                    {reportSections.summary || reportData?.report}
                   </div>
                   
                   {reportSections.sentimentDistribution && (
@@ -169,7 +188,7 @@ const BSAReportViewDialog = ({ isOpen, onOpenChange, report, onDownloadJson, onD
                 <Card className="p-4">
                   <h3 className="text-lg font-semibold mb-2">Raw Report Data</h3>
                   <div className="whitespace-pre-line font-mono text-sm">
-                    {report.data?.report || "No raw report data available."}
+                    {reportData?.report || "No raw report data available."}
                   </div>
                 </Card>
               </TabsContent>

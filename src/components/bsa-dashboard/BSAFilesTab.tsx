@@ -10,11 +10,17 @@ import { FileUp, FilePlus, FileText, Trash2, Download } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
+import { bsaFiles } from '@/utils/supabaseHelpers';
+import { BSAFile } from '@/types/database.types';
 
-const BSAFilesTab = ({ clientId }) => {
+interface BSAFilesTabProps {
+  clientId: string | undefined;
+}
+
+const BSAFilesTab: React.FC<BSAFilesTabProps> = ({ clientId }) => {
   const { toast } = useToast();
   const { user } = useAuth();
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<BSAFile[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
@@ -36,11 +42,7 @@ const BSAFilesTab = ({ clientId }) => {
 
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from('bsa_files')
-        .select('*')
-        .eq('client_id', clientId)
-        .order('created_at', { ascending: false });
+      const { data, error } = await bsaFiles.getByClientId(clientId);
 
       if (error) throw error;
       setFiles(data || []);
@@ -60,7 +62,7 @@ const BSAFilesTab = ({ clientId }) => {
     fetchFiles();
   }, [fetchFiles]);
 
-  const handleFileUpload = async (event) => {
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file || !clientId || !user) return;
 
@@ -86,20 +88,18 @@ const BSAFilesTab = ({ clientId }) => {
         .getPublicUrl(filePath);
 
       // 3. Create a database record
-      const { error: dbError } = await supabase
-        .from('bsa_files')
-        .insert({
-          client_id: clientId,
-          filename: file.name,
-          file_path: filePath,
-          file_type: file.type,
-          file_size: file.size,
-          year: parseInt(selectedYear),
-          quarter: parseInt(selectedQuarter),
-          created_by: user.id,
-        });
+      const { data, error } = await bsaFiles.upload({
+        client_id: clientId,
+        filename: file.name,
+        file_path: filePath,
+        file_type: file.type,
+        file_size: file.size,
+        year: parseInt(selectedYear),
+        quarter: parseInt(selectedQuarter),
+        created_by: user.id,
+      });
 
-      if (dbError) throw dbError;
+      if (error) throw error;
 
       toast({
         title: 'File uploaded',
@@ -108,7 +108,7 @@ const BSAFilesTab = ({ clientId }) => {
 
       // Refresh the files list
       fetchFiles();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error uploading file:', error);
       toast({
         title: 'Upload failed',
@@ -122,22 +122,11 @@ const BSAFilesTab = ({ clientId }) => {
     }
   };
 
-  const handleDeleteFile = async (fileId, filePath) => {
+  const handleDeleteFile = async (fileId: string, filePath: string) => {
     try {
-      // 1. Delete file from storage
-      const { error: storageError } = await supabase.storage
-        .from('bsa_files')
-        .remove([filePath]);
+      const { error } = await bsaFiles.delete(fileId, filePath);
 
-      if (storageError) throw storageError;
-
-      // 2. Delete database record
-      const { error: dbError } = await supabase
-        .from('bsa_files')
-        .delete()
-        .eq('id', fileId);
-
-      if (dbError) throw dbError;
+      if (error) throw error;
 
       // 3. Update UI
       setFiles(files.filter(file => file.id !== fileId));
@@ -145,7 +134,7 @@ const BSAFilesTab = ({ clientId }) => {
         title: 'File deleted',
         description: 'The file has been successfully deleted.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting file:', error);
       toast({
         title: 'Error',
@@ -155,7 +144,7 @@ const BSAFilesTab = ({ clientId }) => {
     }
   };
 
-  const downloadFile = async (file) => {
+  const downloadFile = async (file: BSAFile) => {
     try {
       const { data, error } = await supabase.storage
         .from('bsa_files')
@@ -187,7 +176,7 @@ const BSAFilesTab = ({ clientId }) => {
     }
   };
 
-  const getFileTypeIcon = (fileType) => {
+  const getFileTypeIcon = (fileType: string) => {
     if (fileType.includes('text')) return <FileText className="h-4 w-4" />;
     return <FileText className="h-4 w-4" />;
   };
@@ -257,7 +246,7 @@ const BSAFilesTab = ({ clientId }) => {
                 <Button 
                   type="button"
                   className="w-full"
-                  onClick={() => document.getElementById('file-upload').click()}
+                  onClick={() => document.getElementById('file-upload')?.click()}
                   disabled={isUploading}
                 >
                   {isUploading ? (
