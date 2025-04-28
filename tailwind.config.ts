@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
@@ -23,6 +22,7 @@ const config = {
       fontFamily: {
         sans: ["Inter", ...fontFamily.sans],
         display: ["Montserrat", ...fontFamily.sans],
+        serif: ["Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

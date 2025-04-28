@@ -6,7 +6,7 @@ const OrbitalAnimation: React.FC = () => {
   const { canvasRef } = useOrbitalAnimation();
   
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-40">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-40 md:block hidden">
       <canvas ref={canvasRef} className="absolute inset-0" />
     </div>
   );

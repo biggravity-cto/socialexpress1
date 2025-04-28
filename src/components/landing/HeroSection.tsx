@@ -19,7 +19,7 @@ const HeroSection: React.FC = () => {
       />
       
       {/* Orbital animation focused around the bg text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 md:block hidden">
         <OrbitalAnimation />
       </div>
       
@@ -35,7 +35,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
-              className="text-6xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent"
+              className="text-6xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif"
             >
               b
             </motion.span>
@@ -43,7 +43,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="text-3xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary absolute -top-3 -right-4 bg-clip-text text-transparent"
+              className="text-3xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary absolute -top-3 -right-4 bg-clip-text text-transparent font-serif"
             >
               g
             </motion.span>
