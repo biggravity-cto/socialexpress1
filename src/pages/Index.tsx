@@ -11,11 +11,9 @@ import ProcessSection from '@/components/landing/ProcessSection';
 import FinalCtaSection from '@/components/landing/FinalCtaSection';
 
 const Index = () => {
-  // Refs for scrolling
   const featuresRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   
-  // For subtle background motion effect
   const { scrollY } = useScroll();
   const opacity = useTransform(scrollY, [0, 300], [1, 0.5]);
   const backgroundY = useTransform(scrollY, [0, 500], [0, -50]);
@@ -29,7 +27,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-space-dark">
+    <div className="min-h-screen bg-gradient-to-b from-space-dark to-space-darker">
       <div className="relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0 }}
@@ -46,7 +44,7 @@ const Index = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
-          className="bg-space-blue"
+          className="bg-gradient-to-b from-space-darker to-space-dark"
         >
           <PillarsSection />
         </motion.div>
@@ -57,7 +55,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="packages"
-          className="bg-space-dark"
+          className="bg-gradient-to-b from-space-dark via-space-darker to-space-dark"
         >
           <PackagesSection />
         </motion.div>
@@ -68,7 +66,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="testimonials"
-          className="bg-space-blue"
+          className="bg-white"
         >
           <TestimonialsSection />
         </motion.div>
@@ -79,7 +77,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="process"
-          className="bg-space-dark"
+          className="relative bg-gradient-to-b from-white to-gray-50"
         >
           <ProcessSection />
         </motion.div>
@@ -89,6 +87,7 @@ const Index = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true, margin: "-10%" }}
+          className="bg-space-dark"
         >
           <FinalCtaSection />
         </motion.div>
