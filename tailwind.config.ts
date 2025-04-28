@@ -70,16 +70,16 @@ const config = {
           '900': '#384250',
         },
         ocean: {
-          '50': '#edfafd',
-          '100': '#d3f2fa',
-          '200': '#afe5f5',
-          '300': '#78d2ee',
-          '400': '#39b7e0',
-          '500': '#1d9cc8',
-          '600': '#187ea9',
-          '700': '#196689',
-          '800': '#1c5571',
-          '900': '#1c475f',
+          '50': '#f0f9fb',
+          '100': '#d9f1f6',
+          '200': '#b8e4ed',
+          '300': '#8ad1e1',
+          '400': '#54b7d0',
+          '500': '#3499b7',
+          '600': '#2d7c9b',
+          '700': '#2a657f',
+          '800': '#2a5468',
+          '900': '#274857',
         },
         sand: {
           '50': '#f9f7f4',
@@ -96,8 +96,8 @@ const config = {
         
         // Brand colors updated for Big Gravity
         brand: {
-          primary: "#95D4E3",
-          secondary: "#3EDBB2",
+          primary: "#95D4E3",    // Primary brand color
+          secondary: "#3EDBB2",  // Secondary brand color
         },
       },
       borderRadius: {
