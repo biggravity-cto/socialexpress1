@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
@@ -58,7 +57,6 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Hospitality-themed colors remain for backward compatibility
         resort: {
           '50': '#f7f9fa',
           '100': '#e9eef2',
@@ -71,7 +69,6 @@ const config = {
           '800': '#3f4e5d',
           '900': '#384250',
         },
-        // Updated ocean colors for new design
         ocean: {
           '50': '#edfafd',
           '100': '#d3f2fa',
@@ -95,6 +92,12 @@ const config = {
           '700': '#8b624c',
           '800': '#735244',
           '900': '#60463c',
+        },
+        
+        // Brand colors updated for Big Gravity
+        brand: {
+          primary: "#95D4E3",
+          secondary: "#3EDBB2",
         },
       },
       borderRadius: {
