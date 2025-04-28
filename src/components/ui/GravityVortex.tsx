@@ -29,13 +29,13 @@ const GravityVortex: React.FC = () => {
 
     // Create particles
     const particles: Particle[] = [];
-    const particleCount = 200;
+    const particleCount = 250;
 
     // Particle colors
     const colors = [
+      '#3BFFCB', // brand green
       '#95D4E3', // brand primary
       '#3EDBB2', // brand secondary
-      '#3BFFCB', // brand green
       '#FFFFFF'  // white
     ];
 
@@ -122,8 +122,8 @@ const GravityVortex: React.FC = () => {
     const animate = () => {
       if (!ctx) return;
 
-      // Clear canvas with a slight trail effect
-      ctx.fillStyle = 'rgba(10, 10, 20, 0.1)';
+      // Clear canvas with a slight trail effect for deep space feeling
+      ctx.fillStyle = 'rgba(10, 12, 20, 0.2)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw particles
@@ -152,8 +152,8 @@ const GravityVortex: React.FC = () => {
           className="absolute inset-0"
         />
         
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#f8f8f8]/70" />
+        {/* Deep space gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-space-dark/50 to-space-dark" />
         
         {/* Brand colors glow */}
         <motion.div

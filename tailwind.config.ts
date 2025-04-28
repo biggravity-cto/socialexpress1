@@ -95,12 +95,26 @@ const config = {
           '900': '#60463c',
         },
         
-        // Brand colors updated for Big Gravity
+        // Brand colors updated for Big Gravity with space theme
         brand: {
           primary: "#95D4E3",    // Primary brand color
           secondary: "#3EDBB2",  // Secondary brand color
           green: "#3BFFCB",      // Brand green
         },
+        
+        // Space theme colors
+        space: {
+          dark: "#0A0E1C",       // Deep space background
+          darker: "#05070E",     // Darker areas
+          blue: "#1C2444",       // Cosmic blue accents
+          purple: "#2D1B4E",     // Cosmic purple accents
+          accent: "#8C52FF",     // Space accent
+        }
+      },
+      boxShadow: {
+        'glow': '0 0 15px rgba(59, 255, 203, 0.5)',
+        'glow-blue': '0 0 15px rgba(149, 212, 227, 0.5)',
+        'glow-white': '0 0 15px rgba(255, 255, 255, 0.3)',
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -123,6 +137,14 @@ const config = {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.7' }
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
         }
       },
       animation: {
@@ -130,6 +152,12 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "ping": "ping 2s cubic-bezier(0, 0, 0.2, 1) infinite",
         "float": "float 6s ease-in-out infinite",
+        "pulse": "pulse 3s ease-in-out infinite",
+        "shimmer": "shimmer 8s ease-in-out infinite",
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-space': 'linear-gradient(to right, #3BFFCB, #95D4E3)',
       },
     },
   },

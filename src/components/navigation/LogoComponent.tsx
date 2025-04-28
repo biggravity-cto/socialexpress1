@@ -7,7 +7,7 @@ const LogoComponent: React.FC = () => {
   return (
     <Link to="/" className="flex-shrink-0 mr-4">
       <motion.span 
-        className="text-gray-900 text-xl sm:text-2xl md:text-3xl font-display font-bold"
+        className="text-white text-xl sm:text-2xl md:text-3xl font-display font-bold"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}

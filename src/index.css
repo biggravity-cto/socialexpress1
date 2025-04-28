@@ -83,6 +83,12 @@
   -webkit-text-fill-color: transparent;
 }
 
+.text-gradient-space {
+  @apply bg-gradient-to-r from-brand-green via-brand-primary to-white text-transparent bg-clip-text;
+  background-size: 200% auto;
+  animation: shimmer 8s ease-in-out infinite;
+}
+
 /* Glass styling */
 .glass {
   background: rgba(255, 255, 255, 0.85);
@@ -92,10 +98,23 @@
 }
 
 .glass-dark {
-  background: rgba(30, 30, 40, 0.7);
+  background: rgba(10, 14, 28, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(40, 40, 60, 0.2);
+}
+
+/* Space theme specific classes */
+.space-card {
+  @apply bg-space-dark border border-gray-800 bg-opacity-80 backdrop-blur-md rounded-lg;
+}
+
+.glow-text {
+  text-shadow: 0 0 10px rgba(59, 255, 203, 0.8);
+}
+
+.glow-border {
+  @apply border border-brand-green shadow-glow;
 }
 
 /* Custom scrollbar styles */
@@ -105,17 +124,17 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0A0E1C;
   border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #c5d1e2;
+  background: #3BFFCB;
   border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #a3b4cc;
+  background: #95D4E3;
 }
 
 /* Horizontal overflow handling */
@@ -131,17 +150,17 @@
 }
 
 .horizontal-scroll::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #0A0E1C;
   border-radius: 3px;
 }
 
 .horizontal-scroll::-webkit-scrollbar-thumb {
-  background: #c5d1e2;
+  background: #3BFFCB;
   border-radius: 3px;
 }
 
 .horizontal-scroll::-webkit-scrollbar-thumb:hover {
-  background: #a3b4cc;
+  background: #95D4E3;
 }
 
 /* Prevent text overflow */
@@ -149,4 +168,14 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+/* Animation keyframes */
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }

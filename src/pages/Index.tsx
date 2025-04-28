@@ -29,7 +29,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-space-dark">
       <div className="relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0 }}
@@ -46,7 +46,7 @@ const Index = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
-          className="bg-gray-50"
+          className="bg-space-blue"
         >
           <PillarsSection />
         </motion.div>
@@ -57,7 +57,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="packages"
-          className="bg-white"
+          className="bg-space-dark"
         >
           <PackagesSection />
         </motion.div>
@@ -68,7 +68,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="testimonials"
-          className="bg-gray-50"
+          className="bg-space-blue"
         >
           <TestimonialsSection />
         </motion.div>
@@ -79,7 +79,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="process"
-          className="bg-white"
+          className="bg-space-dark"
         >
           <ProcessSection />
         </motion.div>

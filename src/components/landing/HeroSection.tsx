@@ -7,7 +7,7 @@ import GravityVortex from '@/components/ui/GravityVortex';
 
 const HeroSection: React.FC = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-white">
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-space-dark">
       <GravityVortex />
       
       <div className="container mx-auto px-4 relative z-10">
@@ -17,15 +17,15 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center space-y-8"
         >
-          <span className="inline-block text-gray-700 text-lg font-medium tracking-wider mb-4">
-            INNOVATIVE DIGITAL SOLUTIONS
+          <span className="inline-block text-brand-green text-lg font-medium tracking-wider mb-4">
+            AI-POWERED TRANSFORMATION
           </span>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 font-display tracking-tight">
-            Harness the Power of Big Gravity
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-display tracking-tight leading-tight">
+            Helping brands succeed in Asian markets - from Seoul to Shanghai to San Francisco
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-700 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
             Data-driven strategies that elevate your brand and transform your digital presence.
           </p>
           
@@ -37,7 +37,7 @@ const HeroSection: React.FC = () => {
           >
             <Button 
               size="lg"
-              className="relative group bg-gradient-to-r from-brand-green to-brand-secondary hover:opacity-90 text-gray-900 font-medium px-8 py-6 h-auto text-lg shadow-md"
+              className="relative group bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark font-medium px-8 py-6 h-auto text-lg shadow-glow"
             >
               <CalendarDays className="mr-2 h-5 w-5" />
               Book a Strategy Call
@@ -45,14 +45,14 @@ const HeroSection: React.FC = () => {
           </motion.div>
           
           <div className="mt-12">
-            <p className="text-gray-600 text-sm font-medium mb-2">Trusted by Leading Brands</p>
+            <p className="text-gray-400 text-sm font-medium mb-2">Trusted by Leading Brands</p>
             <div className="flex items-center justify-center gap-2">
               <span className="flex items-center gap-0.5">
                 {[1,2,3,4,5].map((star) => (
                   <span key={star} className="text-brand-green">★</span>
                 ))}
               </span>
-              <span className="text-gray-600 text-sm">
+              <span className="text-gray-400 text-sm">
                 50+ Innovative Companies
               </span>
             </div>

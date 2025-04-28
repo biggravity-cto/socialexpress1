@@ -44,8 +44,8 @@ const PublicNavbar = () => {
 
   const navbarClasses = `w-full z-40 transition-all duration-300 ${
     isScrolled 
-      ? 'bg-white shadow-md py-3' 
-      : 'bg-white border-b border-gray-100 py-4'
+      ? 'bg-space-dark/90 backdrop-blur-md shadow-md py-3' 
+      : 'bg-transparent py-4'
   }`;
 
   return (
@@ -61,7 +61,7 @@ const PublicNavbar = () => {
             {!isMobile && (
               <Link to="/contact">
                 <Button 
-                  className="bg-gradient-to-r from-brand-green to-brand-secondary text-gray-900 hover:opacity-90 font-medium px-4 py-2"
+                  className="bg-gradient-to-r from-brand-green to-brand-primary text-space-dark hover:opacity-90 font-medium px-4 py-2"
                 >
                   <CalendarDays className="mr-2 h-4 w-4" />
                   Book a Call
@@ -75,6 +75,7 @@ const PublicNavbar = () => {
                 size="icon" 
                 onClick={() => setIsMenuOpen(true)}
                 aria-label="Toggle menu"
+                className="text-white hover:bg-white/10"
               >
                 <AlignJustify className="h-5 w-5" />
               </Button>
