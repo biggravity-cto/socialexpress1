@@ -5,6 +5,7 @@ import { Check, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Footer from '@/components/landing/Footer';
 import Navbar from '@/components/navigation/Navbar';
+import { Link } from 'react-router-dom';
 
 const Offerings = () => {
   const services = [
@@ -136,12 +137,14 @@ const Offerings = () => {
             <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
               Our team of experts is ready to help you create a customized strategy that delivers results.
             </p>
-            <Button 
-              size="lg"
-              className="bg-ocean-600 hover:bg-ocean-700"
-            >
-              Book a Strategy Call <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link to="/book-call">
+              <Button 
+                size="lg"
+                className="bg-ocean-600 hover:bg-ocean-700"
+              >
+                Book a Strategy Call <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>

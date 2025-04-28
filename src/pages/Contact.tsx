@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarDays, Mail, Phone } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Contact = () => {
   return (
@@ -42,12 +43,14 @@ const Contact = () => {
                   </div>
                   
                   <div className="pt-6">
-                    <Button 
-                      className="w-full bg-gradient-to-r from-brand-green to-brand-secondary hover:opacity-90 text-gray-900"
-                    >
-                      <CalendarDays className="mr-2 h-4 w-4" />
-                      Schedule a Call
-                    </Button>
+                    <Link to="/book-call">
+                      <Button 
+                        className="w-full bg-gradient-to-r from-brand-green to-brand-secondary hover:opacity-90 text-gray-900"
+                      >
+                        <CalendarDays className="mr-2 h-4 w-4" />
+                        Schedule a Call
+                      </Button>
+                    </Link>
                   </div>
                 </div>
                 

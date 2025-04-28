@@ -60,7 +60,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           </div>
           
           <div className="mt-auto pt-6 border-t border-gray-800 space-y-4 pb-10">
-            <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+            <Link to="/book-call" onClick={() => setIsMenuOpen(false)}>
               <Button 
                 className="w-full py-6 text-base bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark"
                 size="lg"

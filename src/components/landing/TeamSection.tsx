@@ -18,7 +18,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({ name, role, description, index 
       viewport={{ once: true, margin: "-50px" }}
       className="bg-gradient-to-br from-white to-gray-100 rounded-xl p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
     >
-      <div className="mb-6 border-b border-gray-200 pb-4">
+      <div className="mb-4">
         <h3 className="text-xl font-bold text-space-dark mb-1 font-display">{name}</h3>
         <p className="text-brand-primary font-medium">{role}</p>
       </div>
