@@ -24,13 +24,15 @@ const OrbitalAnimation: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     
-    // Center point (big "bg" logo position)
+    // Center point
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
     
     // Create orbital objects
     const orbitals: Orbital[] = [];
     const orbitCount = 7; // Number of orbiting objects
+    const planets: Planet[] = [];
+    const planetCount = 3; // Number of planets
     
     class Orbital {
       x: number;
@@ -48,7 +50,7 @@ const OrbitalAnimation: React.FC = () => {
         this.angle = Math.random() * Math.PI * 2;
         this.x = centerX + Math.cos(this.angle) * this.distance;
         this.y = centerY + Math.sin(this.angle) * this.distance;
-        this.size = Math.random() * 3 + 2;
+        this.size = Math.random() * 3 + 1;
         this.speed = (Math.random() * 0.01 + 0.005) * (Math.random() > 0.5 ? 1 : -1);
         this.color = Math.random() > 0.7 ? '#3BFFCB' : '#95D4E3';
         this.trail = [];
@@ -84,7 +86,7 @@ const OrbitalAnimation: React.FC = () => {
           
           ctx.strokeStyle = this.color;
           ctx.lineWidth = this.size / 2;
-          ctx.globalAlpha = 0.5;
+          ctx.globalAlpha = 0.3;
           ctx.stroke();
           ctx.globalAlpha = 1;
         }
@@ -96,10 +98,60 @@ const OrbitalAnimation: React.FC = () => {
         ctx.fill();
       }
     }
-    
-    // Create orbital objects
-    for (let i = 0; i < orbitCount; i++) {
-      orbitals.push(new Orbital());
+
+    class Planet {
+      x: number;
+      y: number;
+      size: number;
+      angle: number;
+      speed: number;
+      distance: number;
+      color: string;
+      rotationSpeed: number;
+      
+      constructor() {
+        this.distance = Math.random() * 200 + 150;
+        this.angle = Math.random() * Math.PI * 2;
+        this.x = centerX + Math.cos(this.angle) * this.distance;
+        this.y = centerY + Math.sin(this.angle) * this.distance;
+        this.size = Math.random() * 8 + 5;
+        this.speed = (Math.random() * 0.003 + 0.001) * (Math.random() > 0.5 ? 1 : -1);
+        this.color = Math.random() > 0.5 ? '#3BFFCB' : '#95D4E3';
+        this.rotationSpeed = Math.random() * 0.05 + 0.01;
+      }
+      
+      update() {
+        // Update angle and position
+        this.angle += this.speed;
+        this.x = centerX + Math.cos(this.angle) * this.distance;
+        this.y = centerY + Math.sin(this.angle) * this.distance;
+      }
+      
+      draw() {
+        if (!ctx) return;
+        
+        // Draw planet
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = 0.7;
+        ctx.fill();
+        
+        // Draw glow
+        const gradient = ctx.createRadialGradient(
+          this.x, this.y, this.size * 0.5,
+          this.x, this.y, this.size * 2.5
+        );
+        gradient.addColorStop(0, this.color);
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.globalAlpha = 0.2;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
     }
     
     // Draw "bg" logo in the center
@@ -107,21 +159,31 @@ const OrbitalAnimation: React.FC = () => {
       if (!ctx) return;
       
       ctx.save();
-      ctx.font = "bold 120px Space Grotesk";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
       
       // Draw 'b' character
-      ctx.fillStyle = "rgba(59, 255, 203, 0.15)";
-      ctx.fillText("b", centerX - 30, centerY);
+      ctx.font = "bold 100px Space Grotesk";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = "rgba(59, 255, 203, 0.1)";
+      ctx.fillText("b", centerX - 20, centerY);
       
       // Draw superscript 'g'
-      ctx.font = "bold 60px Space Grotesk";
-      ctx.fillStyle = "rgba(149, 212, 227, 0.15)";
-      ctx.fillText("g", centerX + 30, centerY - 30);
+      ctx.font = "bold 50px Space Grotesk";
+      ctx.fillStyle = "rgba(149, 212, 227, 0.1)";
+      ctx.fillText("g", centerX + 20, centerY - 25);
       
       ctx.restore();
     };
+    
+    // Create orbital objects
+    for (let i = 0; i < orbitCount; i++) {
+      orbitals.push(new Orbital());
+    }
+    
+    // Create planets
+    for (let i = 0; i < planetCount; i++) {
+      planets.push(new Planet());
+    }
     
     // Animation loop
     const animate = () => {
@@ -132,6 +194,12 @@ const OrbitalAnimation: React.FC = () => {
       
       // Draw the logo
       drawLogo();
+      
+      // Update and draw all planets
+      planets.forEach(planet => {
+        planet.update();
+        planet.draw();
+      });
       
       // Update and draw all orbitals
       orbitals.forEach(orbital => {

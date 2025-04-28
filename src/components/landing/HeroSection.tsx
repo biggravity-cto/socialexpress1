@@ -20,29 +20,26 @@ const HeroSection: React.FC = () => {
           className="max-w-4xl mx-auto text-center space-y-8"
         >
           <div className="inline-block text-brand-green text-lg font-medium tracking-wider mb-4">
-            <motion.span 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
+              className="flex flex-wrap justify-center gap-4"
             >
-              AI-POWERED TRANSFORMATION
-            </motion.span>
-            <motion.span 
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-              className="ml-2 text-sm align-text-top"
-            >
-              b<sup>g</sup>
-            </motion.span>
+              <span className="text-brand-primary">한국</span>
+              <span className="text-brand-green">中国</span>
+              <span className="text-white">Việt Nam</span>
+              <span className="text-brand-primary">日本</span>
+              <span className="text-brand-green">新加坡</span>
+            </motion.div>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-display tracking-tight leading-tight">
-            Helping brands reach Asian markets
+            Empowering <span className="text-brand-green">LUXURY</span> hospitality brands
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Understand, attract, and profit from Korean and other Asian tourism markets.
+            Understand, attract, and <span className="text-brand-green font-bold">PROFIT FROM</span> the Korean tourist market
           </p>
           
           <motion.div 

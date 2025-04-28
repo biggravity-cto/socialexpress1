@@ -4,14 +4,13 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import HeroSection from '@/components/landing/HeroSection';
 import Footer from '@/components/landing/Footer';
 import ScrollToTopButton from '@/components/landing/ScrollToTopButton';
-import PillarsSection from '@/components/landing/PillarsSection';
-import PackagesSection from '@/components/landing/PackagesSection';
+import ServicesSection from '@/components/landing/ServicesSection';
+import TeamSection from '@/components/landing/TeamSection';
+import PricingSection from '@/components/landing/PricingSection';
 import TestimonialsSection from '@/components/landing/TestimonialsSection';
-import ProcessSection from '@/components/landing/ProcessSection';
 import FinalCtaSection from '@/components/landing/FinalCtaSection';
 
 const Index = () => {
-  const featuresRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   
   const { scrollY } = useScroll();
@@ -27,7 +26,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0 }}
@@ -38,15 +37,13 @@ const Index = () => {
         </motion.div>
         
         <motion.div 
-          id="pillars"
-          ref={featuresRef}
+          id="services"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
-          className="bg-white"
         >
-          <PillarsSection />
+          <ServicesSection />
         </motion.div>
         
         <motion.div
@@ -54,10 +51,19 @@ const Index = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
-          id="packages"
-          className="bg-gray-50"
+          id="pricing"
         >
-          <PackagesSection />
+          <PricingSection />
+        </motion.div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true, margin: "-10%" }}
+          id="team"
+        >
+          <TeamSection />
         </motion.div>
         
         <motion.div
@@ -66,20 +72,8 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="testimonials"
-          className="bg-white"
         >
           <TestimonialsSection />
-        </motion.div>
-        
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true, margin: "-10%" }}
-          id="process"
-          className="relative bg-gray-100"
-        >
-          <ProcessSection />
         </motion.div>
         
         <motion.div
