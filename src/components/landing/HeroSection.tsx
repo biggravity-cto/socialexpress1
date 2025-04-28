@@ -19,14 +19,15 @@ const HeroSection: React.FC = () => {
         >
           <span className="inline-block text-brand-green text-lg font-medium tracking-wider mb-4">
             AI-POWERED TRANSFORMATION
+            <span className="ml-2 text-sm align-text-top">b<sup>g</sup></span>
           </span>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-display tracking-tight leading-tight">
-            Helping brands succeed in Asian markets - from Seoul to Shanghai to San Francisco
+            Helping brands reach Asian markets
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Data-driven strategies that elevate your brand and transform your digital presence.
+            Understand, attract, and profit from Korean and other Asian tourism markets.
           </p>
           
           <motion.div 

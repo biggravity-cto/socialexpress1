@@ -42,6 +42,10 @@ const PublicNavbar = () => {
     }
   };
 
+  // Determine text color based on scroll position
+  const textColor = isScrolled ? 'text-white' : 'text-space-dark';
+  const logoTextColor = isScrolled ? 'text-white' : 'text-space-dark';
+
   const navbarClasses = `w-full z-40 transition-all duration-300 ${
     isScrolled 
       ? 'bg-space-dark/90 backdrop-blur-md shadow-md py-3' 
@@ -53,7 +57,9 @@ const PublicNavbar = () => {
       <header className={navbarClasses}>
         <div className="container flex items-center justify-between">
           <div className="flex items-center">
-            <LogoComponent />
+            <div className={logoTextColor}>
+              <LogoComponent />
+            </div>
             {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
           </div>
           
@@ -75,7 +81,7 @@ const PublicNavbar = () => {
                 size="icon" 
                 onClick={() => setIsMenuOpen(true)}
                 aria-label="Toggle menu"
-                className="text-white hover:bg-white/10"
+                className={`${isScrolled ? 'text-white hover:bg-white/10' : 'text-space-dark hover:bg-space-dark/10'}`}
               >
                 <AlignJustify className="h-5 w-5" />
               </Button>

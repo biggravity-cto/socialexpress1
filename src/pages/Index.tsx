@@ -27,7 +27,7 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-space-dark to-space-darker">
+    <div className="min-h-screen bg-gradient-to-b from-space-dark to-gray-50">
       <div className="relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0 }}
@@ -44,7 +44,7 @@ const Index = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
-          className="bg-gradient-to-b from-space-darker to-space-dark"
+          className="bg-gray-50" // Lighter background
         >
           <PillarsSection />
         </motion.div>
@@ -55,7 +55,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="packages"
-          className="bg-gradient-to-b from-space-dark via-space-darker to-space-dark"
+          className="bg-gradient-to-b from-gray-50 to-white" // More contrast
         >
           <PackagesSection />
         </motion.div>
@@ -77,7 +77,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="process"
-          className="relative bg-gradient-to-b from-white to-gray-50"
+          className="relative bg-gradient-to-b from-white to-gray-100" // Subtle gradient
         >
           <ProcessSection />
         </motion.div>
@@ -87,7 +87,7 @@ const Index = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           viewport={{ once: true, margin: "-10%" }}
-          className="bg-space-dark"
+          className="bg-space-dark" // Keep this dark for contrast with the button
         >
           <FinalCtaSection />
         </motion.div>
