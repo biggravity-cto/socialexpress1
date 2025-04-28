@@ -58,7 +58,7 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Hospitality-themed colors
+        // Hospitality-themed colors remain for backward compatibility
         resort: {
           '50': '#f7f9fa',
           '100': '#e9eef2',
@@ -71,6 +71,7 @@ const config = {
           '800': '#3f4e5d',
           '900': '#384250',
         },
+        // Updated ocean colors for new design
         ocean: {
           '50': '#edfafd',
           '100': '#d3f2fa',
@@ -110,10 +111,20 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        ping: {
+          '0%': { transform: 'scale(1)', opacity: '1' },
+          '75%, 100%': { transform: 'scale(2)', opacity: '0' },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "ping": "ping 2s cubic-bezier(0, 0, 0.2, 1) infinite",
+        "float": "float 6s ease-in-out infinite",
       },
     },
   },
