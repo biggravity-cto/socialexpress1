@@ -29,7 +29,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
       <div className="flex flex-col h-full w-full overflow-y-auto">
         <div className="flex flex-col h-full px-6 py-4">
           <div className="flex justify-between items-center mb-8">
-            <LogoComponent />
+            <LogoComponent isScrolled={true} />
             <Button 
               variant="ghost" 
               size="icon" 

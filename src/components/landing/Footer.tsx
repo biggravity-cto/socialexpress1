@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
@@ -51,43 +52,43 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#0a0a14] pt-16 border-t border-gray-800">
+    <footer className="bg-space-darker pt-16 border-t border-gray-800">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center mb-6">
-              <span className="font-display font-bold text-2xl tracking-tight text-white">Big Gravity</span>
+              <span className="font-display font-bold text-2xl tracking-[0.2em] text-white">BIG GRAVITY</span>
             </Link>
             <p className="text-gray-400 mb-6 max-w-md">
               Global digital marketing excellence for luxury hospitality brands. Transforming guest experiences through data-driven strategies and cultural expertise.
             </p>
             
             <div className="flex space-x-4 mb-6">
-              <a href="#" className="bg-gray-900 p-2 rounded-full text-gray-500 hover:bg-gray-700 hover:text-white transition-colors">
+              <a href="#" className="bg-space-blue p-2 rounded-full text-gray-300 hover:bg-brand-green hover:text-space-dark transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="bg-gray-900 p-2 rounded-full text-gray-500 hover:bg-gray-700 hover:text-white transition-colors">
+              <a href="#" className="bg-space-blue p-2 rounded-full text-gray-300 hover:bg-brand-green hover:text-space-dark transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="bg-gray-900 p-2 rounded-full text-gray-500 hover:bg-gray-700 hover:text-white transition-colors">
+              <a href="#" className="bg-space-blue p-2 rounded-full text-gray-300 hover:bg-brand-green hover:text-space-dark transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="bg-gray-900 p-2 rounded-full text-gray-500 hover:bg-gray-700 hover:text-white transition-colors">
+              <a href="#" className="bg-space-blue p-2 rounded-full text-gray-300 hover:bg-brand-green hover:text-space-dark transition-colors">
                 <Linkedin size={20} />
               </a>
             </div>
             <div className="space-y-3">
               <div className="flex items-start">
                 <Mail className="h-5 w-5 text-brand-primary mt-0.5 mr-3" />
-                <span className="text-gray-400">contact@biggravity.agency</span>
+                <span className="text-gray-300">contact@biggravity.agency</span>
               </div>
               <div className="flex items-start">
                 <Phone className="h-5 w-5 text-brand-primary mt-0.5 mr-3" />
-                <span className="text-gray-400">+1 (800) 123-4567</span>
+                <span className="text-gray-300">+1 (800) 123-4567</span>
               </div>
               <div className="flex items-start">
                 <MapPin className="h-5 w-5 text-brand-primary mt-0.5 mr-3" />
-                <span className="text-gray-400">Phoenix, AZ</span>
+                <span className="text-gray-300">Phoenix, AZ</span>
               </div>
             </div>
           </div>
@@ -101,7 +102,7 @@ const Footer: React.FC = () => {
                     <a 
                       href={link.url} 
                       onClick={(e) => handleAnchorClick(e, link.url)}
-                      className="text-gray-400 hover:text-brand-primary transition-colors"
+                      className="text-gray-300 hover:text-brand-primary transition-colors"
                     >
                       {link.name}
                     </a>
@@ -117,13 +118,13 @@ const Footer: React.FC = () => {
             © {currentYear} Big Gravity. All rights reserved.
           </p>
           <div className="flex space-x-6">
-            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
+            <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">
               Privacy Policy
             </a>
-            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
+            <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">
               Terms of Service
             </a>
-            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
+            <a href="#" className="text-gray-400 hover:text-white transition-colors text-sm">
               Cookie Policy
             </a>
           </div>

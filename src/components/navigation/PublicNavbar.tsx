@@ -42,13 +42,10 @@ const PublicNavbar = () => {
     }
   };
 
-  // Determine text color based on scroll position
-  const textColor = isScrolled ? 'text-white' : 'text-space-dark';
-  const logoTextColor = isScrolled ? 'text-white' : 'text-space-dark';
-
-  const navbarClasses = `w-full z-40 transition-all duration-300 ${
+  // Always ensure good contrast regardless of scroll position
+  const navbarClasses = `fixed w-full z-40 transition-all duration-300 ${
     isScrolled 
-      ? 'bg-space-dark/90 backdrop-blur-md shadow-md py-3' 
+      ? 'bg-space-dark/95 backdrop-blur-md shadow-md py-3' 
       : 'bg-transparent py-4'
   }`;
 
@@ -57,10 +54,8 @@ const PublicNavbar = () => {
       <header className={navbarClasses}>
         <div className="container flex items-center justify-between">
           <div className="flex items-center">
-            <div className={logoTextColor}>
-              <LogoComponent />
-            </div>
-            {!isMobile && <NavigationLinks scrollToSection={scrollToSection} />}
+            <LogoComponent isScrolled={isScrolled} />
+            {!isMobile && <NavigationLinks scrollToSection={scrollToSection} isScrolled={isScrolled} />}
           </div>
           
           <div className="flex items-center gap-2">

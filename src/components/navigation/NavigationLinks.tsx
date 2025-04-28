@@ -5,16 +5,17 @@ import { Link } from 'react-router-dom';
 
 interface NavigationLinksProps {
   scrollToSection?: (sectionId: string) => void;
+  isScrolled?: boolean;
 }
 
-const NavigationLinks: React.FC<NavigationLinksProps> = ({ scrollToSection }) => {
+const NavigationLinks: React.FC<NavigationLinksProps> = ({ scrollToSection, isScrolled }) => {
   return (
     <div className="hidden md:flex items-center space-x-6">
-      <NavLink label="About" to="/about" />
-      <NavLink label="Offerings" to="/offerings" />
-      <NavLink label="Case Studies" to="/case-studies" />
-      <NavLink label="Team" to="/team" />
-      <NavLink label="Contact" to="/contact" />
+      <NavLink label="About" to="/about" isScrolled={isScrolled} />
+      <NavLink label="Offerings" to="/offerings" isScrolled={isScrolled} />
+      <NavLink label="Case Studies" to="/case-studies" isScrolled={isScrolled} />
+      <NavLink label="Team" to="/team" isScrolled={isScrolled} />
+      <NavLink label="Contact" to="/contact" isScrolled={isScrolled} />
     </div>
   );
 };
@@ -22,9 +23,15 @@ const NavigationLinks: React.FC<NavigationLinksProps> = ({ scrollToSection }) =>
 interface NavLinkProps {
   label: string;
   to: string;
+  isScrolled?: boolean;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ label, to }) => {
+const NavLink: React.FC<NavLinkProps> = ({ label, to, isScrolled }) => {
+  // Determine text color based on scroll position
+  const textColorClass = isScrolled 
+    ? "text-white" 
+    : "text-space-dark";
+
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
@@ -32,7 +39,7 @@ const NavLink: React.FC<NavLinkProps> = ({ label, to }) => {
     >
       <Link 
         to={to} 
-        className="text-space-dark hover:text-brand-green relative group font-medium text-base"
+        className={`${textColorClass} hover:text-brand-green relative group font-medium text-base`}
       >
         {label}
         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green group-hover:w-full transition-all duration-300" />
