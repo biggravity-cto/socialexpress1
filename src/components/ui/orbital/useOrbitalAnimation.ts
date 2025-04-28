@@ -28,6 +28,9 @@ export const useOrbitalAnimation = () => {
       
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
+      // Draw the logo in the background
+      Logo.draw(ctx, config.centerX, config.centerY);
+      
       planets.forEach(planet => {
         planet.update(config.centerX, config.centerY);
         planet.draw(ctx);

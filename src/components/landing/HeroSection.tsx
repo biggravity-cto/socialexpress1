@@ -17,7 +17,7 @@ const HeroSection: React.FC = () => {
         }}
       />
       
-      {/* Orbital animation around the bg text */}
+      {/* Orbital animation focused around the bg text */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <OrbitalAnimation />
       </div>
