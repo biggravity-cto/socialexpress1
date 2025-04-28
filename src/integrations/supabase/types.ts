@@ -242,6 +242,33 @@ export type Database = {
         }
         Relationships: []
       }
+      call_bookings: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+        }
+        Relationships: []
+      }
       campaigns: {
         Row: {
           color: string

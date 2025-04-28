@@ -10,7 +10,7 @@ interface NavigationLinksProps {
 
 const NavigationLinks: React.FC<NavigationLinksProps> = ({ scrollToSection, isScrolled }) => {
   return (
-    <div className="hidden md:flex items-center space-x-6">
+    <div className="hidden md:flex items-center space-x-8 ml-12">
       <NavLink label="About" to="/about" isScrolled={isScrolled} />
       <NavLink label="Offerings" to="/offerings" isScrolled={isScrolled} />
       <NavLink label="Case Studies" to="/case-studies" isScrolled={isScrolled} />

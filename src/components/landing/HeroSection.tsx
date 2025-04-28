@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarDays } from 'lucide-react';
 import OrbitalAnimation from '@/components/ui/OrbitalAnimation';
+import { Link } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
   return (
@@ -62,13 +63,15 @@ const HeroSection: React.FC = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
           >
-            <Button 
-              size="lg"
-              className="relative group bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark font-medium px-8 py-6 h-auto text-lg shadow-glow"
-            >
-              <CalendarDays className="mr-2 h-5 w-5" />
-              Book a Strategy Call
-            </Button>
+            <Link to="/book-call">
+              <Button 
+                size="lg"
+                className="relative group bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark font-medium px-8 py-6 h-auto text-lg shadow-glow"
+              >
+                <CalendarDays className="mr-2 h-5 w-5" />
+                Book a Strategy Call
+              </Button>
+            </Link>
           </motion.div>
           
           <div className="mt-12">

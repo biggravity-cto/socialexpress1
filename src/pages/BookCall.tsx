@@ -1,8 +1,10 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { CalendarDays, Mail, User, MessageSquare } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Form,
   FormControl,
@@ -13,27 +15,52 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { CalendarDays } from 'lucide-react';
 
-interface BookingFormData {
-  name: string;
-  email: string;
-  company: string;
-  message: string;
-}
+const formSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Invalid email address'),
+  company: z.string().optional(),
+  message: z.string().min(10, 'Message must be at least 10 characters'),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 const BookCall = () => {
   const { toast } = useToast();
-  const form = useForm<BookingFormData>();
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      company: '',
+      message: '',
+    },
+  });
 
-  const onSubmit = (data: BookingFormData) => {
-    console.log(data);
-    toast({
-      title: "Request Submitted",
-      description: "We'll be in touch shortly to confirm your strategy call.",
-    });
-    form.reset();
+  const onSubmit = async (data: FormData) => {
+    try {
+      const { error } = await supabase.functions.invoke('send-booking-notification', {
+        body: data,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Request Submitted",
+        description: "We'll be in touch shortly to confirm your strategy call.",
+      });
+      
+      form.reset();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "There was a problem submitting your request. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -64,14 +91,11 @@ const BookCall = () => {
                     <FormItem>
                       <FormLabel className="text-white">Name</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                          <Input 
-                            placeholder="Your name" 
-                            className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-gray-400" 
-                            {...field}
-                          />
-                        </div>
+                        <Input 
+                          placeholder="Your name" 
+                          className="bg-white/10 border-white/20 text-white placeholder:text-gray-400" 
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -85,15 +109,12 @@ const BookCall = () => {
                     <FormItem>
                       <FormLabel className="text-white">Email</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                          <Input 
-                            placeholder="your@email.com" 
-                            type="email"
-                            className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-gray-400" 
-                            {...field}
-                          />
-                        </div>
+                        <Input 
+                          placeholder="your@email.com" 
+                          type="email"
+                          className="bg-white/10 border-white/20 text-white placeholder:text-gray-400" 
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -105,7 +126,7 @@ const BookCall = () => {
                   name="company"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Company</FormLabel>
+                      <FormLabel className="text-white">Company (Optional)</FormLabel>
                       <FormControl>
                         <Input 
                           placeholder="Your company name" 
@@ -125,14 +146,11 @@ const BookCall = () => {
                     <FormItem>
                       <FormLabel className="text-white">Message</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <MessageSquare className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
-                          <Textarea 
-                            placeholder="Tell us about your goals..."
-                            className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-gray-400 min-h-[120px]"
-                            {...field}
-                          />
-                        </div>
+                        <Textarea 
+                          placeholder="Tell us about your goals..."
+                          className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 min-h-[120px]"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
