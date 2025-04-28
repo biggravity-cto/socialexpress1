@@ -26,27 +26,12 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center space-y-8"
         >
-          <div className="relative inline-block" ref={logoRef}>
-            <div className="relative">
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-                className="text-6xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif"
-                style={{ fontFamily: "Georgia, serif" }}
-              >
-                g
-              </motion.span>
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.2 }}
-                className="text-3xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary absolute -top-3 -right-4 bg-clip-text text-transparent font-serif"
-                style={{ fontFamily: "Georgia, serif" }}
-              >
-                b
-              </motion.span>
-            </div>
+          <div className="relative inline-block mb-6">
+            <span 
+              className="text-5xl md:text-6xl font-display font-semibold tracking-[0.2em] text-white"
+            >
+              BIG GRAVITY
+            </span>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-6 font-display tracking-tight leading-tight">

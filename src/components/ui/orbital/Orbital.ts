@@ -12,10 +12,10 @@ export class Orbital implements OrbitalObject {
   trail: { x: number; y: number }[];
   trailLength: number;
 
-  constructor(config: CanvasConfig) {
+  constructor(config: CanvasConfig, sizeMultiplier: number = 1) {
     const { centerX, centerY } = config;
-    // Smaller radius for tighter orbits
-    this.distance = Math.random() * 50 + 25; 
+    // Smaller radius for tighter orbits, adjusted by multiplier
+    this.distance = (Math.random() * 50 + 25) * sizeMultiplier; 
     this.angle = Math.random() * Math.PI * 2;
     this.x = centerX + Math.cos(this.angle) * this.distance;
     this.y = centerY + Math.sin(this.angle) * this.distance;

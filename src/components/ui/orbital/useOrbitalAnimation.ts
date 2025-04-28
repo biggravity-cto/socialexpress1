@@ -5,7 +5,7 @@ import { Orbital } from './Orbital';
 import { Planet } from './Planet';
 import { CanvasConfig } from './types';
 
-export const useOrbitalAnimation = () => {
+export const useOrbitalAnimation = (type: 'default' | 'compact' = 'default') => {
   const { canvasRef, resizeCanvas } = useCanvas();
 
   useEffect(() => {
@@ -18,9 +18,28 @@ export const useOrbitalAnimation = () => {
     const config: CanvasConfig | null = resizeCanvas();
     if (!config) return;
     
-    // Create focused orbital effects around the bg text
-    const orbitals: Orbital[] = Array.from({ length: 6 }, () => new Orbital(config));
-    const planets: Planet[] = Array.from({ length: 3 }, () => new Planet(config));
+    // Create focused orbital effects
+    const planetCount = type === 'compact' ? 3 : 3;
+    const orbitalCount = type === 'compact' ? 3 : 6;
+    
+    // Adjust orbital size based on type
+    const orbitSizeMultiplier = type === 'compact' ? 0.6 : 1;
+    
+    const orbitals: Orbital[] = Array.from({ length: orbitalCount }, () => 
+      new Orbital(config, orbitSizeMultiplier)
+    );
+    
+    const planets: Planet[] = Array.from({ length: planetCount }, () => 
+      new Planet(config, orbitSizeMultiplier)
+    );
+    
+    // Set brand colors for compact orbitals
+    if (type === 'compact') {
+      const brandColors = ['#1EAEDB', '#33C3F0', '#4DC5DE'];
+      planets.forEach((planet, idx) => {
+        planet.color = brandColors[idx % brandColors.length];
+      });
+    }
     
     const animate = () => {
       if (!ctx || !canvas) return;
@@ -41,7 +60,7 @@ export const useOrbitalAnimation = () => {
     };
     
     animate();
-  }, []);
+  }, [type]);
 
   return { canvasRef };
 };

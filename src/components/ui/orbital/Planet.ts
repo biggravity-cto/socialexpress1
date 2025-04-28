@@ -11,10 +11,10 @@ export class Planet implements OrbitalObject {
   color: string;
   rotationSpeed: number;
 
-  constructor(config: CanvasConfig) {
+  constructor(config: CanvasConfig, sizeMultiplier: number = 1) {
     const { centerX, centerY } = config;
-    // Smaller orbit radius
-    this.distance = Math.random() * 60 + 30;
+    // Smaller orbit radius, adjusted by multiplier
+    this.distance = (Math.random() * 60 + 30) * sizeMultiplier;
     this.angle = Math.random() * Math.PI * 2;
     this.x = centerX + Math.cos(this.angle) * this.distance;
     this.y = centerY + Math.sin(this.angle) * this.distance;
