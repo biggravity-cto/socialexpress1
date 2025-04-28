@@ -16,7 +16,7 @@ const FinalCtaSection: React.FC = () => {
           viewport={{ once: true, margin: "-100px" }}
           className="max-w-4xl mx-auto text-center"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 font-display leading-tight text-gradient-space">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-8 font-display leading-tight text-gradient-space">
             Ready to transform your digital strategy?
           </h2>
           

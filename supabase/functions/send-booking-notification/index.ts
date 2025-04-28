@@ -21,6 +21,9 @@ serve(async (req) => {
     console.log(`New booking request from ${name} (${email})`)
     console.log(`Company: ${company}`)
     console.log(`Message: ${message}`)
+    
+    // Would integrate with an email service here to send to peter@biggravity.com
+    console.log(`Notification would be sent to peter@biggravity.com`)
 
     // Store in database
     const supabaseClient = createClient(

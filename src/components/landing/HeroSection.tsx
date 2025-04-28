@@ -49,7 +49,7 @@ const HeroSection: React.FC = () => {
             </motion.span>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-display tracking-tight leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-6 font-display tracking-tight leading-tight">
             Empowering brands to reach the <span className="text-brand-green">Korean</span> market
           </h1>
           
