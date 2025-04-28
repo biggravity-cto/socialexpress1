@@ -29,60 +29,8 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen">
-      <div className="relative overflow-hidden bg-gradient-to-b from-[#0a0a14] to-[#1c1c2e]">
-        {/* Decorative elements */}
-        <motion.div
-          className="absolute inset-0 -z-10 overflow-hidden"
-          style={{ opacity, y: backgroundY }}
-        >
-          {/* Animated background elements with space-inspired design */}
-          <motion.div 
-            animate={{ 
-              x: [0, 10, 0], 
-              y: [0, 15, 0],
-              opacity: [0.3, 0.5, 0.3]
-            }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: 20,
-              ease: "easeInOut"
-            }}
-            className="absolute top-0 right-[10%] w-96 h-96 rounded-full blur-[100px] bg-ocean-500/20"
-          />
-          <motion.div 
-            animate={{ 
-              x: [0, -10, 0], 
-              y: [0, 10, 0],
-              opacity: [0.2, 0.4, 0.2]
-            }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: 15,
-              ease: "easeInOut",
-              delay: 2
-            }}
-            className="absolute top-[20%] left-[5%] w-80 h-80 rounded-full blur-[100px] bg-purple-500/20"
-          />
-          <motion.div 
-            animate={{ 
-              x: [0, 15, 0], 
-              y: [0, -10, 0],
-              opacity: [0.3, 0.6, 0.3]
-            }}
-            transition={{ 
-              repeat: Infinity, 
-              duration: 18,
-              ease: "easeInOut",
-              delay: 5
-            }}
-            className="absolute bottom-[20%] right-[15%] w-64 h-64 rounded-full blur-[100px] bg-blue-400/30"
-          />
-          
-          {/* Stars effect */}
-          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?q=80&w=2672&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover opacity-10"></div>
-        </motion.div>
-        
+    <div className="min-h-screen bg-white">
+      <div className="relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -98,6 +46,7 @@ const Index = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
+          className="bg-gray-50"
         >
           <PillarsSection />
         </motion.div>
@@ -108,6 +57,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="packages"
+          className="bg-white"
         >
           <PackagesSection />
         </motion.div>
@@ -118,6 +68,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="testimonials"
+          className="bg-gray-50"
         >
           <TestimonialsSection />
         </motion.div>
@@ -128,6 +79,7 @@ const Index = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true, margin: "-10%" }}
           id="process"
+          className="bg-white"
         >
           <ProcessSection />
         </motion.div>
@@ -149,4 +101,3 @@ const Index = () => {
 };
 
 export default Index;
-

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { X, Sparkles, User } from 'lucide-react';
+import { X, CalendarDays } from 'lucide-react';
 import LogoComponent from './LogoComponent';
 
 interface MobileMenuProps {
@@ -15,18 +15,12 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ 
   isMenuOpen, 
   setIsMenuOpen, 
-  scrollToSection,
-  setIsModalOpen
+  scrollToSection
 }) => {
   if (!isMenuOpen) return null;
   
   const handleMenuItemClick = (sectionId: string) => {
     scrollToSection(sectionId);
-    setIsMenuOpen(false);
-  };
-  
-  const handleEarlyAccessClick = () => {
-    setIsModalOpen(true);
     setIsMenuOpen(false);
   };
   
@@ -48,34 +42,31 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           
           <div className="flex flex-col space-y-8 flex-grow">
             {[
-              {label: "Features", id: "features"},
-              {label: "Pricing", id: "pricing"},
-              {label: "Success Stories", id: "testimonials"},
-              {label: "FAQ", id: "faq"}
+              {label: "About", to: "/about"},
+              {label: "Offerings", to: "/offerings"},
+              {label: "Case Studies", to: "/case-studies"},
+              {label: "Team", to: "/team"},
+              {label: "Blog", to: "/blog"}
             ].map((item) => (
-              <button 
-                key={item.id}
-                onClick={() => handleMenuItemClick(item.id)}
-                className="text-xl font-medium text-gray-800 hover:text-ocean-600 py-2 text-left"
+              <Link 
+                key={item.label}
+                to={item.to}
+                onClick={() => setIsMenuOpen(false)}
+                className="text-xl font-medium text-gray-800 hover:text-brand-green py-2 text-left"
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
           </div>
           
           <div className="mt-auto pt-6 border-t border-gray-100 space-y-4 pb-10">
-            <Button 
-              className="w-full py-6 text-base bg-ocean-600 hover:bg-ocean-700"
-              size="lg"
-              onClick={handleEarlyAccessClick}
-            >
-              <Sparkles className="mr-2 h-5 w-5" /> Request Early Access
-            </Button>
-            
-            <Link to="/auth" className="w-full block" onClick={() => setIsMenuOpen(false)}>
-              <Button variant="outline" className="w-full py-6 text-base" size="lg">
-                <User className="h-5 w-5 mr-2" />
-                Demo Login
+            <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+              <Button 
+                className="w-full py-6 text-base bg-gradient-to-r from-brand-green to-brand-secondary hover:opacity-90 text-gray-900"
+                size="lg"
+              >
+                <CalendarDays className="mr-2 h-5 w-5" />
+                Book a Strategy Call
               </Button>
             </Link>
           </div>

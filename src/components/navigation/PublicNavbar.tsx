@@ -1,19 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import EarlyAccessModal from '@/components/landing/EarlyAccessModal';
 import LogoComponent from './LogoComponent';
 import NavigationLinks from './NavigationLinks';
-import NavbarActions from './NavbarActions';
-import MobileMenu from './MobileMenu';
 import { Button } from '@/components/ui/button';
-import { AlignJustify, Sparkles } from 'lucide-react';
+import { AlignJustify, CalendarDays } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import MobileMenu from './MobileMenu';
 
 const PublicNavbar = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +45,7 @@ const PublicNavbar = () => {
   const navbarClasses = `w-full z-40 transition-all duration-300 ${
     isScrolled 
       ? 'bg-white shadow-md py-3' 
-      : 'bg-white border-b border-gray-200 py-4'
+      : 'bg-white border-b border-gray-100 py-4'
   }`;
 
   return (
@@ -60,17 +58,15 @@ const PublicNavbar = () => {
           </div>
           
           <div className="flex items-center gap-2">
-            {isMobile && (
-              <Button 
-                className="bg-ocean-600 hover:bg-ocean-700 font-medium text-xs px-3 h-8"
-                onClick={() => setIsModalOpen(true)}
-              >
-                <Sparkles className="mr-1 h-3 w-3" /> Early Access
-              </Button>
-            )}
-            
             {!isMobile && (
-              <NavbarActions onEarlyAccessClick={() => setIsModalOpen(true)} />
+              <Link to="/contact">
+                <Button 
+                  className="bg-gradient-to-r from-brand-green to-brand-secondary text-gray-900 hover:opacity-90 font-medium px-4 py-2"
+                >
+                  <CalendarDays className="mr-2 h-4 w-4" />
+                  Book a Call
+                </Button>
+              </Link>
             )}
             
             {isMobile && (
@@ -91,10 +87,8 @@ const PublicNavbar = () => {
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         scrollToSection={scrollToSection}
-        setIsModalOpen={setIsModalOpen}
+        setIsModalOpen={() => {}}
       />
-      
-      <EarlyAccessModal open={isModalOpen} onOpenChange={setIsModalOpen} />
     </>
   );
 };

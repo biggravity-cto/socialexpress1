@@ -8,6 +8,7 @@ import Offerings from '@/pages/Offerings';
 import CaseStudies from '@/pages/CaseStudies';
 import Team from '@/pages/Team';
 import Blog from '@/pages/Blog';
+import Contact from '@/pages/Contact';
 import NotFound from '@/pages/NotFound';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/team" element={<Team />} />
           <Route path="/blog" element={<Blog />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

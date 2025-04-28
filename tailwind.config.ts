@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
@@ -98,6 +99,7 @@ const config = {
         brand: {
           primary: "#95D4E3",    // Primary brand color
           secondary: "#3EDBB2",  // Secondary brand color
+          green: "#3BFFCB",      // Brand green
         },
       },
       borderRadius: {
