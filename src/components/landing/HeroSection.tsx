@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -18,14 +19,24 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center space-y-8"
         >
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className="text-4xl font-bold tracking-widest text-brand-primary"
-          >
-            bg
-          </motion.div>
+          <div className="relative inline-block">
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              className="text-6xl font-medium tracking-tight text-brand-primary inline-block"
+            >
+              b
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="text-3xl font-medium tracking-tight text-brand-primary absolute -top-3 -right-4"
+            >
+              g
+            </motion.span>
+          </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-display tracking-tight leading-tight">
             Empowering brands to reach the <span className="text-brand-green">Korean</span> market

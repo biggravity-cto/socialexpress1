@@ -9,6 +9,7 @@ import CaseStudies from '@/pages/CaseStudies';
 import Team from '@/pages/Team';
 import Blog from '@/pages/Blog';
 import Contact from '@/pages/Contact';
+import BookCall from '@/pages/BookCall';
 import NotFound from '@/pages/NotFound';
 import BrandGuidelines from '@/pages/BrandGuidelines';
 import { Toaster } from '@/components/ui/toaster';
@@ -25,6 +26,7 @@ function App() {
           <Route path="/team" element={<Team />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/book-call" element={<BookCall />} />
           <Route path="/brand-guidelines" element={<BrandGuidelines />} />
           <Route path="*" element={<NotFound />} />
         </Route>

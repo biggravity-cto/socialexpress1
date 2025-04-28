@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LogoComponent from './LogoComponent';
@@ -62,7 +61,7 @@ const PublicNavbar = () => {
           
           <div className="flex items-center gap-2">
             {!isMobile && (
-              <Link to="/contact">
+              <Link to="/book-call">
                 <Button 
                   className="bg-gradient-to-r from-brand-green to-brand-primary text-space-dark hover:opacity-90 font-medium px-4 py-2"
                 >
