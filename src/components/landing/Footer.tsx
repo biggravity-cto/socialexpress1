@@ -19,8 +19,8 @@ const footerLinks = [
       { name: "Guides", url: "/guides" },
       { name: "Help Center", url: "#" },
       { name: "Contact", url: "#" },
-      { name: "Privacy Policy", url: "#" },
-      { name: "Terms of Service", url: "#" }
+      { name: "Brand Guidelines", url: "/brand-guidelines" },
+      { name: "Privacy Policy", url: "#" }
     ]
   },
   {

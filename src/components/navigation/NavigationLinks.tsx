@@ -32,7 +32,7 @@ const NavLink: React.FC<NavLinkProps> = ({ label, to }) => {
     >
       <Link 
         to={to} 
-        className="text-gray-300 hover:text-brand-green relative group"
+        className="text-space-dark hover:text-brand-green relative group font-medium"
       >
         {label}
         <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green group-hover:w-full transition-all duration-300" />
