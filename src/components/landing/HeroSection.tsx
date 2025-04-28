@@ -1,5 +1,5 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarDays } from 'lucide-react';
@@ -7,7 +7,7 @@ import OrbitalAnimation from '@/components/ui/OrbitalAnimation';
 import { Link } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
-  const bgLogoRef = useRef<HTMLDivElement>(null);
+  const logoRef = useRef<HTMLDivElement>(null);
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-space-dark">
@@ -27,28 +27,30 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center space-y-8"
         >
-          <div className="relative inline-block" ref={bgLogoRef}>
-            {/* Orbital animation container positioned around the bg logo */}
-            <div className="absolute inset-0 -m-12 pointer-events-none">
+          <div className="relative inline-block" ref={logoRef}>
+            {/* Orbital animation container positioned around the logo */}
+            <div className="absolute inset-0 -m-8 sm:-m-10 pointer-events-none">
               <OrbitalAnimation />
             </div>
             
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1 }}
-              className="text-6xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif"
-            >
-              b
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="text-3xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary absolute -top-3 -right-4 bg-clip-text text-transparent font-serif"
-            >
-              g
-            </motion.span>
+            <div className="relative">
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+                className="text-6xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif"
+              >
+                g
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.2 }}
+                className="text-3xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary absolute -top-3 -right-4 bg-clip-text text-transparent font-serif"
+              >
+                b
+              </motion.span>
+            </div>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-white mb-6 font-display tracking-tight leading-tight">

@@ -16,12 +16,13 @@ const TeamMember: React.FC<TeamMemberProps> = ({ name, role, description, index 
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true, margin: "-50px" }}
-      className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+      className="bg-gradient-to-br from-white to-gray-100 rounded-xl p-8 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
     >
-      <div className="h-24 w-24 bg-gradient-to-br from-brand-primary to-brand-green rounded-full mx-auto mb-6"></div>
-      <h3 className="text-xl font-bold text-space-dark mb-1 font-display text-center">{name}</h3>
-      <p className="text-brand-primary font-medium mb-4 text-center">{role}</p>
-      <p className="text-gray-600 text-center">{description}</p>
+      <div className="mb-6 border-b border-gray-200 pb-4">
+        <h3 className="text-xl font-bold text-space-dark mb-1 font-display">{name}</h3>
+        <p className="text-brand-primary font-medium">{role}</p>
+      </div>
+      <p className="text-gray-600">{description}</p>
     </motion.div>
   );
 };
@@ -44,8 +45,8 @@ const TeamSection: React.FC = () => {
       description: "As Big Gravity's CTO, Brad develops AI-powered solutions that help hotels and resorts unlock new revenue opportunities in the Korean market. His technology streamlines operations and enhances guest experiences."
     },
     {
-      name: "Woohyung",
-      role: "Market Intelligence",
+      name: "Woohyung Hong",
+      role: "Director of Market Research",
       description: "Woohyung worked previously in hospitality as research partner in a major Korean travel agency. His focus at Big Gravity is strategic market intelligence for our clients. He lives in Seoul and enjoys international travel."
     }
   ];
@@ -64,7 +65,7 @@ const TeamSection: React.FC = () => {
               Our Experts
             </span>
             <h2 className="text-3xl md:text-4xl font-bold mb-6 font-display leading-tight bg-gradient-to-r from-space-dark to-space-blue bg-clip-text text-transparent">
-              The TEAM
+              The Team
             </h2>
             <p className="text-xl text-gray-600">
               Meet our team of Korean market specialists with decades of experience in hospitality, marketing, and technology.

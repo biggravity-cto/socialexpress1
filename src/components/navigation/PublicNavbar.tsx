@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { AlignJustify, CalendarDays } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import MobileMenu from './MobileMenu';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const PublicNavbar = () => {
   const isMobile = useIsMobile();
@@ -56,6 +57,26 @@ const PublicNavbar = () => {
       <header className={navbarClasses}>
         <div className="container flex items-center justify-between">
           <div className="flex items-center">
+            <AnimatePresence>
+              {isScrolled && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="mr-2"
+                >
+                  <div className="relative">
+                    <span className="text-3xl font-medium bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif">
+                      g
+                    </span>
+                    <span className="text-xl font-medium bg-gradient-to-r from-brand-green to-brand-primary absolute -top-2 -right-2 bg-clip-text text-transparent font-serif">
+                      b
+                    </span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <LogoComponent isScrolled={isScrolled} />
             {!isMobile && <NavigationLinks scrollToSection={scrollToSection} isScrolled={isScrolled} />}
           </div>

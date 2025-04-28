@@ -18,8 +18,8 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Index />} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/offerings" element={<Offerings />} />
           <Route path="/case-studies" element={<CaseStudies />} />

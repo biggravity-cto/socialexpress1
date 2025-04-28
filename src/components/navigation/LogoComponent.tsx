@@ -14,7 +14,7 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled }) => {
   return (
     <Link to="/" className="flex-shrink-0 mr-4">
       <motion.span 
-        className={`${textColorClass} text-xl sm:text-2xl md:text-3xl font-display font-semibold tracking-[0.2em] rounded-md`}
+        className={`${textColorClass} text-xl md:text-2xl font-display font-semibold tracking-[0.2em] rounded-md`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
