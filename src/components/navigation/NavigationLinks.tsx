@@ -1,39 +1,39 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-interface NavigationLinksProps {
-  scrollToSection: (sectionId: string) => void;
-}
-
-const NavigationLinks: React.FC<NavigationLinksProps> = ({ scrollToSection }) => {
+const NavigationLinks: React.FC = () => {
   return (
     <div className="hidden md:flex items-center space-x-6">
-      <NavLink label="Features" sectionId="features" scrollToSection={scrollToSection} />
-      <NavLink label="Pricing" sectionId="pricing" scrollToSection={scrollToSection} />
-      <NavLink label="Success Stories" sectionId="testimonials" scrollToSection={scrollToSection} />
-      <NavLink label="FAQ" sectionId="faq" scrollToSection={scrollToSection} />
+      <NavLink label="About" to="/about" />
+      <NavLink label="Offerings" to="/offerings" />
+      <NavLink label="Case Studies" to="/case-studies" />
+      <NavLink label="Team" to="/team" />
+      <NavLink label="Blog" to="/blog" />
     </div>
   );
 };
 
 interface NavLinkProps {
   label: string;
-  sectionId: string;
-  scrollToSection: (sectionId: string) => void;
+  to: string;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ label, sectionId, scrollToSection }) => {
+const NavLink: React.FC<NavLinkProps> = ({ label, to }) => {
   return (
-    <motion.button 
-      onClick={() => scrollToSection(sectionId)} 
-      className="text-gray-600 hover:text-gray-900 relative group"
+    <motion.div
       whileHover={{ scale: 1.05 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
     >
-      {label}
-      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-ocean-500 group-hover:w-full transition-all duration-300"></span>
-    </motion.button>
+      <Link 
+        to={to} 
+        className="text-gray-200 hover:text-white relative group"
+      >
+        {label}
+        <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-primary group-hover:w-full transition-all duration-300" />
+      </Link>
+    </motion.div>
   );
 };
 

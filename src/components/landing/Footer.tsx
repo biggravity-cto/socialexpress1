@@ -4,33 +4,32 @@ import { Facebook, Twitter, Instagram, Linkedin, Mail, MapPin, Phone } from 'luc
 
 const footerLinks = [
   {
-    title: "Product",
+    title: "Explore",
     links: [
-      { name: "Features", url: "/features" },
-      { name: "Pricing", url: "/pricing" },
-      { name: "Integrations", url: "#" },
-      { name: "Updates", url: "#" },
-      { name: "API", url: "#" }
+      { name: "About", url: "/about" },
+      { name: "Offerings", url: "/offerings" },
+      { name: "Case Studies", url: "/case-studies" },
+      { name: "Team", url: "/team" },
+      { name: "Blog", url: "/blog" }
     ]
   },
   {
     title: "Resources",
     links: [
-      { name: "Blog", url: "/blog" },
       { name: "Guides", url: "/guides" },
-      { name: "Case Studies", url: "/case-studies" },
       { name: "Help Center", url: "#" },
-      { name: "Community", url: "#" }
+      { name: "Contact", url: "#" },
+      { name: "Privacy Policy", url: "#" },
+      { name: "Terms of Service", url: "#" }
     ]
   },
   {
-    title: "Company",
+    title: "Connect",
     links: [
-      { name: "About", url: "#" },
-      { name: "Customers", url: "#testimonials" },
-      { name: "Careers", url: "#" },
-      { name: "Contact", url: "#" },
-      { name: "Legal", url: "#" }
+      { name: "Facebook", url: "#" },
+      { name: "Twitter", url: "#" },
+      { name: "Instagram", url: "#" },
+      { name: "LinkedIn", url: "#" },
     ]
   }
 ];
@@ -52,56 +51,57 @@ const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white pt-16 border-t border-gray-100">
+    <footer className="bg-[#0a0a14] pt-16 border-t border-gray-800">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center mb-6">
-              <span className="font-bold text-2xl tracking-tight text-resort-800">Guest<span className="text-ocean-600">Flow</span></span>
+              <span className="font-display font-bold text-2xl tracking-tight text-white">Big Gravity</span>
             </Link>
-            <p className="text-resort-600 mb-6 max-w-md">
-              The AI-powered digital marketing platform built exclusively for hotels, resorts, and hospitality brands to delight guests and drive revenue.
+            <p className="text-gray-400 mb-6 max-w-md">
+              Global digital marketing excellence for luxury hospitality brands. Transforming guest experiences through data-driven strategies and cultural expertise.
             </p>
+            
             <div className="flex space-x-4 mb-6">
-              <a href="#" className="bg-gray-100 p-2 rounded-full text-resort-700 hover:bg-ocean-100 hover:text-ocean-600 transition-colors">
+              <a href="#" className="bg-gray-900 p-2 rounded-full text-gray-500 hover:bg-gray-700 hover:text-white transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="bg-gray-100 p-2 rounded-full text-resort-700 hover:bg-ocean-100 hover:text-ocean-600 transition-colors">
+              <a href="#" className="bg-gray-900 p-2 rounded-full text-gray-500 hover:bg-gray-700 hover:text-white transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="bg-gray-100 p-2 rounded-full text-resort-700 hover:bg-ocean-100 hover:text-ocean-600 transition-colors">
+              <a href="#" className="bg-gray-900 p-2 rounded-full text-gray-500 hover:bg-gray-700 hover:text-white transition-colors">
                 <Instagram size={20} />
               </a>
-              <a href="#" className="bg-gray-100 p-2 rounded-full text-resort-700 hover:bg-ocean-100 hover:text-ocean-600 transition-colors">
+              <a href="#" className="bg-gray-900 p-2 rounded-full text-gray-500 hover:bg-gray-700 hover:text-white transition-colors">
                 <Linkedin size={20} />
               </a>
             </div>
             <div className="space-y-3">
               <div className="flex items-start">
-                <Mail className="h-5 w-5 text-ocean-500 mt-0.5 mr-3" />
-                <span className="text-resort-600">contact@guestflow.com</span>
+                <Mail className="h-5 w-5 text-brand-primary mt-0.5 mr-3" />
+                <span className="text-gray-400">contact@biggravity.agency</span>
               </div>
               <div className="flex items-start">
-                <Phone className="h-5 w-5 text-ocean-500 mt-0.5 mr-3" />
-                <span className="text-resort-600">+1 (800) 123-4567</span>
+                <Phone className="h-5 w-5 text-brand-primary mt-0.5 mr-3" />
+                <span className="text-gray-400">+1 (800) 123-4567</span>
               </div>
               <div className="flex items-start">
-                <MapPin className="h-5 w-5 text-ocean-500 mt-0.5 mr-3" />
-                <span className="text-resort-600">Phoenix, AZ</span>
+                <MapPin className="h-5 w-5 text-brand-primary mt-0.5 mr-3" />
+                <span className="text-gray-400">Phoenix, AZ</span>
               </div>
             </div>
           </div>
           
           {footerLinks.map((column, index) => (
             <div key={index}>
-              <h3 className="font-semibold text-resort-800 mb-6">{column.title}</h3>
+              <h3 className="font-semibold text-white mb-6">{column.title}</h3>
               <ul className="space-y-3">
                 {column.links.map((link, linkIndex) => (
                   <li key={linkIndex}>
                     <a 
                       href={link.url} 
                       onClick={(e) => handleAnchorClick(e, link.url)}
-                      className="text-resort-600 hover:text-ocean-600 transition-colors"
+                      className="text-gray-400 hover:text-brand-primary transition-colors"
                     >
                       {link.name}
                     </a>
@@ -112,18 +112,18 @@ const Footer: React.FC = () => {
           ))}
         </div>
         
-        <div className="border-t border-gray-100 py-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-resort-500 text-sm mb-4 md:mb-0">
-            © {currentYear} GuestFlow. All rights reserved.
+        <div className="border-t border-gray-800 py-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-500 text-sm mb-4 md:mb-0">
+            © {currentYear} Big Gravity. All rights reserved.
           </p>
           <div className="flex space-x-6">
-            <a href="#" className="text-resort-500 hover:text-resort-900 transition-colors text-sm">
+            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
               Privacy Policy
             </a>
-            <a href="#" className="text-resort-500 hover:text-resort-900 transition-colors text-sm">
+            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
               Terms of Service
             </a>
-            <a href="#" className="text-resort-500 hover:text-resort-900 transition-colors text-sm">
+            <a href="#" className="text-gray-500 hover:text-white transition-colors text-sm">
               Cookie Policy
             </a>
           </div>
