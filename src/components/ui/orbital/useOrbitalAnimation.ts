@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useCanvas } from './useCanvas';
 import { Orbital } from './Orbital';
 import { Planet } from './Planet';
-import { Logo } from './Logo';
 import { CanvasConfig } from './types';
 
 export const useOrbitalAnimation = () => {
@@ -19,17 +18,14 @@ export const useOrbitalAnimation = () => {
     const config: CanvasConfig | null = resizeCanvas();
     if (!config) return;
     
-    // Reduce number of orbitals and planets for a more focused effect
-    const orbitals: Orbital[] = Array.from({ length: 4 }, () => new Orbital(config));
-    const planets: Planet[] = Array.from({ length: 2 }, () => new Planet(config));
+    // Create focused orbital effects around the bg text
+    const orbitals: Orbital[] = Array.from({ length: 6 }, () => new Orbital(config));
+    const planets: Planet[] = Array.from({ length: 3 }, () => new Planet(config));
     
     const animate = () => {
       if (!ctx || !canvas) return;
       
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Draw the logo in the background
-      Logo.draw(ctx, config.centerX, config.centerY);
       
       planets.forEach(planet => {
         planet.update(config.centerX, config.centerY);

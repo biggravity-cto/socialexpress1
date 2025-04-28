@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarDays } from 'lucide-react';
@@ -7,6 +7,8 @@ import OrbitalAnimation from '@/components/ui/OrbitalAnimation';
 import { Link } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
+  const bgLogoRef = useRef<HTMLDivElement>(null);
+
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-space-dark">
       {/* Animated gradient background */}
@@ -18,11 +20,6 @@ const HeroSection: React.FC = () => {
         }}
       />
       
-      {/* Orbital animation focused around the bg text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 md:block hidden">
-        <OrbitalAnimation />
-      </div>
-      
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -30,7 +27,12 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center space-y-8"
         >
-          <div className="relative inline-block">
+          <div className="relative inline-block" ref={bgLogoRef}>
+            {/* Orbital animation container positioned around the bg logo */}
+            <div className="absolute inset-0 -m-12 pointer-events-none">
+              <OrbitalAnimation />
+            </div>
+            
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

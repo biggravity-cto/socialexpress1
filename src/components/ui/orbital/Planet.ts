@@ -13,12 +13,13 @@ export class Planet implements OrbitalObject {
 
   constructor(config: CanvasConfig) {
     const { centerX, centerY } = config;
-    this.distance = Math.random() * 200 + 150;
+    // Smaller orbit radius to focus around the bg text
+    this.distance = Math.random() * 100 + 50;
     this.angle = Math.random() * Math.PI * 2;
     this.x = centerX + Math.cos(this.angle) * this.distance;
     this.y = centerY + Math.sin(this.angle) * this.distance;
-    this.size = Math.random() * 8 + 5;
-    this.speed = (Math.random() * 0.003 + 0.001) * (Math.random() > 0.5 ? 1 : -1);
+    this.size = Math.random() * 6 + 3;
+    this.speed = (Math.random() * 0.006 + 0.002) * (Math.random() > 0.5 ? 1 : -1);
     this.color = Math.random() > 0.5 ? '#3BFFCB' : '#95D4E3';
     this.rotationSpeed = Math.random() * 0.05 + 0.01;
   }

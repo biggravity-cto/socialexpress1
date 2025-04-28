@@ -14,15 +14,16 @@ export class Orbital implements OrbitalObject {
 
   constructor(config: CanvasConfig) {
     const { centerX, centerY } = config;
-    this.distance = Math.random() * 150 + 100;
+    // Smaller radius to orbit closely around the bg text
+    this.distance = Math.random() * 80 + 40; 
     this.angle = Math.random() * Math.PI * 2;
     this.x = centerX + Math.cos(this.angle) * this.distance;
     this.y = centerY + Math.sin(this.angle) * this.distance;
     this.size = Math.random() * 3 + 1;
-    this.speed = (Math.random() * 0.01 + 0.005) * (Math.random() > 0.5 ? 1 : -1);
+    this.speed = (Math.random() * 0.02 + 0.01) * (Math.random() > 0.5 ? 1 : -1);
     this.color = Math.random() > 0.7 ? '#3BFFCB' : '#95D4E3';
     this.trail = [];
-    this.trailLength = Math.floor(Math.random() * 15) + 5;
+    this.trailLength = Math.floor(Math.random() * 15) + 10;
   }
 
   update(centerX: number, centerY: number) {
