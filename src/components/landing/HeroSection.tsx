@@ -24,22 +24,18 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
-              className="flex flex-wrap justify-center gap-4"
+              className="text-2xl font-semibold text-white"
             >
-              <span className="text-brand-primary">한국</span>
-              <span className="text-brand-green">中国</span>
-              <span className="text-white">Việt Nam</span>
-              <span className="text-brand-primary">日本</span>
-              <span className="text-brand-green">新加坡</span>
+              AI Marketing & Brand Management
             </motion.div>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-display tracking-tight leading-tight">
-            Empowering <span className="text-brand-green">LUXURY</span> hospitality brands
+            Empowering brands to reach the <span className="text-brand-green">Korean</span> market
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Understand, attract, and <span className="text-brand-green font-bold">PROFIT FROM</span> the Korean tourist market
+            Understand, attract, and <span className="text-brand-green font-bold">delight</span> Korean tourists
           </p>
           
           <motion.div 
@@ -64,9 +60,6 @@ const HeroSection: React.FC = () => {
                 {[1,2,3,4,5].map((star) => (
                   <span key={star} className="text-brand-green">★</span>
                 ))}
-              </span>
-              <span className="text-gray-400 text-sm">
-                50+ Innovative Companies
               </span>
             </div>
           </div>
