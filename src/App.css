@@ -36,6 +36,38 @@
   padding: 2em;
 }
 
+/* Section styling */
+.section-light {
+  background-color: #f8f9fa;
+  color: #0A0E1C;
+}
+
+.section-dark {
+  background-color: #0A0E1C;
+  color: #ffffff;
+}
+
+/* Text contrast helpers */
+.text-on-light {
+  color: #0A0E1C;
+}
+
+.text-on-dark {
+  color: #ffffff;
+}
+
+/* Pillar card styling */
+.pillar-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.pillar-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
 .read-the-docs {
   color: #888;
 }

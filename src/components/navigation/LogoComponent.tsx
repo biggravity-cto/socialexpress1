@@ -8,8 +8,8 @@ interface LogoComponentProps {
 }
 
 const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled }) => {
-  // Always ensure good contrast based on scroll position
-  const textColorClass = isScrolled ? "text-white" : "text-space-dark";
+  // Always ensure good contrast - white text when on dark background (not scrolled)
+  const textColorClass = isScrolled ? "text-space-dark" : "text-white";
 
   return (
     <Link to="/" className="flex-shrink-0 mr-4">

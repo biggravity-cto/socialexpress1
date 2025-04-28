@@ -4,11 +4,13 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarDays } from 'lucide-react';
 import GravityVortex from '@/components/ui/GravityVortex';
+import OrbitalAnimation from '@/components/ui/OrbitalAnimation';
 
 const HeroSection: React.FC = () => {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-space-dark">
       <GravityVortex />
+      <OrbitalAnimation />
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -17,10 +19,23 @@ const HeroSection: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center space-y-8"
         >
-          <span className="inline-block text-brand-green text-lg font-medium tracking-wider mb-4">
-            AI-POWERED TRANSFORMATION
-            <span className="ml-2 text-sm align-text-top">b<sup>g</sup></span>
-          </span>
+          <div className="inline-block text-brand-green text-lg font-medium tracking-wider mb-4">
+            <motion.span 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              AI-POWERED TRANSFORMATION
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="ml-2 text-sm align-text-top"
+            >
+              b<sup>g</sup>
+            </motion.span>
+          </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 font-display tracking-tight leading-tight">
             Helping brands reach Asian markets

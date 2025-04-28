@@ -34,89 +34,154 @@ const GravityVortex: React.FC = () => {
       '#FFFFFF'  // white for stars
     ];
 
-    const particles: Particle[] = [];
-    const particleCount = 700; // Increased count for more density
+    // Create linear gradient for wormhole edges
+    const gradientRadius = Math.max(canvas.width, canvas.height) * 0.5;
+    const gradient = ctx.createRadialGradient(
+      centerX, centerY, 0,
+      centerX, centerY, gradientRadius
+    );
+    gradient.addColorStop(0, 'rgba(10, 14, 28, 0)');
+    gradient.addColorStop(0.7, 'rgba(10, 14, 28, 0.4)');
+    gradient.addColorStop(1, 'rgba(10, 14, 28, 0.9)');
 
-    class Particle {
+    const stars: Star[] = [];
+    const starCount = 800; // Increased for more stars
+    const ringParticles: RingParticle[] = [];
+    const ringParticleCount = 200;
+
+    class Star {
       x: number;
       y: number;
       z: number;
+      prevZ: number;
       size: number;
       color: string;
       speed: number;
       opacity: number;
 
       constructor() {
-        // Create particles in 3D space ahead of viewer
-        this.z = Math.random() * 1200 + 200; // Starting further out
-        
-        // Random distribution around center axis
+        this.z = Math.random() * 2000 + 500; // Stars start far away
         const angle = Math.random() * Math.PI * 2;
-        const radius = Math.random() * (400 - this.z / 10); // Particles closer to center as they get closer to viewer
-        this.x = centerX + Math.cos(angle) * radius;
-        this.y = centerY + Math.sin(angle) * radius;
+        const radius = Math.random() * canvas.width * 2;
         
-        this.size = Math.random() * 3 + 0.5;
+        this.x = centerX + Math.cos(angle) * (radius / (this.z * 0.001));
+        this.y = centerY + Math.sin(angle) * (radius / (this.z * 0.001));
+        this.prevZ = this.z;
+        this.size = Math.random() * 2 + 1;
         this.color = colors[Math.floor(Math.random() * colors.length)];
-        this.speed = Math.random() * 6 + 8; // Faster movement
-        this.opacity = Math.random() * 0.7 + 0.3;
+        this.speed = Math.random() * 15 + 5; // Faster speed for wormhole effect
+        this.opacity = Math.random() * 0.8 + 0.2;
       }
 
       update() {
-        // Move particles toward viewer (decrease z)
+        this.prevZ = this.z;
         this.z -= this.speed;
         
-        // Particles get larger and faster as they approach
-        this.size = Math.max(0.5, (1000 - this.z) / 150);
-        
-        // Reset particles that reach the viewer
         if (this.z < 0) {
-          this.z = 1200;
+          this.z = 2000;
           const angle = Math.random() * Math.PI * 2;
-          const radius = Math.random() * 300;
-          this.x = centerX + Math.cos(angle) * radius;
-          this.y = centerY + Math.sin(angle) * radius;
-          this.opacity = Math.random() * 0.7 + 0.3;
+          const radius = Math.random() * canvas.width * 2;
+          
+          this.x = centerX + Math.cos(angle) * (radius / (this.z * 0.001));
+          this.y = centerY + Math.sin(angle) * (radius / (this.z * 0.001));
+          this.prevZ = this.z;
         }
         
-        // Calculate perspective
-        const perspective = 800 / (800 + this.z);
-        
-        // Update position based on perspective
-        this.x = centerX + (this.x - centerX) * perspective;
-        this.y = centerY + (this.y - centerY) * perspective;
+        // Update position based on z-change (perspective)
+        const factor = this.speed / this.z;
+        this.x = this.x + (this.x - centerX) * factor;
+        this.y = this.y + (this.y - centerY) * factor;
       }
 
       draw() {
+        const sx = (this.x - centerX) * (800 / this.prevZ) + centerX;
+        const sy = (this.y - centerY) * (800 / this.prevZ) + centerY;
+        const ex = (this.x - centerX) * (800 / this.z) + centerX;
+        const ey = (this.y - centerY) * (800 / this.z) + centerY;
+        
         if (!ctx) return;
         
-        const brightness = Math.min(1, (1000 - this.z) / 1000);
+        const alpha = Math.min(1, 800 / this.z);
         
-        // Draw star/particle with glow effect
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        
-        if (this.color === '#FFFFFF') {
-          // Stars
-          ctx.fillStyle = `rgba(255, 255, 255, ${brightness * this.opacity})`;
-        } else {
-          // Create gradient for particles
-          const gradient = ctx.createRadialGradient(
-            this.x, this.y, 0, 
-            this.x, this.y, this.size * 2
-          );
-          gradient.addColorStop(0, this.color);
-          gradient.addColorStop(1, 'rgba(10, 14, 28, 0)');
-          ctx.fillStyle = gradient;
+        // Draw star streak
+        if (this.z < 1500) { // Only draw streaks for closer stars
+          ctx.beginPath();
+          ctx.moveTo(sx, sy);
+          ctx.lineTo(ex, ey);
+          ctx.strokeStyle = this.color;
+          ctx.lineWidth = this.size * (alpha * 0.5);
+          ctx.globalAlpha = alpha * this.opacity * 0.8;
+          ctx.stroke();
         }
         
+        // Draw star point
+        ctx.beginPath();
+        ctx.arc(ex, ey, this.size * alpha, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = alpha * this.opacity;
         ctx.fill();
+        
+        ctx.globalAlpha = 1;
       }
     }
 
-    // Initialize particles
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
+    class RingParticle {
+      angle: number;
+      radius: number;
+      z: number;
+      size: number;
+      color: string;
+      speed: number;
+      opacity: number;
+      
+      constructor() {
+        this.angle = Math.random() * Math.PI * 2;
+        this.radius = Math.random() * 200 + 100;
+        this.z = Math.random() * 1500 + 500;
+        this.size = Math.random() * 3 + 1;
+        this.color = colors[Math.floor(Math.random() * (colors.length - 1))]; // No white for ring particles
+        this.speed = Math.random() * 10 + 5;
+        this.opacity = Math.random() * 0.5 + 0.3;
+      }
+      
+      update() {
+        this.z -= this.speed;
+        
+        if (this.z < 0) {
+          this.z = 1500 + Math.random() * 500;
+        }
+      }
+      
+      draw() {
+        if (!ctx) return;
+        
+        // Calculate perspective scale based on z-distance
+        const perspective = 800 / this.z;
+        const scaledRadius = this.radius * perspective;
+        
+        const x = centerX + Math.cos(this.angle) * scaledRadius;
+        const y = centerY + Math.sin(this.angle) * scaledRadius;
+        
+        const alpha = Math.min(1, 800 / this.z) * this.opacity;
+        
+        ctx.beginPath();
+        ctx.arc(x, y, this.size * perspective, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = alpha;
+        ctx.fill();
+        
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    // Initialize stars
+    for (let i = 0; i < starCount; i++) {
+      stars.push(new Star());
+    }
+    
+    // Initialize ring particles
+    for (let i = 0; i < ringParticleCount; i++) {
+      ringParticles.push(new RingParticle());
     }
 
     // Animation loop
@@ -126,9 +191,19 @@ const GravityVortex: React.FC = () => {
       // Clear canvas with slight trail effect
       ctx.fillStyle = 'rgba(10, 14, 28, 0.3)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw tunnel effect (darker edges)
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw particles
-      particles.forEach(particle => {
+      // Update and draw stars
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+      
+      // Update and draw ring particles
+      ringParticles.forEach(particle => {
         particle.update();
         particle.draw();
       });
@@ -153,9 +228,9 @@ const GravityVortex: React.FC = () => {
           className="absolute inset-0 pointer-events-none"
           animate={{
             background: [
-              'radial-gradient(circle at 50% 50%, rgba(59,255,203,0.15) 0%, rgba(10,14,28,0.95) 70%)',
-              'radial-gradient(circle at 50% 50%, rgba(59,255,203,0.2) 0%, rgba(10,14,28,0.9) 75%)',
-              'radial-gradient(circle at 50% 50%, rgba(59,255,203,0.15) 0%, rgba(10,14,28,0.95) 70%)',
+              'radial-gradient(circle at 50% 50%, rgba(59,255,203,0.1) 0%, rgba(10,14,28,0.95) 70%)',
+              'radial-gradient(circle at 50% 50%, rgba(59,255,203,0.15) 0%, rgba(10,14,28,0.9) 75%)',
+              'radial-gradient(circle at 50% 50%, rgba(59,255,203,0.1) 0%, rgba(10,14,28,0.95) 70%)',
             ]
           }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}

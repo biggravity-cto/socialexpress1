@@ -27,10 +27,10 @@ interface NavLinkProps {
 }
 
 const NavLink: React.FC<NavLinkProps> = ({ label, to, isScrolled }) => {
-  // Determine text color based on scroll position
+  // White text when on hero (not scrolled), dark text when scrolled
   const textColorClass = isScrolled 
-    ? "text-white" 
-    : "text-space-dark";
+    ? "text-space-dark" 
+    : "text-white";
 
   return (
     <motion.div
