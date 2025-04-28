@@ -144,6 +144,14 @@ const config = {
         shimmer: {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
+        },
+        gradient: {
+          '0%, 100%': {
+            backgroundPosition: '0% 50%'
+          },
+          '50%': {
+            backgroundPosition: '100% 50%'
+          }
         }
       },
       animation: {
@@ -153,6 +161,7 @@ const config = {
         "float": "float 6s ease-in-out infinite",
         "pulse": "pulse 3s ease-in-out infinite",
         "shimmer": "shimmer 8s ease-in-out infinite",
+        'gradient-x': 'gradient 15s ease infinite',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

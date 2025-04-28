@@ -3,14 +3,24 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarDays } from 'lucide-react';
-import GravityVortex from '@/components/ui/GravityVortex';
 import OrbitalAnimation from '@/components/ui/OrbitalAnimation';
 
 const HeroSection: React.FC = () => {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-space-dark">
-      <GravityVortex />
-      <OrbitalAnimation />
+      {/* Animated gradient background */}
+      <div 
+        className="absolute inset-0 bg-gradient-to-r from-space-dark via-brand-primary/20 to-space-dark animate-gradient-x"
+        style={{
+          backgroundSize: '200% 200%',
+          animation: 'gradient 15s ease infinite',
+        }}
+      />
+      
+      {/* Orbital animation around the bg text */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <OrbitalAnimation />
+      </div>
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
@@ -24,7 +34,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1 }}
-              className="text-6xl font-medium tracking-tight text-brand-primary inline-block"
+              className="text-6xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent"
             >
               b
             </motion.span>
@@ -32,7 +42,7 @@ const HeroSection: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="text-3xl font-medium tracking-tight text-brand-primary absolute -top-3 -right-4"
+              className="text-3xl font-medium tracking-tight bg-gradient-to-r from-brand-green to-brand-primary absolute -top-3 -right-4 bg-clip-text text-transparent"
             >
               g
             </motion.span>
