@@ -3,7 +3,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-const NavigationLinks: React.FC = () => {
+interface NavigationLinksProps {
+  scrollToSection?: (sectionId: string) => void;
+}
+
+const NavigationLinks: React.FC<NavigationLinksProps> = ({ scrollToSection }) => {
   return (
     <div className="hidden md:flex items-center space-x-6">
       <NavLink label="About" to="/about" />
