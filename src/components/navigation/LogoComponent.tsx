@@ -45,7 +45,7 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
                 <span className="text-3xl font-bold text-space-dark font-serif absolute bottom-0 left-0">
                   g
                 </span>
-                <span className="text-2xl font-semibold text-space-dark font-serif absolute" style={{ bottom: '3px', left: '13px' }}>
+                <span className="text-2xl font-normal text-space-dark font-serif absolute" style={{ bottom: '2px', left: '14px' }}>
                   b
                 </span>
               </div>
@@ -74,7 +74,7 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
               <span className="text-3xl font-bold text-white font-serif absolute bottom-0 left-0">
                 g
               </span>
-              <span className="text-2xl font-semibold text-white font-serif absolute" style={{ bottom: '3px', left: '13px' }}>
+              <span className="text-2xl font-normal text-white font-serif absolute" style={{ bottom: '2px', left: '14px' }}>
                 b
               </span>
             </div>
