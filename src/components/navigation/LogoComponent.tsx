@@ -39,12 +39,12 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
           transition={{ duration: 0.3 }}
         >
           <div className="relative border border-gray-300 bg-transparent flex items-center justify-center" style={{ width: '40px', height: '40px' }}>
-            {/* Updated gb logo with proper alignment based on reference image */}
+            {/* Fixed gb logo with proper alignment based on reference image */}
             <div className="flex items-center justify-center relative">
               <span className="text-3xl font-bold text-space-dark font-serif">
                 g
               </span>
-              <span className="text-2xl font-bold text-space-dark absolute top-0 right-[8px] font-serif">
+              <span className="text-2xl font-bold text-space-dark absolute top-0 right-[11px] font-serif">
                 b
               </span>
             </div>
@@ -66,12 +66,12 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Updated gb logo with proper alignment based on reference image */}
+          {/* Fixed gb logo with proper alignment based on reference image */}
           <div className="flex items-center justify-center relative">
             <span className="text-3xl font-bold text-white font-serif">
               g
             </span>
-            <span className="text-2xl font-bold text-white absolute top-0 right-[8px] font-serif">
+            <span className="text-2xl font-bold text-white absolute top-0 right-[11px] font-serif">
               b
             </span>
           </div>
