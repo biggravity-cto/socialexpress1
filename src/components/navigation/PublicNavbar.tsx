@@ -46,8 +46,8 @@ const PublicNavbar = () => {
     }
   };
 
-  const handleBookCallClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleBookCallClick = () => {
+    // Use navigate instead of Link to ensure programmatic navigation works consistently
     navigate('/book-call');
   };
 

@@ -3,10 +3,15 @@ import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarDays } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
   const logoRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const handleBookCallClick = () => {
+    navigate('/book-call');
+  };
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-space-dark">
@@ -48,15 +53,14 @@ const HeroSection: React.FC = () => {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
           >
-            <Link to="/book-call">
-              <Button 
-                size="lg"
-                className="relative group bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark font-medium px-8 py-6 h-auto text-lg shadow-glow"
-              >
-                <CalendarDays className="mr-2 h-5 w-5" />
-                Book a Strategy Call
-              </Button>
-            </Link>
+            <Button 
+              size="lg"
+              className="relative group bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark font-medium px-8 py-6 h-auto text-lg shadow-glow"
+              onClick={handleBookCallClick}
+            >
+              <CalendarDays className="mr-2 h-5 w-5" />
+              Book a Strategy Call
+            </Button>
           </motion.div>
           
           <div className="mt-12">

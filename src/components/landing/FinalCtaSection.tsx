@@ -3,9 +3,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const FinalCtaSection: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleBookCallClick = () => {
+    navigate('/book-call');
+  };
+
   return (
     <section className="py-20 lg:py-28 bg-space-dark text-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -20,15 +26,14 @@ const FinalCtaSection: React.FC = () => {
             Ready to transform your digital strategy?
           </h2>
           
-          <Link to="/book-call">
-            <Button 
-              size="lg"
-              className="bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark px-8 py-6 h-auto text-lg shadow-glow group"
-            >
-              <CalendarIcon className="mr-2 h-5 w-5 group-hover:animate-pulse" />
-              Book a Strategy Call
-            </Button>
-          </Link>
+          <Button 
+            size="lg"
+            className="bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark px-8 py-6 h-auto text-lg shadow-glow group"
+            onClick={handleBookCallClick}
+          >
+            <CalendarIcon className="mr-2 h-5 w-5 group-hover:animate-pulse" />
+            Book a Strategy Call
+          </Button>
           
           <p className="mt-4 text-gray-400">30-min complimentary strategy call</p>
         </motion.div>

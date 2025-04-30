@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { X, CalendarDays } from 'lucide-react';
 import LogoComponent from './LogoComponent';
@@ -19,9 +19,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 }) => {
   if (!isMenuOpen) return null;
   
+  const navigate = useNavigate();
+  
   const handleMenuItemClick = (sectionId: string) => {
     scrollToSection(sectionId);
     setIsMenuOpen(false);
+  };
+  
+  const handleBookCallClick = () => {
+    setIsMenuOpen(false);
+    navigate('/book-call');
   };
   
   return (
@@ -60,15 +67,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           </div>
           
           <div className="mt-auto pt-6 border-t border-gray-800 space-y-4 pb-10">
-            <Link to="/book-call" onClick={() => setIsMenuOpen(false)}>
-              <Button 
-                className="w-full py-6 text-base bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark"
-                size="lg"
-              >
-                <CalendarDays className="mr-2 h-5 w-5" />
-                Book a Strategy Call
-              </Button>
-            </Link>
+            <Button 
+              className="w-full py-6 text-base bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark"
+              size="lg"
+              onClick={handleBookCallClick}
+            >
+              <CalendarDays className="mr-2 h-5 w-5" />
+              Book a Strategy Call
+            </Button>
           </div>
         </div>
       </div>
