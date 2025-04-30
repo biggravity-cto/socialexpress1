@@ -38,14 +38,14 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="relative border border-gray-300 bg-transparent flex items-center justify-center" style={{ width: '40px', height: '40px' }}>
-            {/* Logo positioned correctly within the box */}
+          <div className="relative border border-gray-300 bg-transparent flex items-center justify-center" style={{ width: '48px', height: '48px' }}>
+            {/* Logo positioned correctly within the box with more padding */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative" style={{ width: '24px', height: '26px' }}>
+              <div className="relative" style={{ width: '28px', height: '28px' }}>
                 <span className="text-3xl font-bold text-space-dark font-serif absolute bottom-0 left-0">
                   g
                 </span>
-                <span className="text-2xl font-bold text-space-dark font-serif absolute" style={{ bottom: '3px', left: '11px' }}>
+                <span className="text-2xl font-semibold text-space-dark font-serif absolute" style={{ bottom: '3px', left: '13px' }}>
                   b
                 </span>
               </div>
@@ -63,18 +63,18 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
       ) : (
         <motion.div 
           className="relative border border-white/50 bg-transparent flex items-center justify-center"
-          style={{ width: '40px', height: '40px' }}
+          style={{ width: '48px', height: '48px' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Logo positioned correctly within the box */}
+          {/* Logo positioned correctly within the box with more padding */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="relative" style={{ width: '24px', height: '26px' }}>
+            <div className="relative" style={{ width: '28px', height: '28px' }}>
               <span className="text-3xl font-bold text-white font-serif absolute bottom-0 left-0">
                 g
               </span>
-              <span className="text-2xl font-bold text-white font-serif absolute" style={{ bottom: '3px', left: '11px' }}>
+              <span className="text-2xl font-semibold text-white font-serif absolute" style={{ bottom: '3px', left: '13px' }}>
                 b
               </span>
             </div>
