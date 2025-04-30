@@ -39,13 +39,13 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
           transition={{ duration: 0.3 }}
         >
           <div className="relative border border-gray-300 bg-transparent flex items-center justify-center" style={{ width: '40px', height: '40px' }}>
-            {/* Properly positioned gb logo based on reference image */}
-            <div className="flex items-center justify-center">
-              <div className="relative">
-                <span className="text-3xl font-bold text-space-dark font-serif absolute left-0">
+            {/* Logo positioned correctly within the box */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="relative" style={{ width: '24px', height: '26px' }}>
+                <span className="text-3xl font-bold text-space-dark font-serif absolute bottom-0 left-0">
                   g
                 </span>
-                <span className="text-2xl font-bold text-space-dark font-serif absolute" style={{ left: '15px', top: '0px' }}>
+                <span className="text-2xl font-bold text-space-dark font-serif absolute" style={{ bottom: '3px', left: '11px' }}>
                   b
                 </span>
               </div>
@@ -68,13 +68,13 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Properly positioned gb logo based on reference image */}
-          <div className="flex items-center justify-center">
-            <div className="relative">
-              <span className="text-3xl font-bold text-white font-serif absolute left-0">
+          {/* Logo positioned correctly within the box */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative" style={{ width: '24px', height: '26px' }}>
+              <span className="text-3xl font-bold text-white font-serif absolute bottom-0 left-0">
                 g
               </span>
-              <span className="text-2xl font-bold text-white font-serif absolute" style={{ left: '15px', top: '0px' }}>
+              <span className="text-2xl font-bold text-white font-serif absolute" style={{ bottom: '3px', left: '11px' }}>
                 b
               </span>
             </div>
