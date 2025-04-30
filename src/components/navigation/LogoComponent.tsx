@@ -30,22 +30,22 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
   }
   
   return (
-    <Link to="/" className="flex-shrink-0 mr-4 relative">
+    <Link to="/" className="flex-shrink-0 mr-6 relative">
       {isScrolled ? (
         <motion.div 
-          className="flex items-center space-x-3"
+          className="flex items-center space-x-5"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="relative" style={{ width: '40px', height: '40px' }}>
+          <div className="relative border border-gray-300 bg-transparent" style={{ width: '40px', height: '40px' }}>
             <div className="relative w-full h-full flex items-center justify-center">
-              {/* Improved gb logo with better alignment and bolder font */}
-              <div className="flex items-center justify-center relative">
-                <span className="text-3xl font-bold bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif relative z-10">
+              {/* Updated gb logo with better alignment matching reference image */}
+              <div className="flex items-center justify-center">
+                <span className="text-3xl font-bold text-space-dark font-serif">
                   g
                 </span>
-                <span className="text-xl font-bold bg-gradient-to-r from-brand-green to-brand-primary absolute -top-2 -right-3 bg-clip-text text-transparent font-serif relative z-10">
+                <span className="text-xl font-bold text-space-dark absolute top-[-2px] right-[6px] font-serif">
                   b
                 </span>
               </div>
@@ -62,19 +62,19 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
         </motion.div>
       ) : (
         <motion.div 
-          className="relative"
+          className="relative border border-white/50 bg-transparent"
           style={{ width: '40px', height: '40px' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
           <div className="relative w-full h-full flex items-center justify-center">
-            {/* Improved gb logo with better alignment and bolder font */}
-            <div className="flex items-center justify-center relative">
-              <span className="text-3xl font-bold bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif relative z-10">
+            {/* Updated gb logo with better alignment matching reference image */}
+            <div className="flex items-center justify-center">
+              <span className="text-3xl font-bold text-white font-serif">
                 g
               </span>
-              <span className="text-xl font-bold bg-gradient-to-r from-brand-green to-brand-primary absolute -top-2 -right-3 bg-clip-text text-transparent font-serif relative z-10">
+              <span className="text-xl font-bold text-white absolute top-[-2px] right-[6px] font-serif">
                 b
               </span>
             </div>
