@@ -14,13 +14,13 @@ export class Planet implements OrbitalObject {
   constructor(config: CanvasConfig, sizeMultiplier: number = 1) {
     const { centerX, centerY } = config;
     // Smaller orbit radius, adjusted by multiplier
-    this.distance = (Math.random() * 60 + 30) * sizeMultiplier;
+    this.distance = (Math.random() * 40 + 20) * sizeMultiplier;
     this.angle = Math.random() * Math.PI * 2;
     this.x = centerX + Math.cos(this.angle) * this.distance;
     this.y = centerY + Math.sin(this.angle) * this.distance;
-    this.size = Math.random() * 4 + 2;
-    this.speed = (Math.random() * 0.006 + 0.002) * (Math.random() > 0.5 ? 1 : -1);
-    this.color = '#FFFFFF'; // White color for better contrast
+    this.size = Math.random() * 3 + 2;
+    this.speed = (Math.random() * 0.008 + 0.003) * (Math.random() > 0.5 ? 1 : -1);
+    this.color = '#FFFFFF'; // Default white color, can be overridden
     this.rotationSpeed = Math.random() * 0.05 + 0.01;
   }
 
@@ -34,7 +34,7 @@ export class Planet implements OrbitalObject {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fillStyle = this.color;
-    ctx.globalAlpha = 0.7;
+    ctx.globalAlpha = 0.85;
     ctx.fill();
     
     const gradient = ctx.createRadialGradient(
@@ -47,7 +47,7 @@ export class Planet implements OrbitalObject {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
     ctx.fillStyle = gradient;
-    ctx.globalAlpha = 0.2;
+    ctx.globalAlpha = 0.3;
     ctx.fill();
     ctx.globalAlpha = 1;
   }

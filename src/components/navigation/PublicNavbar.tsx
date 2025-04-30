@@ -5,15 +5,15 @@ import LogoComponent from './LogoComponent';
 import NavigationLinks from './NavigationLinks';
 import { Button } from '@/components/ui/button';
 import { AlignJustify, CalendarDays } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import MobileMenu from './MobileMenu';
 import { motion, AnimatePresence } from 'framer-motion';
-import OrbitalAnimation from '@/components/ui/OrbitalAnimation';
 
 const PublicNavbar = () => {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,6 +46,11 @@ const PublicNavbar = () => {
     }
   };
 
+  const handleBookCallClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate('/book-call');
+  };
+
   // Always ensure good contrast regardless of scroll position
   const navbarClasses = `fixed w-full z-40 transition-all duration-300 ${
     isScrolled 
@@ -58,53 +63,20 @@ const PublicNavbar = () => {
       <header className={navbarClasses}>
         <div className="container flex items-center justify-between">
           <div className="flex items-center">
-            <AnimatePresence>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="relative mr-3"
-                style={{ width: '40px', height: '40px' }}
-              >
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <span className="text-3xl font-medium bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif">
-                    g
-                  </span>
-                  <span className="text-xl font-medium bg-gradient-to-r from-brand-green to-brand-primary absolute -top-2 -right-2 bg-clip-text text-transparent font-serif">
-                    b
-                  </span>
-                  <div className="absolute inset-0 pointer-events-none">
-                    <OrbitalAnimation type="compact" />
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-            
-            <AnimatePresence>
-              {isScrolled && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <LogoComponent isScrolled={isScrolled} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <LogoComponent isScrolled={isScrolled} />
             
             {!isMobile && <NavigationLinks scrollToSection={scrollToSection} isScrolled={isScrolled} />}
           </div>
           
           <div className="flex items-center gap-2">
             {!isMobile && (
-              <Link to="/book-call">
-                <Button 
-                  className="bg-gradient-to-r from-brand-green to-brand-primary text-space-dark hover:opacity-90 font-medium px-4 py-2"
-                >
-                  <CalendarDays className="mr-2 h-4 w-4" />
-                  Book a Call
-                </Button>
-              </Link>
+              <Button 
+                className="bg-gradient-to-r from-brand-green to-brand-primary text-space-dark hover:opacity-90 font-medium px-4 py-2"
+                onClick={handleBookCallClick}
+              >
+                <CalendarDays className="mr-2 h-4 w-4" />
+                Book a Call
+              </Button>
             )}
             
             {isMobile && (
