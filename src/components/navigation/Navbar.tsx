@@ -6,12 +6,17 @@ import DashboardNavbar from './DashboardNavbar';
 
 const Navbar = () => {
   const location = useLocation();
+  const path = location.pathname;
 
   // Check if we're on the public pages
-  if (location.pathname === '/' || location.pathname === '/login' || 
-      location.pathname === '/features' || location.pathname === '/pricing' || 
-      location.pathname === '/blog' || location.pathname === '/guides' ||
-      location.pathname === '/auth' || location.pathname === '/email-confirmation') {
+  const publicPaths = ['/', '/login', '/features', '/pricing', '/blog', '/guides',
+      '/auth', '/email-confirmation', '/about', '/offerings', '/case-studies', 
+      '/team', '/contact', '/book-call'];
+      
+  const isPublicPage = publicPaths.some(publicPath => 
+    path === publicPath || path.startsWith(`${publicPath}/`));
+
+  if (isPublicPage) {
     return <PublicNavbar />;
   }
 

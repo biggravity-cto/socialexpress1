@@ -11,7 +11,7 @@ const Layout = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   
-  const publicPages = ['/', '/login', '/auth', '/email-confirmation', '/features', '/pricing', '/blog', '/guides', '/case-studies'];
+  const publicPages = ['/', '/login', '/auth', '/email-confirmation', '/features', '/pricing', '/blog', '/guides', '/case-studies', '/about', '/offerings', '/team', '/contact', '/book-call'];
   const isPublicPage = publicPages.includes(location.pathname);
   const isLoginPage = location.pathname === '/login' || location.pathname === '/auth' || location.pathname === '/email-confirmation';
   

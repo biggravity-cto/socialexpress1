@@ -3,12 +3,14 @@ import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { CalendarDays } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroSection: React.FC = () => {
   const logoRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const handleBookCallClick = () => {
-    window.location.href = '/book-call';
+    navigate('/book-call');
   };
 
   return (
@@ -56,7 +58,7 @@ const HeroSection: React.FC = () => {
               className="relative group bg-gradient-to-r from-brand-green to-brand-primary hover:opacity-90 text-space-dark font-medium px-8 py-6 h-auto text-lg shadow-glow"
               onClick={handleBookCallClick}
             >
-              <CalendarDays className="mr-2 h-5 w-5" />
+              <CalendarDays className="mr-2 h-5 w-5 group-hover:animate-pulse" />
               Book a Strategy Call
             </Button>
           </motion.div>

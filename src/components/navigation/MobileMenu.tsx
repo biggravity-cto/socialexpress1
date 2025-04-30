@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { X, CalendarDays } from 'lucide-react';
 
@@ -18,9 +18,11 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 }) => {
   if (!isMenuOpen) return null;
   
+  const navigate = useNavigate();
+  
   const handleBookCallClick = () => {
     setIsMenuOpen(false);
-    window.location.href = '/book-call';
+    navigate('/book-call');
   };
   
   return (

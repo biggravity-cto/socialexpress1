@@ -47,8 +47,7 @@ const PublicNavbar = () => {
   };
 
   const handleBookCallClick = () => {
-    // Direct navigation to book-call page
-    window.location.href = '/book-call';
+    navigate('/book-call');
   };
 
   // Always ensure good contrast regardless of scroll position
