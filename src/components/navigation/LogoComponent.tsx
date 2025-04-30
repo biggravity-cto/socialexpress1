@@ -39,14 +39,16 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
           transition={{ duration: 0.3 }}
         >
           <div className="relative border border-gray-300 bg-transparent flex items-center justify-center" style={{ width: '40px', height: '40px' }}>
-            {/* Fixed gb logo with proper alignment based on reference image */}
-            <div className="flex items-center justify-center relative">
-              <span className="text-3xl font-bold text-space-dark font-serif">
-                g
-              </span>
-              <span className="text-2xl font-bold text-space-dark absolute top-0 right-[11px] font-serif">
-                b
-              </span>
+            {/* Properly positioned gb logo based on reference image */}
+            <div className="flex items-center justify-center">
+              <div className="relative">
+                <span className="text-3xl font-bold text-space-dark font-serif absolute left-0">
+                  g
+                </span>
+                <span className="text-2xl font-bold text-space-dark font-serif absolute" style={{ left: '15px', top: '0px' }}>
+                  b
+                </span>
+              </div>
             </div>
           </div>
           <motion.span 
@@ -66,14 +68,16 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Fixed gb logo with proper alignment based on reference image */}
-          <div className="flex items-center justify-center relative">
-            <span className="text-3xl font-bold text-white font-serif">
-              g
-            </span>
-            <span className="text-2xl font-bold text-white absolute top-0 right-[11px] font-serif">
-              b
-            </span>
+          {/* Properly positioned gb logo based on reference image */}
+          <div className="flex items-center justify-center">
+            <div className="relative">
+              <span className="text-3xl font-bold text-white font-serif absolute left-0">
+                g
+              </span>
+              <span className="text-2xl font-bold text-white font-serif absolute" style={{ left: '15px', top: '0px' }}>
+                b
+              </span>
+            </div>
           </div>
         </motion.div>
       )}
