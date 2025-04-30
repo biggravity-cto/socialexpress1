@@ -2,7 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import OrbitalAnimation from '../ui/OrbitalAnimation';
 
 interface LogoComponentProps {
   isScrolled?: boolean;
@@ -46,12 +45,9 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
                 <span className="text-3xl font-bold bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif relative z-10">
                   g
                 </span>
-                <span className="text-xl font-bold bg-gradient-to-r from-brand-green to-brand-primary absolute -top-2 -right-2 bg-clip-text text-transparent font-serif relative z-10">
+                <span className="text-xl font-bold bg-gradient-to-r from-brand-green to-brand-primary absolute -top-2 -right-3 bg-clip-text text-transparent font-serif relative z-10">
                   b
                 </span>
-              </div>
-              <div className="absolute inset-0 pointer-events-none">
-                <OrbitalAnimation type="compact" brandColors={true} />
               </div>
             </div>
           </div>
@@ -78,12 +74,9 @@ const LogoComponent: React.FC<LogoComponentProps> = ({ isScrolled, isHeroLogo = 
               <span className="text-3xl font-bold bg-gradient-to-r from-brand-green to-brand-primary inline-block bg-clip-text text-transparent font-serif relative z-10">
                 g
               </span>
-              <span className="text-xl font-bold bg-gradient-to-r from-brand-green to-brand-primary absolute -top-2 -right-2 bg-clip-text text-transparent font-serif relative z-10">
+              <span className="text-xl font-bold bg-gradient-to-r from-brand-green to-brand-primary absolute -top-2 -right-3 bg-clip-text text-transparent font-serif relative z-10">
                 b
               </span>
-            </div>
-            <div className="absolute inset-0 pointer-events-none">
-              <OrbitalAnimation type="compact" brandColors={true} />
             </div>
           </div>
         </motion.div>
