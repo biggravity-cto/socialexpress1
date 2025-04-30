@@ -1,9 +1,8 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { X, CalendarDays } from 'lucide-react';
-import LogoComponent from './LogoComponent';
 
 interface MobileMenuProps {
   isMenuOpen: boolean;
@@ -19,16 +18,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 }) => {
   if (!isMenuOpen) return null;
   
-  const navigate = useNavigate();
-  
-  const handleMenuItemClick = (sectionId: string) => {
-    scrollToSection(sectionId);
-    setIsMenuOpen(false);
-  };
-  
   const handleBookCallClick = () => {
     setIsMenuOpen(false);
-    navigate('/book-call');
+    window.location.href = '/book-call';
   };
   
   return (

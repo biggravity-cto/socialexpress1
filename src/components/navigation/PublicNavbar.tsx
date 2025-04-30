@@ -47,8 +47,8 @@ const PublicNavbar = () => {
   };
 
   const handleBookCallClick = () => {
-    // Use navigate instead of Link to ensure programmatic navigation works consistently
-    navigate('/book-call');
+    // Direct navigation to book-call page
+    window.location.href = '/book-call';
   };
 
   // Always ensure good contrast regardless of scroll position
